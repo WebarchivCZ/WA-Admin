@@ -15,18 +15,11 @@
 		<?php //<img src="img/logo.gif" width="101" height="29" alt="" /> ?>
 		</a>
 		</h1>
-
-		<ul id="top-navigation">
-			<li class="active"><span><span>Hlavní stránka</span></span></li>
-			<li><span><span><a href="<?= url::base(); ?>tables/resources">Zdroje</a></span></span></li>
-			<li><span><span><a href="<?= url::base(); ?>tables/contracts">Smlouvy</a></span></span></li>
-			<li><span><span><a href="<?= url::base(); ?>tables/publishers">Vydavatelé</a></span></span></li>
-			<li><span><span><a href="<?= url::base(); ?>tables/contacts">Kontakty</a></span></span></li>
-		</ul>
+		<?= $top_nav; ?>
 	</div>
 	<div id="middle">
 		<div id="left-column">
-		<?= $nav; ?>
+		<?= $left_nav; ?>
 			
 		</div>
 		<div id="center-column">

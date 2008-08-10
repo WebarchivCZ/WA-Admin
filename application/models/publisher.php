@@ -7,12 +7,18 @@
  * 	- name
  */
 
-class Publisher_Model extends ORM  {
+class Publisher_Model extends ORM implements Viewable_Table {
 	
 	public function __construct($id = NULL)
 	{
 		parent::__construct($id);
 	}	
+	
+	public function table_headers()
+	{
+		$headers = array('id', 'name', 'comments');
+		return $headers;
+	}
 }
 
 ?>

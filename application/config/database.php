@@ -30,12 +30,12 @@ $config['default'] = array
 	'connection'    => array
 	(
 		'type'     => 'mysql',
-		'user'     => 'waTest',
-		'pass'     => 'test',
-		'host'     => 'raptor.webarchiv.cz',
+		'user'     => 'root',
+		'pass'     => 'inline',
+		'host'     => 'localhost',
 		'port'     => FALSE,
 		'socket'   => FALSE,
-		'database' => 'waTest'
+		'database' => 'wadmin'
 	),
 	'character_set' => 'utf8',
 	'table_prefix'  => '',

@@ -37,13 +37,14 @@ abstract class Template_Controller extends Controller {
 			// Render the template immediately after the controller method
 			Event::add('system.post_controller', array($this, '_render'));
 		}
-		
+		//TODO zobrazovat menu podle aktualni polozky
 		$this->template->title = "Default";
 		$this->template->content = new View("layout/center");
-		$this->template->nav = new View("layout/l-navigation");
+		$this->template->top_nav = new View("layout/top_nav");
+		$this->template->left_nav = new View("layout/left_nav");
 		
 		//just for debug
-		
+		$profiler = new Profiler();
 	}
 
 	/**
