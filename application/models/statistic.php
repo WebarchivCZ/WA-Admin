@@ -1,6 +1,6 @@
 <?php
-class Statistic_Model extends Model {
-	
+class Statistic_Model extends Model
+{	
 	public static function factory() {
 		return new Statistic_Model();
 	}

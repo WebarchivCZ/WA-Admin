@@ -1,6 +1,6 @@
 <?php
-	$lang = array
-	(	
+$lang = array
+(	
 		'add' => 'přidat',
 		'comments' => 'komentář',
 		'publisher' => 'vydavatel',
@@ -17,5 +17,5 @@
 		'result' => 'vysledek',
 		'Correspondence' => 'Korespondence',
 		'resource' => 'zdroj',
-	)
+)
 ?>

@@ -7,8 +7,8 @@
  * 	- name
  */
 
-class Publisher_Model extends ORM implements Viewable_Table {
-	
+class Publisher_Model extends ORM implements Viewable_Table
+{
 	public function __construct($id = NULL)
 	{
 		parent::__construct($id);

@@ -11,7 +11,6 @@
 
 class Contract_Model extends ORM implements Viewable_Table
 {
-	
 	public function _construct($id = NULL)
 	{
 		// load database library into $this->db (can be omitted if not required)

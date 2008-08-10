@@ -1,11 +1,12 @@
 <div class="top-bar"><a href="#" class="button"><?= Kohana::lang('tables.add') ?></a>
-<h1><?= Kohana::lang('tables.'.$model) ?></h1>
-<div class="breadcrumbs"><a href="#">Homepage</a> / <a href="#">Contents</a></div>
+	<h1><?= Kohana::lang('tables.'.$model) ?></h1>
+	<div class="breadcrumbs"><a href="#">Homepage</a> / <a href="#">Contents</a></div>
 </div>
 <br />
-<div class="select-bar"><label> <input type="text" name="textfield" /> </label>
-
-<label> <input type="submit" name="Submit" value="Search" /> </label></div>
+<div class="select-bar">
+	<label> <input type="text" name="textfield" /> </label>
+	<label> <input type="submit" name="Submit" value="Search" /> </label>
+</div>
 <div class="table">
 
 <?= html::image(array('src'=>'media/img/bg-th-left.gif', 'width'=>'8', 'height'=>'7', 'class'=>'left')) ?>

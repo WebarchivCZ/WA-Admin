@@ -30,12 +30,12 @@ $config['default'] = array
 	'connection'    => array
 	(
 		'type'     => 'mysql',
-		'user'     => 'root',
-		'pass'     => 'inline',
+		'user'     => 'waTest',
+		'pass'     => 'test',
 		'host'     => 'localhost',
 		'port'     => FALSE,
 		'socket'   => FALSE,
-		'database' => 'wadmin'
+		'database' => 'waTest'
 	),
 	'character_set' => 'utf8',
 	'table_prefix'  => '',
