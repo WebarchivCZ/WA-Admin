@@ -27,10 +27,11 @@ class Table_Controller extends Template_Controller {
 				
 				$view->headers = $headers;
 				
-				$m->select($headers);
+				//$m->select($headers);
 				
 				$view->items = $m->find_all();	
 				$this->template->content = $view;
+				
 			}
 			else
 			{
