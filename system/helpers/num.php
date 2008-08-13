@@ -2,7 +2,7 @@
 /**
  * Number helper class.
  *
- * $Id$
+ * $Id: num.php 2373 2008-03-28 20:01:58Z Shadowhand $
  *
  * @package    Core
  * @author     Kohana Team

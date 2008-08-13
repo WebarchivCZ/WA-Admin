@@ -6,7 +6,7 @@
  * @see http://en.wikipedia.org/wiki/Active_record
  * @see http://en.wikipedia.org/wiki/Object-relational_mapping
  *
- * $Id$
+ * $Id: ORM.php 3304 2008-08-08 18:45:30Z Shadowhand $
  *
  * @package    Core
  * @author     Kohana Team
@@ -86,11 +86,11 @@ class ORM_Core {
 		}
 		elseif (is_object($id))
 		{
-			// Load an object
-			$this->load_values((array) $id);
-
 			// Object is loaded and saved
 			$this->loaded = $this->saved = TRUE;
+
+			// Load an object
+			$this->load_values((array) $id);
 		}
 		else
 		{
@@ -574,6 +574,9 @@ class ORM_Core {
 
 			// Object has been saved
 			$this->saved = TRUE;
+
+			// Nothing has been changed
+			$this->changed = array();
 		}
 		else
 		{
@@ -652,14 +655,14 @@ class ORM_Core {
 	 */
 	public function clear()
 	{
-		// Replace the current object with an empty one
-		$this->load_values(array());
-
 		// Object is no longer loaded or saved
 		$this->loaded = $this->saved = FALSE;
 
 		// Nothing has been changed
 		$this->changed = array();
+
+		// Replace the current object with an empty one
+		$this->load_values(array());
 
 		return $this;
 	}
@@ -769,7 +772,7 @@ class ORM_Core {
 	 */
 	public function remove(ORM $model)
 	{
-		if ( ! $this->has($object))
+		if ( ! $this->has($model))
 			return FALSE;
 
 		if (($join_table = array_search(inflector::plural($model->object_name), $this->has_and_belongs_to_many)) === FALSE)
@@ -1071,14 +1074,14 @@ class ORM_Core {
 
 		if ($result->count() === 1)
 		{
-			// Load object values
-			$this->load_values($result->result(FALSE)->current());
-
 			// Model is loaded and saved
 			$this->loaded = $this->saved = TRUE;
 
 			// Clear relationships and changed values
 			$this->related = $this->changed = array();
+
+			// Load object values
+			$this->load_values($result->result(FALSE)->current());
 		}
 		else
 		{

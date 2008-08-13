@@ -3,7 +3,7 @@
  * File Auth driver.
  * Note: this Auth driver does not support roles nor auto-login.
  *
- * $Id$
+ * $Id: File.php 3114 2008-07-15 21:11:44Z Geert $
  *
  * @package    Auth
  * @author     Kohana Team

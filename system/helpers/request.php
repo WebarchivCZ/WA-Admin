@@ -2,7 +2,7 @@
 /**
  * Request helper class.
  *
- * $Id$
+ * $Id: request.php 3160 2008-07-20 16:03:48Z Shadowhand $
  *
  * @package    Core
  * @author     Kohana Team

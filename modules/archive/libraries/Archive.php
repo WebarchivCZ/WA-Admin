@@ -2,7 +2,7 @@
 /**
  * Archive library.
  *
- * $Id$
+ * $Id: Archive.php 3168 2008-07-21 01:34:36Z Shadowhand $
  *
  * @package    Archive
  * @author     Kohana Team

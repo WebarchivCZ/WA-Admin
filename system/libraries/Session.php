@@ -2,7 +2,7 @@
 /**
  * Session library.
  *
- * $Id$
+ * $Id: Session.php 3231 2008-07-29 07:30:50Z Geert $
  *
  * @package    Core
  * @author     Kohana Team

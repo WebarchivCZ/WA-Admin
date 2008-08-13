@@ -2,7 +2,7 @@
 /**
  * Cache driver interface.
  *
- * $Id$
+ * $Id: Cache.php 3135 2008-07-17 13:14:17Z Geert $
  *
  * @package    Cache
  * @author     Kohana Team

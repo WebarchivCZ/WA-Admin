@@ -2,7 +2,7 @@
 /**
  * Archive library tar driver.
  *
- * $Id$
+ * $Id: Tar.php 3138 2008-07-17 14:40:27Z Shadowhand $
  *
  * @package    Archive
  * @author     Kohana Team

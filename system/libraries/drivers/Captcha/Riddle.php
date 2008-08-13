@@ -2,7 +2,7 @@
 /**
  * Captcha driver for "riddle" style.
  *
- * $Id$
+ * $Id: Riddle.php 3032 2008-07-10 16:31:35Z Geert $
  *
  * @package    Captcha
  * @author     Kohana Team

@@ -2,7 +2,7 @@
 /**
  * Archive library bzip driver.
  *
- * $Id$
+ * $Id: Bzip.php 3138 2008-07-17 14:40:27Z Shadowhand $
  *
  * @package    Archive
  * @author     Kohana Team

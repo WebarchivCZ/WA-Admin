@@ -2,7 +2,7 @@
 /**
  * File helper class.
  *
- * $Id$
+ * $Id: file.php 3237 2008-07-30 12:10:20Z Geert $
  *
  * @package    Core
  * @author     Kohana Team

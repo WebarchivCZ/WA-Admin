@@ -2,7 +2,7 @@
 /**
  * Google Maps API integration.
  *
- * $Id$
+ * $Id: Gmap.php 3240 2008-07-30 21:42:43Z alexsancho $
  *
  * @package    Gmaps
  * @author     Kohana Team

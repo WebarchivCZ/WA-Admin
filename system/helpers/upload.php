@@ -3,7 +3,7 @@
  * Upload helper class for working with the global $_FILES
  * array and Validation library.
  *
- * $Id$
+ * $Id: upload.php 3264 2008-08-05 19:03:14Z Geert $
  *
  * @package    Core
  * @author     Kohana Team

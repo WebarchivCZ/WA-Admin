@@ -18,7 +18,7 @@
  * string functions.
  * @see http://php.net/mbstring
  *
- * $Id$
+ * $Id: utf8.php 2712 2008-05-29 17:05:06Z Geert $
  *
  * @package    Core
  * @author     Kohana Team

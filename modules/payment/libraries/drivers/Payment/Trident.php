@@ -2,7 +2,7 @@
 /**
  * Trident Payment Driver
  *
- * $Id$
+ * $Id: Trident.php 3163 2008-07-20 16:15:31Z Shadowhand $
  *
  * @package    Payment
  * @author     Kohana Team

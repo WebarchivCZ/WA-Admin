@@ -2,7 +2,7 @@
 /**
  * Email helper class.
  *
- * $Id$
+ * $Id: email.php 3213 2008-07-27 14:28:37Z Geert $
  *
  * @package    Core
  * @author     Kohana Team

@@ -2,7 +2,7 @@
 /**
  * Kohana process control file, loaded by the front controller.
  * 
- * $Id$
+ * $Id: Bootstrap.php 3160 2008-07-20 16:03:48Z Shadowhand $
  *
  * @package    Core
  * @author     Kohana Team

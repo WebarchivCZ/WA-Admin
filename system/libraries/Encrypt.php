@@ -4,7 +4,7 @@
  * using the MCrypt extension.
  * @see http://php.net/mcrypt
  *
- * $Id$
+ * $Id: Encrypt.php 3263 2008-08-05 17:57:50Z PugFish $
  *
  * @package    Core
  * @author     Kohana Team

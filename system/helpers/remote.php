@@ -2,7 +2,7 @@
 /**
  * Remote url/file helper.
  *
- * $Id$
+ * $Id: remote.php 3149 2008-07-18 13:48:25Z Shadowhand $
  *
  * @package    Core
  * @author     Kohana Team

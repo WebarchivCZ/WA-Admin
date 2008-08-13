@@ -2,7 +2,7 @@
 /**
  * Payment driver interface
  *
- * $Id$
+ * $Id: Payment.php 3108 2008-07-14 00:01:27Z Shadowhand $
  *
  * @package    Payment
  * @author     Kohana Team

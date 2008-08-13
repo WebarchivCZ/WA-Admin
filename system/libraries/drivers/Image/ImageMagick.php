@@ -2,7 +2,7 @@
 /**
  * ImageMagick Image Driver.
  *
- * $Id$
+ * $Id: ImageMagick.php 3248 2008-08-01 21:02:18Z Geert $
  *
  * @package    Image
  * @author     Kohana Team

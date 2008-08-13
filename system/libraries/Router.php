@@ -2,7 +2,7 @@
 /**
  * Router
  *
- * $Id$
+ * $Id: Router.php 3256 2008-08-05 01:34:16Z Shadowhand $
  *
  * @package    Core
  * @author     Kohana Team

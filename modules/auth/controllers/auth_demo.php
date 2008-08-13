@@ -3,7 +3,7 @@
  * Auth module demo controller. This controller should NOT be used in production.
  * It is for demonstration purposes only!
  *
- * $Id$
+ * $Id: auth_demo.php 3267 2008-08-06 03:44:02Z Shadowhand $
  *
  * @package    Auth
  * @author     Kohana Team

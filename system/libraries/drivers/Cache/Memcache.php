@@ -2,7 +2,7 @@
 /**
  * Memcache-based Cache driver.
  *
- * $Id$
+ * $Id: Memcache.php 3160 2008-07-20 16:03:48Z Shadowhand $
  *
  * @package    Cache
  * @author     Kohana Team

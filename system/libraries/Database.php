@@ -2,7 +2,7 @@
 /**
  * Provides database access in a platform agnostic way, using simple query building blocks.
  *
- * $Id$
+ * $Id: Database.php 3295 2008-08-07 19:30:03Z zombor $
  *
  * @package    Core
  * @author     Kohana Team
@@ -732,6 +732,10 @@ class Database_Core {
 
 		foreach ($key as $k => $v)
 		{
+			// Add a table prefix if the column includes the table.
+			if (strpos($k, '.'))
+				$k = $this->config['table_prefix'].$k;
+
 			$this->set[$k] = $this->driver->escape($v);
 		}
 
@@ -760,9 +764,10 @@ class Database_Core {
 
 		$sql = $this->driver->compile_select(get_object_vars($this));
 
+		$this->reset_select();
+
 		$result = $this->query($sql);
 
-		$this->reset_select();
 		$this->last_query = $sql;
 
 		return $result;
@@ -796,8 +801,10 @@ class Database_Core {
 
 		$sql = $this->driver->compile_select(get_object_vars($this));
 
-		$result = $this->query($sql);
 		$this->reset_select();
+
+		$result = $this->query($sql);
+
 		return $result;
 	}
 
@@ -859,25 +866,26 @@ class Database_Core {
 		$sql = $this->driver->insert($this->config['table_prefix'].$table, array_keys($this->set), array_values($this->set));
 
 		$this->reset_write();
+
 		return $this->query($sql);
 	}
 
 	/**
 	 * Adds an "IN" condition to the where clause
-	 * 
+	 *
 	 * @param   string  Name of the column being examined
 	 * @param   mixed   An array or string to match against
 	 * @param   bool    Generate a NOT IN clause instead
 	 * @return  Database_Core  This Database object.
 	 */
-	public function in($field, $values, $not = FALSE) 
+	public function in($field, $values, $not = FALSE)
 	{
 		if (is_array($values))
 		{
 			$escaped_values = array();
 			foreach ($values as $v)
 			{
-				if (is_numeric($v)) 
+				if (is_numeric($v))
 				{
 					$escaped_values[] = $v;
 				}
@@ -895,12 +903,12 @@ class Database_Core {
 
 	/**
 	 * Adds a "NOT IN" condition to the where clause
-	 * 
+	 *
 	 * @param   string  Name of the column being examined
 	 * @param   mixed   An array or string to match against
 	 * @return  Database_Core  This Database object.
 	 */
-	public function notin($field, $values) 
+	public function notin($field, $values)
 	{
 		return $this->in($field, $values, TRUE);
 	}
@@ -989,6 +997,10 @@ class Database_Core {
 
 			$table = $this->from[0];
 		}
+		else
+		{
+			$table = $this->config['table_prefix'].$table;
+		}
 
 		if (! is_null($where))
 		{
@@ -998,7 +1010,7 @@ class Database_Core {
 		if (count($this->where) < 1)
 			throw new Kohana_Database_Exception('database.must_use_where');
 
-		$sql = $this->driver->delete($this->config['table_prefix'].$table, $this->where);
+		$sql = $this->driver->delete($table, $this->where);
 
 		$this->reset_write();
 		return $this->query($sql);

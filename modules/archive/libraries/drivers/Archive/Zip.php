@@ -2,7 +2,7 @@
 /**
  * Archive library zip driver.
  *
- * $Id$
+ * $Id: Zip.php 2007 2008-02-09 06:37:51Z PugFish $
  *
  * @package    Archive
  * @author     Kohana Team

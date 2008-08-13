@@ -3,7 +3,7 @@
  * Kohana Controller class. The controller class must be extended to work
  * properly, so this class is defined as abstract.
  *
- * $Id$
+ * $Id: Controller.php 3281 2008-08-06 16:13:58Z Shadowhand $
  *
  * @package    Core
  * @author     Kohana Team
@@ -33,6 +33,19 @@ abstract class Controller_Core {
 
 		// Input should always be available
 		$this->input = Input::instance();
+	}
+
+	/**
+	 * Handles methods that do not exist.
+	 *
+	 * @param   string  method name
+	 * @param   array   arguments
+	 * @return  void
+	 */
+	public function __call($method, $args)
+	{
+		// Default to showing a 404 page
+		Event::run('system.404');
 	}
 
 	/**

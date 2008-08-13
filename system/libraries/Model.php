@@ -2,7 +2,7 @@
 /**
  * Model base class.
  *
- * $Id$
+ * $Id: Model.php 3002 2008-07-08 14:19:12Z Shadowhand $
  *
  * @package    Core
  * @author     Kohana Team

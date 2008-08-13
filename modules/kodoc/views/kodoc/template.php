@@ -10,23 +10,12 @@
 
 echo html::script(array
 (
-	'kodoc/media/js/jquery-ui',
-	'kodoc/media/js/jquery-min',
-	//'kodoc/media/js/plugins',
-	//'kodoc/media/js/effects'
+	'kodoc/media/js/jquery',
+	'kodoc/media/js/plugins',
+	'kodoc/media/js/effects'
 ), TRUE)
 
 ?>
-
-<script>
-  $(document).ready(function(){
-    $("#menu-accordion").accordion({
-   header: "a.group-head",
-autoHeight: false ,
-navigation: true, 
-});
-  });
-  </script>
 
 <style type="text/css">
 
@@ -47,35 +36,21 @@ dd { display: block; padding-left: 1em; }
 code { white-space: pre; display: none; }
 
 #container { position: relative; margin: 0 16em 2em 1em; border: solid 0 #e7f5d7; border-width: 0 0.2em 0.3em 0.2em; }
-#header{
-width:100%;
-height:3.5em;
-background-color:#63a80d;
 
-}
-#header h1{ font-size: 2em;color:Black;}
-#menu {   position: absolute;   left: 0.3em;  padding: 0;  width: 16em}
+#menu { position: fixed; top: 0; right: 1.5em; width: 14em; padding: 0.2em 0; }
 * html body #menu { position: absolute; } /* Add this style for IE6 */
 #menu ul { margin: 0 0.2em; list-style: none; color: #b43f11; }
 #menu li.first { padding-top: 0.2em; }
+#menu li.active li.lite { color: #b43f11; }
 #menu li ul { padding: 0.1em 0; margin-right: 0; color: #444; }
 #menu li ul a { padding-left: 0.4em; color: #333; }
 #menu li ul a:hover { font-weight: bold; color: #2f4f14; }
 #menu li ul li:before { content: "«"; }
 #menu ul.expanded li { padding-left: 0.6em; }
 #menu li span { text-shadow: 1px 1px 1px #333; font-size: 1.3em; cursor: pointer; }
-#header h4{
-font-size:0.8em;
-}
-a.group-head,a.group-head:visited{color:#b43f11;}
-.methods-overview li a{
-color:#b43f11;
-}
 * html body #menu li span { text-shadow: 0 0 0 transparent; } /* Remove the text shadow in IE6 */
 
-#content {   margin-left: 16em;
-  padding: 0;
-  margin-right: 1em;}
+#content { padding: 0.2em 0.5em; }
 
 #stats { clear: both; padding: 1em 0; text-align: center; font-size: 0.8em; }
 </style>

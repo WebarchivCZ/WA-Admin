@@ -2,7 +2,7 @@
 /**
  * Auth driver interface.
  *
- * $Id$
+ * $Id: Auth.php 3114 2008-07-15 21:11:44Z Geert $
  *
  * @package    Auth
  * @author     Kohana Team

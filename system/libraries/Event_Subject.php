@@ -2,7 +2,7 @@
 /**
  * Kohana event subject. Uses the SPL observer pattern.
  *
- * $Id$
+ * $Id: Event_Subject.php 2337 2008-03-24 19:17:38Z Shadowhand $
  *
  * @package    Core
  * @author     Kohana Team

@@ -2,7 +2,7 @@
 /**
  * Yourpay Payment Driver
  *
- * $Id$
+ * $Id: Yourpay.php 3168 2008-07-21 01:34:36Z Shadowhand $
  *
  * @package    Payment
  * @author     Kohana Team

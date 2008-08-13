@@ -2,7 +2,7 @@
 /**
  * URI library.
  *
- * $Id$
+ * $Id: URI.php 3171 2008-07-21 02:27:11Z Shadowhand $
  *
  * @package    Core
  * @author     Kohana Team

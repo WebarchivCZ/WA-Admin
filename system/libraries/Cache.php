@@ -4,7 +4,7 @@
  * resources. Caches are identified by a unique string. Tagging of caches is
  * also supported, and caches can be found and deleted by id or tag.
  *
- * $Id$
+ * $Id: Cache.php 3263 2008-08-05 17:57:50Z PugFish $
  *
  * @package    Cache
  * @author     Kohana Team

@@ -2,7 +2,7 @@
 /**
  * Text helper class.
  *
- * $Id$
+ * $Id: text.php 3228 2008-07-28 20:47:04Z dlib $
  *
  * @package    Core
  * @author     Kohana Team
