@@ -1,7 +1,10 @@
 <?php
 $lang = array
 (	
+		'view' => 'zobrazit',
+		'delete'=> 'smazat',
 		'add' => 'přidat',
+		'index' => 'výpis',
 		'comments' => 'komentář',
 		'publisher' => 'vydavatel',
 		'id' => 'ID',
@@ -16,6 +19,8 @@ $lang = array
 		'type' => 'typ',
 		'result' => 'vysledek',
 		'Correspondence' => 'Korespondence',
-		'resource' => 'zdroj',
+		'Contacts' => 'Kontakty',
+		'Publishers' => 'Vydavatelé',
+		
 )
 ?>

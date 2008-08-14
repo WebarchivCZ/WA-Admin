@@ -2,11 +2,11 @@
 $config = array
 (
 	'top_menu' => array(
-					'resources',
-					'contracts',
-					'publishers',
-					'contacts',
-					'correspondence',
-					'urls'),
+					'home',
+					'suggest',
+					'rate',
+					'addressing',
+					'progress',
+					'catalogue'),
 )
 ?>

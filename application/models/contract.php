@@ -9,36 +9,15 @@
  * - comments
  */
 
-class Contract_Model extends ORM implements Viewable_Table
+class Contract_Model extends Table_Model 
 {
+	protected $default_column = 'contract_no';
+	public $headers = array('id', 'contract_no', 'status', 'date_signed', 'comments');
+	
 	public function _construct($id = NULL)
 	{
 		// load database library into $this->db (can be omitted if not required)
 		parent::__construct($id);
-		$this->_set_status();
-	}
-	
-	public function table_headers()
-	{
-		$headers = array('id', 'contract_no', 'status', 'date_signed', 'comments');
-		return $headers;
-	}
-	
-	// TODO status - rozpoznavani
-	private function _set_status() {
-		$status = $this->__get('status');
-		$s = 'neznamy';
-		switch ($status)
-		{
-			case '1':
-				$s = 'v poradku';
-				break;
-			default:
-				$s = 'nezname';
-				break;
-		}
-		$this->__set('status', $s);
 	}
 }
-
 ?>

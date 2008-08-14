@@ -1,11 +1,13 @@
 <div class="top-bar"><a href="#" class="button"><?= Kohana::lang('tables.add') ?></a>
-	<h1><?= Kohana::lang('tables.'.$model) ?></h1>
+	<h1><?= Kohana::lang('tables.'.$title) ?></h1>
 	<div class="breadcrumbs"><a href="#">Homepage</a> / <a href="#">Contents</a></div>
 </div>
 <br />
 <div class="select-bar">
-	<label> <input type="text" name="textfield" /> </label>
-	<label> <input type="submit" name="Submit" value="Search" /> </label>
+	<form action="<?= url::base() ?>table/search">
+		<label> <input type="text" name="textfield" /> </label>
+		<label> <input type="submit" name="Submit" value="Search" /> </label>
+	</form>
 </div>
 <div class="table">
 
@@ -16,18 +18,31 @@
 <table class="listing" cellpadding="0" cellspacing="0">
 	<tr>
 	<?php
-	echo display::display_headers($headers);
+		array_push($headers, 'view', 'delete');
+		echo display::display_headers($headers);
 	?>
 	</tr>
 	<?php
 	foreach ($items as $item)
 	{
 		echo '<tr>';
-		foreach ($headers as $column)
+		foreach ($columns as $column)
 		{
-			$value = $item->__get($column);
+			if ($column->foreign_key) {
+			$model = $column->name;
+				$value = $item->$model->__toString();
+				if ($column->isLink())
+				{
+					$id = $item->$model->id;
+					$model = ucfirst($model);
+					$value = "<a href='table/view/$model/$id'>".$value."</a>";
+				}
+			} else {
+				$value = $item->__get($column->column);
+			}
 			echo "<td>$value</td>\n";
 		}
+		echo "<td>Zobrazit</td><td>Smazat</td>";
 		echo '</tr>';
 	}
 	?>

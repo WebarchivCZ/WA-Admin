@@ -1,58 +1,43 @@
 <?php
-class Table_Controller extends Template_Controller {
-
-	public function __construct()
-	{
-		parent::__construct();
-		$this->template->title = "Tabulka";
-	}
+abstract class Table_Controller extends Template_Controller
+{
+	protected $table;
+	protected $title;
 
 	public function index()
 	{
-		$this->template->content = View::factory('select_table');		
+		$model = ORM::factory($this->table);
+		$view = new View('table');
+		$view->title = $this->title;
+		$view->headers = $model->headers;
+		$view->columns = $model->table_columns();
+		$view->items = $model->find_all();
+		$this->template->content = $view;
+		$this->template->title = Kohana::lang('tables.'.$this->title) . " | " . Kohana::lang('tables.index');
 	}
 
-	public function view($model)
-	{
-		if (class_exists($model."_Model"))
-		{
-			$m = ORM::factory($model);
-
-			if ($m instanceof Viewable_Table)
-			{
-				$view = new View('table');
-				$view->model = $model;
-				
-				$headers = $m->table_headers();
-				
-				$view->headers = $headers;
-				
-				//$m->select($headers);
-				
-				$view->items = $m->find_all();	
-				$this->template->content = $view;
-				
-			}
-			else
-			{
-				$this->template->content = "Tabulku nelze zobrazit";
-			}
-		}
-		else {
-			$this->template->content = "Nejde o model";
-		}
-
-
-	}
+	public function view($id = false)
+	{}
 
 	public function add()
+	{}
+
+	public function delete($id = false)
 	{
-
+		$form = new Formation();
+		$form->add_element('submit', 'Delete');
+		if ($form->validate())
+		{
+			ORM::factory($this->table, (int) $id)->delete();
+			Flash::redirect('tables/' . $this->table, 'Deleted', 1);
+		}
+		else
+		{
+			$this->view->form = $form;
+		}
 	}
-	
-	public function search($where, $what) {
-		
-	}
 
+	public function find()
+	{}
 }
 ?>

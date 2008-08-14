@@ -7,24 +7,16 @@
  * 	- name
  */
 
-class Publisher_Model extends ORM implements Viewable_Table
+class Publisher_Model extends Table_Model 
 {	
-	public $default = 'name';
+	protected $default_column = 'name';
+	
+	public $headers = array('id', 'name');
 	
 	public function __construct($id = NULL)
 	{
 		parent::__construct($id);
 		$this->has_many = array('contact');
-	}	
-	
-	public function table_headers()
-	{
-		$headers = array('id', 'name', 'comments');
-		return $headers;
-	}
-	
-	public function __toString() {
-		return $this->name;
 	}
 }
 
