@@ -1,14 +1,17 @@
-<h3>Akce</h3>
-			
-			<ul class="nav">
-			
-				<li><a href="<?= url::current(); ?>/insert">Pridat</a></li>
-				<li><a href="#">Dollar</a></li>
-				<li><a href="#">Lorem dollar</a></li>
-				<li><a href="#">Ipsum dollar</a></li>
-				<li><a href="#">Lorem Ipsum dollar</a></li>
+<?php $base_url = url::base().'/tables/'; ?>
 
-				<li class="last"><a href="#">Dollar Lorem Ipsum</a></li>
-			</ul>
-			<a href="#" class="link">Link here</a>
-			<a href="#" class="link">Link here</a>
+<h3>Tabulky</h3>
+
+<ul class="nav">
+
+	<li><a href="<?= $base_url ?>resources">Zdroje</a></li>
+	<li><a href="<?= $base_url ?>publishers">Vydavatele</a></li>
+	<li><a href="<?= $base_url ?>contacts">Kontakty</a></li>
+	<li><a href="<?= $base_url ?>correspondence">Osloveni</a></li>
+	<li><a href="<?= $base_url ?>contracts">Smlouvy</a></li>
+	<li class="last"><a href="<?= $base_url ?>urls">URL</a></li>
+</ul>
+<a href="http://www.webarchiv.cz" class="link">webarchiv.cz</a>
+<a href="http://wayback.webarchiv.cz" class="link">wayback</a>
+
+<a href="http://trac.webarchiv.cz" class="link">trac</a>

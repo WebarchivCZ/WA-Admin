@@ -10,9 +10,8 @@
 <body>
 <div id="main">
 <div id="header">
-<h1><a href="<?=url::site()?>" class="logo">
-		WA Admin v2
-		<?php //<img src="img/logo.gif" width="101" height="29" alt="" /> 		?>
+<h1><a href="<?=url::site()?>" class="logo">		
+		<img src="<?= url::base() ?>media/img/logo.png" width="317" height="90" alt="" />
 		</a></h1>
 		<?=$top_nav;?>
 	</div>
@@ -25,9 +24,9 @@
 			<?=$content;?>			
 		</div>
 <div id="right-column"><strong class="h">INFO</strong>
-<div class="box" id="help-box">Detect and eliminate viruses and Trojan
-horses, even new and unknown ones. Detect and eliminate viruses and
-Trojan horses, even new and</div>
+<div class="box" id="help-box"> - prihlasen<br />
+<a href="">Odhlasit</a>
+</div>
 </div>
 </div>
 <div id="footer"></div>

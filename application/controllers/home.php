@@ -4,7 +4,9 @@ class Home_Controller extends Template_Controller {
 	
 	public function index() {		
 		$content = new View('home');
-		$content->info = 'Mate 2 zdroju cekajici na vase hodnoceni >> <a href="">Pokracovat</a>';
+		$dash_view = new View('dashboard');
+		$dash_view->dashboard = Dashboard_Model::factory();
+		$content->dashboard = $dash_view;
 		$content->stats = Statistic_Model::factory()->getBasic();
 		
 		$this->template->content = $content;

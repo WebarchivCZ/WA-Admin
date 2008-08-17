@@ -21,6 +21,7 @@ class Auth_Controller extends Template_Controller
 			{
 				// Load the user
 				$user = ORM::factory('curator', $form->username->value);
+				//echo Kohana::debug($user);
 				if (Auth::instance()->login($user, $form->password->value))
 				{
 					// Login successful, redirect
