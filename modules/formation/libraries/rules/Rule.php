@@ -38,7 +38,7 @@
 	}
 	public function set_message($message)
 	{
-		$this->message=$message;	
+		$this->message=(string) $message;	
 	}
 	public function get_message()
 	{
@@ -48,7 +48,7 @@
 		{
 			$message=$this->message;	
 		}
-		$message=$this->parse_message($message);
+		$message=(string) $this->parse_message($message);
 		
 		return $message;
 	}
@@ -56,13 +56,13 @@
 	{	
 		foreach($this->message_vars as $key=>$var)
 		{
-			$message=str_replace('{'.$key.'}',$var,$message);
+			$message=str_replace('{'.$key.'}',(string) $var,$message);
 		}
 		return str_replace('{value}',$this->value,$message);			
 	}
-	protected function set_message_vars($vars)
+	protected function set_message_vars(array $vars=array())
 	{
-		foreach($vars as $key=>$argument)
+		foreach( $vars as $key=>$argument)
 		{
 			$this->message_vars[$key]=$argument;
 		}

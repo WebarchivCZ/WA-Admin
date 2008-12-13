@@ -196,7 +196,12 @@ class View_Core {
 	 */
 	public function __toString()
 	{
-		return $this->render();
+		try {
+			return $this->render();
+		} catch (Exception $e) {
+			echo Kohana::debug($e);
+		}
+		 $this->render();
 	}
 
 	/**
@@ -209,6 +214,7 @@ class View_Core {
 	 */
 	public function render($print = FALSE, $renderer = FALSE)
 	{
+		
 		if (empty($this->kohana_filename))
 			throw new Kohana_Exception('core.view_set_filename');
 

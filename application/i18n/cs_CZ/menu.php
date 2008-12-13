@@ -1,7 +1,7 @@
 <?php
 	$lang = array
 	(
-		'home' => 'Hlavni stranka',
+		'home' => 'Hlavní stránka',
 		'suggest' => 'Vkládání zdrojů',
 		'rate' => 'Hodnocení',
 		'addressing' => 'Oslovování',

@@ -29,7 +29,16 @@ class Model_Formation_Core extends Formation{
 		}
 		elseif(!is_object($model))
 		{
-			$this->_model= new $model;
+			if(substr($model,-6) == '_Model')
+			{
+				$this->_model= new $model;
+						
+			}
+			else
+			{
+				$this->_model= ORM::factory($model);
+			}
+			
 		}
 		else
 		{
@@ -81,7 +90,9 @@ class Model_Formation_Core extends Formation{
 		//Get field types and rules, filters everything
 		$validate=$this->_model->get_validate();
 		$relationships=$this->_model->get_relationships();
-		foreach($this->_model->list_fields() as $name=>$property)
+		
+		
+		foreach($this->_model->table_columns as $name=>$property)
 		{
 			if(in_array($name,$this->exclude))
 				continue;
@@ -116,10 +127,10 @@ class Model_Formation_Core extends Formation{
 				
 				if(!empty($relationships['belongs_to'])&&in_array($foreign_name,$relationships['belongs_to']))
 				{
-					$array=(ORM::factory($foreign_name)->find_all());
+					$array=(Ext_ORM::factory($foreign_name)->find_all());
 					$options=array();
 					foreach($array as $record){
-						$options[$record->id]=$record->name;
+						$options[$record->id]=$record->__toString();
 					}
 					$type='dropdown';
 				}		
@@ -180,7 +191,7 @@ class Model_Formation_Core extends Formation{
 				$this[$name]->add_rule('Rule_Max_Length',$property['length']);
 			}
 						
-			//If model exists at its values to the fields
+			//If model exists add its values to the fields
 			if($this->_model->exists())
 			{
 				$this->set_values($this->_model->as_array());
@@ -206,12 +217,15 @@ class Model_Formation_Core extends Formation{
 	 * @param unknown_type $commit
 	 * @return unknown
 	 */
-	public function save($commit=true){
-		
-		if($this->validate())
+	public function save($commit=true,$values = array()){
+		if($values == array())
+		{
+			$values = $_POST;
+		}
+		if($this->validate($values))
 		{
 			
-			$this->_model->load_values($this->as_array());
+			$this->_model->populate($this->as_array());
 			if($commit==true)
 			{
 				return $this->_model->save();

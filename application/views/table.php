@@ -6,7 +6,7 @@
 <div class="select-bar">
 	<form action="<?= url::base() ?>table/search">
 		<label> <input type="text" name="textfield" /> </label>
-		<label> <input type="submit" name="Submit" value="Search" /> </label>
+		<label> <input type="submit" name="Submit" value="<?= Kohana::lang('tables.search');?>" /> </label>
 	</form>
 </div>
 <div class="table">
@@ -34,8 +34,9 @@
 				if ($column->isLink())
 				{
 					$id = $item->$model->id;
-					$model = ucfirst($model);
-					$value = "<a href='table/view/$model/$id'>".$value."</a>";
+					$controller = inflector::plural($model);
+					$url = url::base()."tables/$controller/view/$id";
+					$value = "<a href='$url'>".$value."</a>";
 				}
 			} else {
 				$value = $item->__get($column->column);

@@ -1,7 +1,7 @@
 <?php defined('SYSPATH') or die('No direct access allowed.');
 
 
-class Formation_Core extends Validation{
+class Formation_Core extends Validate{
 	
 	// Form attributes
 	protected $attr = array
@@ -29,9 +29,9 @@ class Formation_Core extends Validation{
 		// Set the new attribute
 		$this->set_attr('id',$legend);		
 		// Set element autoloader
-		spl_autoload_register(array('Validation', 'auto_load'));		
+		spl_autoload_register(array('Validate', 'auto_load'));		
 		
-		Kohana::log('debug', 'Formation library initialized');
+		Log::add('debug', 'Formation library initialized');
 
 	}
 	/**
@@ -67,9 +67,9 @@ class Formation_Core extends Validation{
 	 *
 	 * @return unknown
 	 */
-	public function validate()
+	public function validate($values = array())
 	{	
-		if($this->load_values()!=false)
+		if($this->load_values($values))
 		{
 			//Validate form
 			return parent::validate();
@@ -84,7 +84,7 @@ class Formation_Core extends Validation{
 	 */
 	public function validate_partial($partial)
 	{
-		if($this->load_values()!=false)
+		if($this->load_values($parial))
 		{
 			//Validate form
 			return parent::validate_partial($partial);			
@@ -97,30 +97,30 @@ class Formation_Core extends Validation{
 	 *
 	 * @return bool
 	 */
-	protected function load_values()
+	protected function load_values($values = array())
 	{
-		static $method;
-		$method=strtolower($this->attr['method']);
-
-		if((Input::instance()->$method())!=array())
-		{	
-			//Load values from a post
-			foreach($this as $name=>$field)
+		if(empty($values))
+			return false;
+			
+		//Load values from a post
+		foreach($this as $name=>$field)
+		{
+			if(!($field instanceof Element_Group))
 			{
-				if(!($field instanceof Element_Group))
+				//Prevent disabled elements from being set
+				if($this[$name]->get_attr('disabled')!='disabled')
 				{
-					//Prevent disabled elements from being set
-					if($this[$name]->get_attr('disabled')!='disabled')
+					//Load value if present
+					if(isset($values[$name]))
 					{
-						//Load value if present
-						$this[$name]->load_value(Input::instance()->$method($name));								
+						$this[$name]->load_value($values[$name]);	
 					}
-
+												
 				}
+
 			}
-			return true;
 		}
-		return false;
+		return true;
 	}
 	/**
 	 * Add element to form

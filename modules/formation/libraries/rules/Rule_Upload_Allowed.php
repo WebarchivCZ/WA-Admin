@@ -4,7 +4,6 @@ class Rule_Upload_Allowed_Core extends Rule_Upload_Required{
 
 	public function __construct(array $allowed)
 	{
-		
 		$this->set_allowed($allowed);		
 	}
 	public function set_allowed(array $allowed)

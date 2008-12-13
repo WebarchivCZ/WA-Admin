@@ -113,14 +113,16 @@ class Form_Field_Core {
 		{
 			if ( ! empty($this->errors)) break;
 
+			$empty_rules=array('Rule_Required','Rule_Upload_Required','Rule_Upload_Size','Rule_Upload_Allowed');
 			
-			if(empty($this->value)&&$name!='Rule_Required')
+			if(empty($this->value)&&!in_array($name,$empty_rules))
 				continue;
 			
 			$field_name=($this->screen_name==null) ? $this->name : $this->screen_name;
-			
-			if($rule instanceof Rule_Upload_Required)
+
+			if($rule instanceof Rule_Upload_Required_Core)
 			{
+				
 				if(!$rule->is_valid($this->upload))
 				{
 					$rule->name=$field_name;

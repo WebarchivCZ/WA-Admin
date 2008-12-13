@@ -5,8 +5,11 @@ abstract class Table_Controller extends Template_Controller
 	protected $title;
 
 	public function index()
-	{
+	{			
 		$model = ORM::factory($this->table);
+		
+		//echo Kohana::debug($model->foreign_key($this->table));
+		
 		$view = new View('table');
 		$view->title = $this->title;
 		$view->headers = $model->headers;
@@ -17,24 +20,16 @@ abstract class Table_Controller extends Template_Controller
 	}
 
 	public function view($id = false)
-	{}
+	{
+		
+	}
 
 	public function add()
 	{}
 
 	public function delete($id = false)
 	{
-		$form = new Formation();
-		$form->add_element('submit', 'Delete');
-		if ($form->validate())
-		{
-			ORM::factory($this->table, (int) $id)->delete();
-			Flash::redirect('tables/' . $this->table, 'Deleted', 1);
-		}
-		else
-		{
-			$this->view->form = $form;
-		}
+		
 	}
 
 	public function find()

@@ -15,7 +15,7 @@ class Element_Label_Core extends Element_Input {
 			$text=utf8::ucwords(inflector::humanize($name)).' ';
 		}
 		$this->set_text($text);
-		$this->set_attr('id',Kohana::config('formation.label_prefix').$name);
+		$this->set_attr('id','label-'.$name);
 	}
 	
 	public function set_text($text)

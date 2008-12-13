@@ -4,7 +4,7 @@
  * then a full URL will be used, eg: http://localhost/kohana/. If it only includes
  * the path, and a site_protocol is specified, the domain will be auto-detected.
  */
-$config['site_domain'] = '/wa/';
+$config['site_domain'] = '/wadmin/';
 
 /**
  * Force a default protocol to be used by the site. If no site_protocol is
@@ -100,7 +100,8 @@ $config['modules'] = array
 	MODPATH.'forge',     // Form generation
 	MODPATH.'kodoc',     // Self-generating documentation
 	MODPATH.'media',     // Media caching and compression
-	MODPATH.'scaffolding',
+	// MODPATH.'scaffolding',
+	// MODPATH.'formation',
 	// MODPATH.'gmaps',     // Google Maps integration
 	// MODPATH.'archive',   // Archive utility
 	// MODPATH.'payment',   // Online payments

@@ -7,9 +7,14 @@ class Rule_Upload_Size_Core extends Rule_Upload_Required{
 		
 		$this->set_size($size);		
 	}
+	/**
+	 * Set maximum size of upload
+	 * @param	string	size
+	 * @return	object
+	 */
 	public function set_size($size)
 	{	
-		$this->message_vars['max_size']=(int) $size;
+		$this->message_vars['max_size']=$size;
 		
 		return $this;
 	}	
@@ -20,6 +25,8 @@ class Rule_Upload_Size_Core extends Rule_Upload_Required{
 		$this->message_vars['filename']=$upload['name'];
 		
 		$this->set_message_vars($upload);
+		
+		
 		
 		$bytes = $size;
 
@@ -32,12 +39,8 @@ class Rule_Upload_Size_Core extends Rule_Upload_Required{
 		}
 		
 		$this->message_vars['max_bytes']=$bytes;
-		
-		if (empty($upload['size']) OR $upload['size'] > $bytes)
-		{
-			return false;
-		}
-		return true;
+	//	return upload::size($upload,(array) $size);
+		return  (empty($upload['size']) OR $upload['size'] > $bytes) ? false : true;
 	}
 
 }

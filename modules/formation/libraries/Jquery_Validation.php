@@ -3,20 +3,26 @@ class Jquery_Validation_Core extends ArrayObject {
 	
 	protected $form;
 
-	//takes forge object as argument
+	/**
+	 * construct jquery_Validation object
+	 * @param	object	object of type Validation
+	 */
 	public function __construct($form =null)
 	{
-		if(!empty($form) && $form instanceof Validation)
+		if(!empty($form) && $form instanceof Validate)
 		{
 			$this->load($form);
 		}
 	}
-	//loads Forge into jquery validation array
-	public function load(Validation $form)
+	/**
+	 * Load actual form into object
+	 * @param	object	validation object
+	 */
+	public function load(Validate $form)
 	{
 		
 		$this->form=$form;
-		
+		$jquery=array();
 		foreach ($this->form as $field=> $input)
 		{
 			if($input->get_name()!='')
@@ -91,12 +97,22 @@ class Jquery_Validation_Core extends ArrayObject {
 	{
 		return $this->getArrayCopy();
 	}
-	//Load an array if you want to bypass Forge
+	//Load an array if you want to bypass Formation
 	public function load_array(array $array)
 	{
 		$this->set_spl($array);
 		return $this;
 	}
+	/*
+	 * Return rules and messages
+	 * @param	boolean	return as json or not
+	 */
+	public function get_rules_messages($json=true){
+		$array=array($this['rules'],$this['messages']);
+		
+		return $json ? json_encode($array) : $array; 
+	}
+	
 	//returns all rules and messages as json ready to be fed to jquery validation
 	public function as_json()
 	{

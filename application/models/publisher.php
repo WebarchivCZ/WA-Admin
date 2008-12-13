@@ -9,14 +9,14 @@
 
 class Publisher_Model extends Table_Model 
 {	
-	protected $default_column = 'name';
+	public $headers = array('id', 'name', 'email', 'comments');
 	
-	public $headers = array('id', 'name');
+	protected $default_column = 'name';
+	protected $has_many = array('contact', 'resource');
 	
 	public function __construct($id = NULL)
 	{
 		parent::__construct($id);
-		$this->has_many = array('contact');
 	}
 }
 
