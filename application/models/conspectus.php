@@ -1,31 +1,29 @@
 <?php
 defined('SYSPATH') or die('No direct script access.');
-
 /**
- * Model representing Publishers
- * available attributes
- * 	- id
- * 	- name
+ * Model representing Conspectus category
  */
-
-class Publisher_Model extends Table_Model
+class Conspectus_Model extends Table_Model
 {
 
 	public $headers = array(
 		'id' , 
-		'name' , 
+		'category' , 
 		'comments');
 
-	protected $default_column = 'name';
+	protected $default_column = 'category';
 
 	protected $has_many = array(
-		'contact' , 
-		'resource');
+		'resources');
 
 	public function __construct ($id = NULL)
 	{
 		parent::__construct($id);
 	}
-}
 
+	public function __set ($key, $value)
+	{
+
+	}
+}
 ?>

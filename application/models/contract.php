@@ -1,23 +1,34 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php
+defined('SYSPATH') or die('No direct script access.');
 
 /**
  * Class representing Contracts
- * Atributes:
- * - contract_no
- * - status
- * - date_signed
- * - comments
  */
 
-class Contract_Model extends Table_Model 
+class Contract_Model extends Table_Model
 {
+
 	protected $default_column = 'contract_no';
-	public $headers = array('id', 'contract_no', 'date_signed', 'comments');
-	
-	public function _construct($id = NULL)
+
+	public $headers = array(
+		'id' , 
+		'contract_no' , 
+		'date_signed' , 
+		'addendum' , 
+		'cc' , 
+		'comments');
+
+	public function _construct ($id = NULL)
 	{
-		// load database library into $this->db (can be omitted if not required)
 		parent::__construct($id);
-	}	
+	}
+
+	public function __set ($key, $value)
+	{
+		if ($key === 'cc' OR $key === 'addendum')
+		{
+			$value = (boolean) $value;
+		}
+	}
 }
 ?>
