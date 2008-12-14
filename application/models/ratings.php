@@ -1,0 +1,51 @@
+<?php
+defined('SYSPATH') or die('No direct script access.');
+/**
+ * Model representing Contacts
+ */
+class Ratings_Model extends Table_Model
+{
+
+	public $headers = array(
+		'id' , 
+		'curator' , 
+		'resource' , 
+		'rating' , 
+		'date' , 
+		'round' , 
+		'comments');
+
+	protected $default_column = 'rating';
+
+	protected $belongs_to = array(
+		'publisher' , 
+		'resource');
+
+	public function __construct ($id = NULL)
+	{
+		parent::__construct($id);
+	}
+
+	public function add_resource ($resource)
+	{
+		if ($resource instanceof Resource_Model)
+		{
+			$this->resource_id = $resource->id;
+		} else
+		{
+			throw new InvalidArgumentException();
+		}
+	}
+
+	public function add_curator ($curator)
+	{
+		if ($curator instanceof Curator_Model)
+		{
+			$this->curator_id = $curator->id;
+		} else
+		{
+			throw new InvalidArgumentException();
+		}
+	}
+}
+?>
