@@ -29,6 +29,7 @@ class Contract_Model extends Table_Model
 		{
 			$value = (boolean) $value;
 		}
+		parent::__set($key, $value);
 	}
 }
 ?>

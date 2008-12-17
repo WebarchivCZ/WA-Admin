@@ -38,6 +38,7 @@ class Curator_Model extends User_Model
 			// Ensure the name is formatted correctly
 			$value = ucwords(strtolower($value));
 		}
+		parent::__set($key, $value);
 	}
 
 	public function add_role ($role)

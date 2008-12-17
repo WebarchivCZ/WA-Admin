@@ -26,6 +26,7 @@ class Role_Model extends Table_Model
 		{
 			throw new InvalidArgumentException('Nazev role je prilis dlouhy');
 		}
+		parent::__set($key, $value);
 	}
 }
 ?>

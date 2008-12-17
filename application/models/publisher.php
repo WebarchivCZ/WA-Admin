@@ -26,6 +26,7 @@ class Publisher_Model extends Table_Model
 	{
 		parent::__construct($id);
 	}
+	
 }
 
 ?>

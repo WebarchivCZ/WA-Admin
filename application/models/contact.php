@@ -41,6 +41,7 @@ class Contact_Model extends Table_Model
 				throw new InvalidArgumentException;
 			}
 		}
+		parent::__set($key, $value);
 	}
 
 	public function add_publisher ($publisher)

@@ -31,6 +31,7 @@ class Crawl_Freq_Model extends Table_Model
 		{
 			throw new InvalidArgumentException('Pojmenovani frekvence sklizeni je prilis dlouhe');
 		}
+		parent::__set($key, $value);
 	}
 }
 

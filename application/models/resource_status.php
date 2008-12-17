@@ -11,6 +11,8 @@ class Resource_Status_Model extends Table_Model
 		'status' ,
 		'comments');
 
+	protected $table_name = 'resource_status';
+	
 	protected $default_column = 'status';
 
 	protected $has_many = array('resources');
@@ -26,6 +28,7 @@ class Resource_Status_Model extends Table_Model
 		{
 			throw new InvalidArgumentException('Nazev statusu je prilis dlouhy');
 		}
+		parent::__set($key, $value);
 	}
 }
 ?>

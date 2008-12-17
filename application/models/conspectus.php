@@ -10,6 +10,8 @@ class Conspectus_Model extends Table_Model
 		'id' , 
 		'category' , 
 		'comments');
+	
+	protected $table_name = 'conspectus';
 
 	protected $default_column = 'category';
 
@@ -23,7 +25,7 @@ class Conspectus_Model extends Table_Model
 
 	public function __set ($key, $value)
 	{
-
+		parent::__set($key, $value);
 	}
 }
 ?>

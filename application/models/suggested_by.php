@@ -11,6 +11,8 @@ class Suggested_By_Model extends Table_Model
 		'proposer' , 
 		'comments');
 
+	protected $table_name = 'suggested_by';
+	
 	protected $default_column = 'proposer';
 
 	protected $has_many = array(
@@ -27,6 +29,7 @@ class Suggested_By_Model extends Table_Model
 		{
 			throw new InvalidArgumentException('Jmeno navrhovatele je prilis dlouhe');
 		}
+		parent::__set($key, $value);
 	}
 }
 ?>
