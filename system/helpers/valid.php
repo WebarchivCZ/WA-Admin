@@ -309,5 +309,23 @@ class valid_Core {
 
 		return (bool) preg_match($pattern, (string) $str);
 	}
+	
+	/**
+	 * Checks whether a string is valid contract number in format 44/2008
+	 *
+	 * @param   string   input string
+	 * @return  boolean
+	 */
+	public static function contract_no($str)
+	{
+		$parts = split('/', $str, 2);
+		$contract_no = $parts[0];
+		$year = $parts[1];
+		if (valid::digit($contract_no) AND valid::digit($year) AND strlen($year) == 4) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 } // End valid

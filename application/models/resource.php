@@ -64,6 +64,16 @@ class Resource_Model extends Table_Model
 		}
 		parent::__set($key, $value);
 	}
+	
+	public function __get ($column) {
+		if ($column === 'date' OR $column === 'metadata' OR $column === 'catalogued') {
+			$value = parent::__get($column);
+			if ( ! is_null($value)) {
+				return date('d.m.Y', strtotime($value));
+			}
+		}
+		return parent::__get($column);
+	}
 
 	public function is_related ($column)
 	{

@@ -64,7 +64,7 @@ DROP TABLE IF EXISTS `waTest`.`contracts` ;
 
 CREATE  TABLE IF NOT EXISTS `waTest`.`contracts` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `contract_no` VARCHAR(255) NOT NULL ,
+  `contract_no` VARCHAR(255) UNIQUE NOT NULL ,
   `date_signed` DATE NULL DEFAULT NULL ,
   `addendum` BOOLEAN NULL ,
   `cc` BOOLEAN NULL ,
@@ -312,30 +312,13 @@ CREATE INDEX `fk_ratings_curators` ON `waTest`.`ratings` (`curator_id` ASC) ;
 
 CREATE INDEX `fk_ratings_resources` ON `waTest`.`ratings` (`resource_id` ASC) ;
 
-
--- -----------------------------------------------------
--- Table `waTest`.`seed_status`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `waTest`.`seed_status` ;
-
-CREATE  TABLE IF NOT EXISTS `waTest`.`seed_status` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `status` VARCHAR(45) NOT NULL ,
-  `comments` TEXT NULL ,
-  PRIMARY KEY (`id`) )
-ENGINE = InnoDB;
-
-
 -- -----------------------------------------------------
 -- Table `waTest`.`seeds`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `waTest`.`seeds` ;
-
 CREATE  TABLE IF NOT EXISTS `waTest`.`seeds` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `resource_id` INT UNSIGNED NOT NULL ,
   `url` VARCHAR(255) NOT NULL ,
-  `seed_status_id` INT NOT NULL ,
   `redirect` BOOLEAN NULL DEFAULT NULL ,
   `valid_from` DATE NULL DEFAULT NULL ,
   `valid_to` DATE NULL DEFAULT NULL ,
@@ -345,18 +328,10 @@ CREATE  TABLE IF NOT EXISTS `waTest`.`seeds` (
     FOREIGN KEY (`resource_id` )
     REFERENCES `waTest`.`resources` (`id` )
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_seeds_seed_status`
-    FOREIGN KEY (`seed_status_id` )
-    REFERENCES `waTest`.`seed_status` (`id` )
-    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 CREATE INDEX `fk_seeds_resources` ON `waTest`.`seeds` (`resource_id` ASC) ;
-
-CREATE INDEX `fk_seeds_seed_status` ON `waTest`.`seeds` (`seed_status_id` ASC) ;
-
 
 -- -----------------------------------------------------
 -- Table `waTest`.`quality_controls`
@@ -415,8 +390,14 @@ COMMIT;
 -- Data for table `waTest`.`resource_status`
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
+INSERT INTO `resource_status` (`status`, `comments`) VALUES ('nový', NULL);
 INSERT INTO `resource_status` (`status`, `comments`) VALUES ('schválen', NULL);
 INSERT INTO `resource_status` (`status`, `comments`) VALUES ('neschválen', NULL);
+INSERT INTO `resource_status` (`status`, `comments`) VALUES ('ohodnocen', NULL);
+INSERT INTO `resource_status` (`status`, `comments`) VALUES ('k přehodnocení', NULL);
+INSERT INTO `resource_status` (`status`, `comments`) VALUES ('nepovolen vydavatelem', NULL);
+INSERT INTO `resource_status` (`status`, `comments`) VALUES ('povolen vydavatelem', NULL);
+INSERT INTO `resource_status` (`status`, `comments`) VALUES ('osloven', NULL);
 
 COMMIT;
 
@@ -430,15 +411,6 @@ INSERT INTO `suggested_by` (`proposer`, `comments`) VALUES ('web/návštěvník'
 INSERT INTO `suggested_by` (`proposer`, `comments`) VALUES ('ISSN', NULL);
 
 COMMIT;
-
--- -----------------------------------------------------
--- Data for table `waTest`.`seed_status`
--- -----------------------------------------------------
-SET AUTOCOMMIT=0;
-INSERT INTO `seed_status` (`id`, `status`, `comments`) VALUES (0, 'valid', NULL);
-
-COMMIT;
-
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

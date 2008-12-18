@@ -10,7 +10,6 @@ class Seed_Model extends Table_Model
 		'id' , 
 		'resource' , 
 		'url' , 
-		'seed_status' , 
 		'redirect' , 
 		'valid_from' , 
 		'valit_to' , 
@@ -19,12 +18,23 @@ class Seed_Model extends Table_Model
 	protected $default_column = 'url';
 
 	protected $belongs_to = array(
-		'resources' , 
-		'seed_status');
+		'resources');
 
 	public function __construct ($id = NULL)
 	{
 		parent::__construct($id);
+	}
+	
+	public function __set($key, $value) {
+		if($key == 'valid') {
+			$value = date('Y-m-d');
+			if((boolean) $value) {
+				$key = 'valid_from';
+			} else {
+				$key = 'valid_to';
+			}
+		}
+		parent::__set($key, $value);
 	}
 
 	public function add_resource ($resource)
@@ -32,17 +42,6 @@ class Seed_Model extends Table_Model
 		if ($resource instanceof Resource_Model)
 		{
 			$this->resource_id = $resource->id;
-		} else
-		{
-			throw new InvalidArgumentException();
-		}
-	}
-
-	public function add_seed_status ($seed_status)
-	{
-		if ($seed_status instanceof Seed_Status_Model)
-		{
-			$this->seed_status_id = $seed_status->id;
 		} else
 		{
 			throw new InvalidArgumentException();

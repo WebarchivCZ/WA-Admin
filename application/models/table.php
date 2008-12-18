@@ -41,13 +41,21 @@ abstract class Table_Model extends ORM
 		return (boolean) in_array($column, $belongs_to);
 	}
 
-	public function find_insert ($value)
+	/**
+	 * 
+	 */
+	public function find_insert ($default_value, $values = NULL)
 	{
 		$column = $this->default_column;
-		$model = ORM::factory($this->object_name)->where($column, $value)->find();
+		$model = ORM::factory($this->object_name)->where($column, $default_value)->find();
 		
 		if (empty($model->{$column})) {
-			$model->{$column} = $value;
+			$model->{$column} = $default_value;
+			if ( ! is_null($values)) {
+			foreach ($values as $key => $value) {
+				$model->{$key} = $value;
+			}
+			}
 			return $model->save();			
 		} else {
 			return $model;
