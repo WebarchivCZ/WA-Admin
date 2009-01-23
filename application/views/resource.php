@@ -1,12 +1,13 @@
-<script type="text/javascript">
-<!--
-
-//-->
-</script>
-
-
-<h2>Vložení nového zdroje</h2>
-
+<div class="top-bar">
+	<h1>Editace zdroje</h1>
+</div>
+<br />
+<div class="select-bar">
+	<form action="<?= url::base().url::current() ?>/search/">
+		<label> <input type="text" name="search_string" /> </label>
+		<label> <input type="submit" name="Submit" value="<?= Kohana::lang('tables.search');?>" /> </label>
+	</form>
+</div>
 <?php
 
 if (isset($resource_id))
@@ -43,5 +44,7 @@ if (isset($resource_id))
 <?php
 } else {
 echo $content;
+?>
+<?php
 }
 ?>

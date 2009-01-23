@@ -48,7 +48,7 @@ abstract class Template_Controller extends Controller {
 		$this->template->left_nav = new View("layout/left_nav");
 		
 		// just for debug
-		$profiler = new Profiler();
+		//$profiler = new Profiler();
 	}
 
 	/**

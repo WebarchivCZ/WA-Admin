@@ -6,7 +6,8 @@ $config = array(
 		'rate' , 
 		'addressing' , 
 		'progress' , 
-		'catalogue') , 
+		'catalogue',
+		'quality_control') , 
 	
 	'ratings_result' => array(
 		'1' => 'NE' , 

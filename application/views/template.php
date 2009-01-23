@@ -26,8 +26,10 @@
 			<?=$content;?>			
 		</div>
 <div id="right-column"><strong class="h">INFO</strong>
-<div class="box" id="help-box"> - prihlasen<br />
-<a href="">Odhlasit</a>
+<div class="box" id="help-box">
+<p><?= date('h:i - d.m.Y'); ?></p>
+<p>přihlášen<br /></p>
+<p><a href="#logout">Odhlásit</a></p>
 </div>
 </div>
 </div>

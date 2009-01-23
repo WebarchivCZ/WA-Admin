@@ -814,3 +814,148 @@
 2008-12-17 16:58:37 +01:00 --- debug: Profiler Library initialized
 2008-12-17 16:58:37 +01:00 --- debug: MySQL Database Driver Initialized
 2008-12-17 16:58:37 +01:00 --- debug: Database Library initialized
+2008-12-17 18:12:12 +01:00 --- debug: Disable magic_quotes_gpc! It is evil and deprecated: http://php.net/magic_quotes
+2008-12-17 18:12:12 +01:00 --- debug: Global GET, POST and COOKIE data sanitized
+2008-12-17 18:12:12 +01:00 --- debug: Profiler Library initialized
+2008-12-17 18:12:12 +01:00 --- debug: MySQL Database Driver Initialized
+2008-12-17 18:12:12 +01:00 --- debug: Database Library initialized
+2008-12-17 18:12:33 +01:00 --- debug: Disable magic_quotes_gpc! It is evil and deprecated: http://php.net/magic_quotes
+2008-12-17 18:12:33 +01:00 --- debug: Global GET, POST and COOKIE data sanitized
+2008-12-17 18:12:33 +01:00 --- debug: Profiler Library initialized
+2008-12-17 18:12:33 +01:00 --- debug: MySQL Database Driver Initialized
+2008-12-17 18:12:33 +01:00 --- debug: Database Library initialized
+2008-12-17 18:12:42 +01:00 --- debug: Disable magic_quotes_gpc! It is evil and deprecated: http://php.net/magic_quotes
+2008-12-17 18:12:42 +01:00 --- debug: Global GET, POST and COOKIE data sanitized
+2008-12-17 18:12:42 +01:00 --- debug: Profiler Library initialized
+2008-12-17 18:12:42 +01:00 --- debug: MySQL Database Driver Initialized
+2008-12-17 18:12:42 +01:00 --- debug: Database Library initialized
+2008-12-17 18:19:53 +01:00 --- debug: Disable magic_quotes_gpc! It is evil and deprecated: http://php.net/magic_quotes
+2008-12-17 18:19:53 +01:00 --- debug: Global GET, POST and COOKIE data sanitized
+2008-12-17 18:19:53 +01:00 --- debug: Profiler Library initialized
+2008-12-17 18:19:53 +01:00 --- debug: MySQL Database Driver Initialized
+2008-12-17 18:19:53 +01:00 --- debug: Database Library initialized
+2008-12-17 18:26:47 +01:00 --- debug: Disable magic_quotes_gpc! It is evil and deprecated: http://php.net/magic_quotes
+2008-12-17 18:26:47 +01:00 --- debug: Global GET, POST and COOKIE data sanitized
+2008-12-17 18:26:47 +01:00 --- debug: Profiler Library initialized
+2008-12-17 18:26:47 +01:00 --- debug: MySQL Database Driver Initialized
+2008-12-17 18:26:47 +01:00 --- debug: Database Library initialized
+2008-12-17 18:27:10 +01:00 --- debug: Disable magic_quotes_gpc! It is evil and deprecated: http://php.net/magic_quotes
+2008-12-17 18:27:10 +01:00 --- debug: Global GET, POST and COOKIE data sanitized
+2008-12-17 18:27:10 +01:00 --- debug: Profiler Library initialized
+2008-12-17 18:27:10 +01:00 --- debug: MySQL Database Driver Initialized
+2008-12-17 18:27:10 +01:00 --- debug: Database Library initialized
+2008-12-17 18:27:29 +01:00 --- debug: Disable magic_quotes_gpc! It is evil and deprecated: http://php.net/magic_quotes
+2008-12-17 18:27:29 +01:00 --- debug: Global GET, POST and COOKIE data sanitized
+2008-12-17 18:27:29 +01:00 --- debug: Profiler Library initialized
+2008-12-17 18:27:29 +01:00 --- debug: MySQL Database Driver Initialized
+2008-12-17 18:27:29 +01:00 --- debug: Database Library initialized
+2008-12-17 18:27:30 +01:00 --- debug: Disable magic_quotes_gpc! It is evil and deprecated: http://php.net/magic_quotes
+2008-12-17 18:27:30 +01:00 --- debug: Global GET, POST and COOKIE data sanitized
+2008-12-17 18:27:30 +01:00 --- debug: Profiler Library initialized
+2008-12-17 18:27:30 +01:00 --- debug: MySQL Database Driver Initialized
+2008-12-17 18:27:30 +01:00 --- debug: Database Library initialized
+2008-12-17 18:28:03 +01:00 --- debug: Disable magic_quotes_gpc! It is evil and deprecated: http://php.net/magic_quotes
+2008-12-17 18:28:03 +01:00 --- debug: Global GET, POST and COOKIE data sanitized
+2008-12-17 18:28:03 +01:00 --- debug: Profiler Library initialized
+2008-12-17 18:28:03 +01:00 --- debug: MySQL Database Driver Initialized
+2008-12-17 18:28:03 +01:00 --- debug: Database Library initialized
+2008-12-17 18:28:03 +01:00 --- debug: Disable magic_quotes_gpc! It is evil and deprecated: http://php.net/magic_quotes
+2008-12-17 18:28:03 +01:00 --- debug: Global GET, POST and COOKIE data sanitized
+2008-12-17 18:28:03 +01:00 --- debug: Profiler Library initialized
+2008-12-17 18:28:03 +01:00 --- debug: MySQL Database Driver Initialized
+2008-12-17 18:28:03 +01:00 --- debug: Database Library initialized
+2008-12-17 18:28:04 +01:00 --- debug: Disable magic_quotes_gpc! It is evil and deprecated: http://php.net/magic_quotes
+2008-12-17 18:28:04 +01:00 --- debug: Global GET, POST and COOKIE data sanitized
+2008-12-17 18:28:04 +01:00 --- debug: Profiler Library initialized
+2008-12-17 18:28:04 +01:00 --- debug: MySQL Database Driver Initialized
+2008-12-17 18:28:04 +01:00 --- debug: Database Library initialized
+2008-12-17 18:28:04 +01:00 --- debug: Disable magic_quotes_gpc! It is evil and deprecated: http://php.net/magic_quotes
+2008-12-17 18:28:04 +01:00 --- debug: Global GET, POST and COOKIE data sanitized
+2008-12-17 18:28:04 +01:00 --- debug: Profiler Library initialized
+2008-12-17 18:28:04 +01:00 --- debug: MySQL Database Driver Initialized
+2008-12-17 18:28:04 +01:00 --- debug: Database Library initialized
+2008-12-17 18:28:04 +01:00 --- debug: Disable magic_quotes_gpc! It is evil and deprecated: http://php.net/magic_quotes
+2008-12-17 18:28:04 +01:00 --- debug: Global GET, POST and COOKIE data sanitized
+2008-12-17 18:28:04 +01:00 --- debug: Profiler Library initialized
+2008-12-17 18:28:04 +01:00 --- debug: MySQL Database Driver Initialized
+2008-12-17 18:28:04 +01:00 --- debug: Database Library initialized
+2008-12-17 18:28:39 +01:00 --- debug: Disable magic_quotes_gpc! It is evil and deprecated: http://php.net/magic_quotes
+2008-12-17 18:28:39 +01:00 --- debug: Global GET, POST and COOKIE data sanitized
+2008-12-17 18:28:39 +01:00 --- debug: Profiler Library initialized
+2008-12-17 18:28:39 +01:00 --- debug: MySQL Database Driver Initialized
+2008-12-17 18:28:39 +01:00 --- debug: Database Library initialized
+2008-12-17 18:29:05 +01:00 --- debug: Disable magic_quotes_gpc! It is evil and deprecated: http://php.net/magic_quotes
+2008-12-17 18:29:05 +01:00 --- debug: Global GET, POST and COOKIE data sanitized
+2008-12-17 18:29:05 +01:00 --- debug: Profiler Library initialized
+2008-12-17 18:29:05 +01:00 --- debug: MySQL Database Driver Initialized
+2008-12-17 18:29:05 +01:00 --- debug: Database Library initialized
+2008-12-17 18:29:55 +01:00 --- debug: Disable magic_quotes_gpc! It is evil and deprecated: http://php.net/magic_quotes
+2008-12-17 18:29:55 +01:00 --- debug: Global GET, POST and COOKIE data sanitized
+2008-12-17 18:29:55 +01:00 --- debug: Profiler Library initialized
+2008-12-17 18:29:55 +01:00 --- debug: MySQL Database Driver Initialized
+2008-12-17 18:29:55 +01:00 --- debug: Database Library initialized
+2008-12-17 18:30:34 +01:00 --- debug: Disable magic_quotes_gpc! It is evil and deprecated: http://php.net/magic_quotes
+2008-12-17 18:30:34 +01:00 --- debug: Global GET, POST and COOKIE data sanitized
+2008-12-17 18:30:34 +01:00 --- debug: Profiler Library initialized
+2008-12-17 18:30:34 +01:00 --- debug: MySQL Database Driver Initialized
+2008-12-17 18:30:34 +01:00 --- debug: Database Library initialized
+2008-12-17 18:31:13 +01:00 --- debug: Disable magic_quotes_gpc! It is evil and deprecated: http://php.net/magic_quotes
+2008-12-17 18:31:13 +01:00 --- debug: Global GET, POST and COOKIE data sanitized
+2008-12-17 18:31:13 +01:00 --- debug: Profiler Library initialized
+2008-12-17 18:31:13 +01:00 --- debug: MySQL Database Driver Initialized
+2008-12-17 18:31:13 +01:00 --- debug: Database Library initialized
+2008-12-17 18:32:49 +01:00 --- debug: Disable magic_quotes_gpc! It is evil and deprecated: http://php.net/magic_quotes
+2008-12-17 18:32:49 +01:00 --- debug: Global GET, POST and COOKIE data sanitized
+2008-12-17 18:32:49 +01:00 --- debug: Profiler Library initialized
+2008-12-17 18:32:49 +01:00 --- debug: MySQL Database Driver Initialized
+2008-12-17 18:32:49 +01:00 --- debug: Database Library initialized
+2008-12-17 18:32:49 +01:00 --- error: Missing i18n entry resource.id for language cs_CZ
+2008-12-17 18:32:49 +01:00 --- error: Missing i18n entry resource.curator_id for language cs_CZ
+2008-12-17 18:32:49 +01:00 --- error: Missing i18n entry resource.contact_id for language cs_CZ
+2008-12-17 18:32:49 +01:00 --- error: Missing i18n entry resource.publisher_id for language cs_CZ
+2008-12-17 18:32:49 +01:00 --- error: Missing i18n entry resource.contract_id for language cs_CZ
+2008-12-17 18:32:49 +01:00 --- error: Missing i18n entry resource.conspectus_id for language cs_CZ
+2008-12-17 18:32:49 +01:00 --- error: Missing i18n entry resource.crawl_freq_id for language cs_CZ
+2008-12-17 18:32:49 +01:00 --- error: Missing i18n entry resource.resource_status_id for language cs_CZ
+2008-12-17 18:32:49 +01:00 --- error: Missing i18n entry resource.suggested_by_id for language cs_CZ
+2008-12-17 18:32:49 +01:00 --- error: Missing i18n entry resource.title for language cs_CZ
+2008-12-17 18:32:49 +01:00 --- error: Missing i18n entry resource.url for language cs_CZ
+2008-12-17 18:32:49 +01:00 --- error: Missing i18n entry resource.rating_result for language cs_CZ
+2008-12-17 18:32:49 +01:00 --- error: Missing i18n entry resource.date for language cs_CZ
+2008-12-17 18:32:49 +01:00 --- error: Missing i18n entry resource.aleph_id for language cs_CZ
+2008-12-17 18:32:49 +01:00 --- error: Missing i18n entry resource.ISSN for language cs_CZ
+2008-12-17 18:32:49 +01:00 --- error: Missing i18n entry resource.metadata for language cs_CZ
+2008-12-17 18:32:49 +01:00 --- error: Missing i18n entry resource.catalogued for language cs_CZ
+2008-12-17 18:32:49 +01:00 --- error: Missing i18n entry resource.creative_commons for language cs_CZ
+2008-12-17 18:32:49 +01:00 --- error: Missing i18n entry resource.tech_problems for language cs_CZ
+2008-12-17 18:32:49 +01:00 --- error: Missing i18n entry resource.comments for language cs_CZ
+2008-12-17 18:34:21 +01:00 --- debug: Disable magic_quotes_gpc! It is evil and deprecated: http://php.net/magic_quotes
+2008-12-17 18:34:21 +01:00 --- debug: Global GET, POST and COOKIE data sanitized
+2008-12-17 18:34:21 +01:00 --- debug: Profiler Library initialized
+2008-12-17 18:34:21 +01:00 --- debug: MySQL Database Driver Initialized
+2008-12-17 18:34:21 +01:00 --- debug: Database Library initialized
+2008-12-17 18:34:44 +01:00 --- debug: Disable magic_quotes_gpc! It is evil and deprecated: http://php.net/magic_quotes
+2008-12-17 18:34:44 +01:00 --- debug: Global GET, POST and COOKIE data sanitized
+2008-12-17 18:34:44 +01:00 --- debug: Profiler Library initialized
+2008-12-17 18:34:44 +01:00 --- debug: MySQL Database Driver Initialized
+2008-12-17 18:34:44 +01:00 --- debug: Database Library initialized
+2008-12-17 18:34:44 +01:00 --- error: Missing i18n entry resource.id for language cs_CZ
+2008-12-17 18:34:44 +01:00 --- error: Missing i18n entry resource.curator_id for language cs_CZ
+2008-12-17 18:34:44 +01:00 --- error: Missing i18n entry resource.contact_id for language cs_CZ
+2008-12-17 18:34:44 +01:00 --- error: Missing i18n entry resource.publisher_id for language cs_CZ
+2008-12-17 18:34:44 +01:00 --- error: Missing i18n entry resource.contract_id for language cs_CZ
+2008-12-17 18:34:44 +01:00 --- error: Missing i18n entry resource.conspectus_id for language cs_CZ
+2008-12-17 18:34:44 +01:00 --- error: Missing i18n entry resource.crawl_freq_id for language cs_CZ
+2008-12-17 18:34:44 +01:00 --- error: Missing i18n entry resource.resource_status_id for language cs_CZ
+2008-12-17 18:34:44 +01:00 --- error: Missing i18n entry resource.suggested_by_id for language cs_CZ
+2008-12-17 18:34:44 +01:00 --- error: Missing i18n entry resource.title for language cs_CZ
+2008-12-17 18:34:44 +01:00 --- error: Missing i18n entry resource.url for language cs_CZ
+2008-12-17 18:34:44 +01:00 --- error: Missing i18n entry resource.rating_result for language cs_CZ
+2008-12-17 18:34:44 +01:00 --- error: Missing i18n entry resource.date for language cs_CZ
+2008-12-17 18:34:44 +01:00 --- error: Missing i18n entry resource.aleph_id for language cs_CZ
+2008-12-17 18:34:44 +01:00 --- error: Missing i18n entry resource.ISSN for language cs_CZ
+2008-12-17 18:34:44 +01:00 --- error: Missing i18n entry resource.metadata for language cs_CZ
+2008-12-17 18:34:44 +01:00 --- error: Missing i18n entry resource.catalogued for language cs_CZ
+2008-12-17 18:34:44 +01:00 --- error: Missing i18n entry resource.creative_commons for language cs_CZ
+2008-12-17 18:34:44 +01:00 --- error: Missing i18n entry resource.tech_problems for language cs_CZ
+2008-12-17 18:34:44 +01:00 --- error: Missing i18n entry resource.comments for language cs_CZ

@@ -7,5 +7,6 @@
 		'addressing' => 'Oslovování',
 		'progress' => 'V jednání',
 		'catalogue' => 'Katalogizace',
+		'quality_control' => 'Kontrola kvality',
 	)
 ?>

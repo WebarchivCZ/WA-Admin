@@ -12,15 +12,15 @@ class Statistic_Model extends Model
 		
 		$stats = '<table>
 					<tr>
-						<td>Pocet zdroju</td>
+						<td>Počet zdrojů</td>
 						<td>'.$resource->count_all().'</td>
 					</tr>
 					<tr>
-						<td>Pocet smluv</td>
+						<td>Počet smluv</td>
 						<td>'.$contract->count_all().'</td>
 					</tr>
 					<tr>
-						<td>Pocet vydavatelu</td>
+						<td>Počet vydavatelů</td>
 						<td>'.$publishers->count_all().'</td>
 					</tr>
 				</table>';

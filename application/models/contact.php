@@ -6,7 +6,7 @@ defined('SYSPATH') or die('No direct script access.');
 class Contact_Model extends Table_Model
 {
 
-	public $headers = array(
+	/*public $headers = array(
 		'id' , 
 		'name' , 
 		'email' , 
@@ -14,7 +14,13 @@ class Contact_Model extends Table_Model
 		'address' , 
 		'publisher' , 
 		'position' , 
-		'comments');
+		'comments');*/
+	
+	public $headers = array(
+		'id',
+		'name',
+		'publisher'
+	);
 
 	protected $default_column = 'name';
 

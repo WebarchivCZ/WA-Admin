@@ -9,7 +9,7 @@ class Resource_Controller extends Template_Controller
 
 	public function insert ($title_resource = NULL)
 	{
-		$view = new View('insert_resource');
+		$view = new View('resource');
 		
 		$form_models = array('publisher' , 'contract');
 		$form_elements_hidden = array('new_contract' => '', 'new_contract_no' => '', 'url_valid' => '');
@@ -17,7 +17,7 @@ class Resource_Controller extends Template_Controller
 		$resource_status_array = ORM::factory('resource_status')->select_list('id', 'status');
 		$conspectus_array = ORM::factory('conspectus')->select_list('id', 'category');
 		$crawl_freq_array = ORM::factory('crawl_freq')->select_list('id', 'frequency');
-		$curators_array = ORM::factory('curator')->select_list('id', 'lastname');
+		$curators_array = ORM::factory('curator')->select_list('id', 'username');
 		$suggested_by_array = ORM::factory('suggested_by')->select_list('id', 'proposer');
 		$ratings_array = Kohana::config('wadmin.ratings_result');
 		

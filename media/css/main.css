@@ -21,6 +21,8 @@ input {vertical-align:middle}
 .bold {font-weight:bold !important}
 .normal {font-weight:normal !important}
 .block {display:block !important}
+.center {text-align: center !important}
+.alert_text {color: red; }
 input.text,
 select,
 textarea {

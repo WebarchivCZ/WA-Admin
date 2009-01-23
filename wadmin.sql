@@ -12,8 +12,8 @@ DROP TABLE IF EXISTS `waTest`.`conspectus` ;
 
 CREATE  TABLE IF NOT EXISTS `waTest`.`conspectus` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `category` VARCHAR(255) NOT NULL ,
-  `comments` VARCHAR(255) NULL DEFAULT NULL ,
+  `category` VARCHAR(150) NOT NULL ,
+  `comments` TEXT NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `waTest`.`publishers` ;
 
 CREATE  TABLE IF NOT EXISTS `waTest`.`publishers` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `name` VARCHAR(100) NOT NULL ,
+  `name` VARCHAR(150) NOT NULL ,
   `comments` TEXT NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
@@ -39,13 +39,14 @@ DROP TABLE IF EXISTS `waTest`.`contacts` ;
 CREATE  TABLE IF NOT EXISTS `waTest`.`contacts` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `publisher_id` INT UNSIGNED NOT NULL ,
-  `name` VARCHAR(255) NULL DEFAULT NULL ,
-  `email` VARCHAR(255) NOT NULL ,
+  `name` VARCHAR(150) NULL DEFAULT NULL ,
+  `email` VARCHAR(150) NOT NULL ,
   `phone` INT UNSIGNED NULL DEFAULT NULL ,
   `address` VARCHAR(255) NULL DEFAULT NULL ,
   `position` VARCHAR(45) NULL DEFAULT NULL ,
   `comments` TEXT NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
+  INDEX `fk_contacts_publishers` (`publisher_id` ASC) ,
   CONSTRAINT `fk_contacts_publishers`
     FOREIGN KEY (`publisher_id` )
     REFERENCES `waTest`.`publishers` (`id` )
@@ -53,8 +54,6 @@ CREATE  TABLE IF NOT EXISTS `waTest`.`contacts` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 PACK_KEYS = DEFAULT;
-
-CREATE INDEX `fk_contacts_publishers` ON `waTest`.`contacts` (`publisher_id` ASC) ;
 
 
 -- -----------------------------------------------------
@@ -64,7 +63,7 @@ DROP TABLE IF EXISTS `waTest`.`contracts` ;
 
 CREATE  TABLE IF NOT EXISTS `waTest`.`contracts` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `contract_no` VARCHAR(255) UNIQUE NOT NULL ,
+  `contract_no` VARCHAR(15) NOT NULL ,
   `date_signed` DATE NULL DEFAULT NULL ,
   `addendum` BOOLEAN NULL ,
   `cc` BOOLEAN NULL ,
@@ -99,19 +98,18 @@ CREATE  TABLE IF NOT EXISTS `waTest`.`curators` (
   `roles_id` INT NULL ,
   `firstname` VARCHAR(50) NOT NULL ,
   `lastname` VARCHAR(100) NOT NULL ,
-  `email` VARCHAR(255) NOT NULL ,
+  `email` VARCHAR(100) NOT NULL ,
   `icq` INT UNSIGNED NULL DEFAULT NULL ,
-  `skype` VARCHAR(200) NULL DEFAULT NULL ,
+  `skype` VARCHAR(100) NULL DEFAULT NULL ,
   `comments` TEXT NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
+  INDEX `fk_curators_roles` (`roles_id` ASC) ,
   CONSTRAINT `fk_curators_roles`
     FOREIGN KEY (`roles_id` )
     REFERENCES `waTest`.`roles` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-CREATE INDEX `fk_curators_roles` ON `waTest`.`curators` (`roles_id` ASC) ;
 
 
 -- -----------------------------------------------------
@@ -180,6 +178,14 @@ CREATE  TABLE IF NOT EXISTS `waTest`.`resources` (
   `tech_problems` TEXT NULL DEFAULT NULL ,
   `comments` TEXT NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
+  INDEX `fk_resources_conspectus` (`conspectus_id` ASC) ,
+  INDEX `fk_resources_contracts` (`contract_id` ASC) ,
+  INDEX `fk_resources_curators` (`curator_id` ASC) ,
+  INDEX `fk_resources_publishers` (`publisher_id` ASC) ,
+  INDEX `fk_resources_contacts` (`contact_id` ASC) ,
+  INDEX `fk_resources_crawl_freq` (`crawl_freq_id` ASC) ,
+  INDEX `fk_resources_resource_status` (`resource_status_id` ASC) ,
+  INDEX `fk_resources_suggested_by` (`suggested_by_id` ASC) ,
   CONSTRAINT `fk_resources_conspectus`
     FOREIGN KEY (`conspectus_id` )
     REFERENCES `waTest`.`conspectus` (`id` )
@@ -222,22 +228,6 @@ CREATE  TABLE IF NOT EXISTS `waTest`.`resources` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE INDEX `fk_resources_conspectus` ON `waTest`.`resources` (`conspectus_id` ASC) ;
-
-CREATE INDEX `fk_resources_contracts` ON `waTest`.`resources` (`contract_id` ASC) ;
-
-CREATE INDEX `fk_resources_curators` ON `waTest`.`resources` (`curator_id` ASC) ;
-
-CREATE INDEX `fk_resources_publishers` ON `waTest`.`resources` (`publisher_id` ASC) ;
-
-CREATE INDEX `fk_resources_contacts` ON `waTest`.`resources` (`contact_id` ASC) ;
-
-CREATE INDEX `fk_resources_crawl_freq` ON `waTest`.`resources` (`crawl_freq_id` ASC) ;
-
-CREATE INDEX `fk_resources_resource_status` ON `waTest`.`resources` (`resource_status_id` ASC) ;
-
-CREATE INDEX `fk_resources_suggested_by` ON `waTest`.`resources` (`suggested_by_id` ASC) ;
-
 
 -- -----------------------------------------------------
 -- Table `waTest`.`correspondence_type`
@@ -265,6 +255,8 @@ CREATE  TABLE IF NOT EXISTS `waTest`.`correspondence` (
   `result` SMALLINT UNSIGNED NULL DEFAULT NULL ,
   `comments` TEXT NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
+  INDEX `fk_correspondence_resources` (`resource_id` ASC) ,
+  INDEX `fk_correspondence_correspondence_type` (`correspondence_type_id` ASC) ,
   CONSTRAINT `fk_correspondence_resources`
     FOREIGN KEY (`resource_id` )
     REFERENCES `waTest`.`resources` (`id` )
@@ -276,10 +268,6 @@ CREATE  TABLE IF NOT EXISTS `waTest`.`correspondence` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-CREATE INDEX `fk_correspondence_resources` ON `waTest`.`correspondence` (`resource_id` ASC) ;
-
-CREATE INDEX `fk_correspondence_correspondence_type` ON `waTest`.`correspondence` (`correspondence_type_id` ASC) ;
 
 
 -- -----------------------------------------------------
@@ -296,6 +284,8 @@ CREATE  TABLE IF NOT EXISTS `waTest`.`ratings` (
   `round` INT UNSIGNED NULL DEFAULT NULL ,
   `comments` INT UNSIGNED NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
+  INDEX `fk_ratings_curators` (`curator_id` ASC) ,
+  INDEX `fk_ratings_resources` (`resource_id` ASC) ,
   CONSTRAINT `fk_ratings_curators`
     FOREIGN KEY (`curator_id` )
     REFERENCES `waTest`.`curators` (`id` )
@@ -308,30 +298,49 @@ CREATE  TABLE IF NOT EXISTS `waTest`.`ratings` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE INDEX `fk_ratings_curators` ON `waTest`.`ratings` (`curator_id` ASC) ;
 
-CREATE INDEX `fk_ratings_resources` ON `waTest`.`ratings` (`resource_id` ASC) ;
+-- -----------------------------------------------------
+-- Table `waTest`.`seed_status`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `waTest`.`seed_status` ;
+
+CREATE  TABLE IF NOT EXISTS `waTest`.`seed_status` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `status` VARCHAR(45) NOT NULL ,
+  `comments` TEXT NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
 
 -- -----------------------------------------------------
 -- Table `waTest`.`seeds`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `waTest`.`seeds` ;
+
 CREATE  TABLE IF NOT EXISTS `waTest`.`seeds` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `resource_id` INT UNSIGNED NOT NULL ,
   `url` VARCHAR(255) NOT NULL ,
+  `seed_status_id` INT NOT NULL ,
   `redirect` BOOLEAN NULL DEFAULT NULL ,
   `valid_from` DATE NULL DEFAULT NULL ,
   `valid_to` DATE NULL DEFAULT NULL ,
   `comments` TEXT NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
+  INDEX `fk_seeds_resources` (`resource_id` ASC) ,
+  INDEX `fk_seeds_seed_status` (`seed_status_id` ASC) ,
   CONSTRAINT `fk_seeds_resources`
     FOREIGN KEY (`resource_id` )
     REFERENCES `waTest`.`resources` (`id` )
     ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_seeds_seed_status`
+    FOREIGN KEY (`seed_status_id` )
+    REFERENCES `waTest`.`seed_status` (`id` )
+    ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE INDEX `fk_seeds_resources` ON `waTest`.`seeds` (`resource_id` ASC) ;
 
 -- -----------------------------------------------------
 -- Table `waTest`.`quality_controls`
@@ -345,6 +354,7 @@ CREATE  TABLE IF NOT EXISTS `waTest`.`quality_controls` (
   `result` SMALLINT NOT NULL ,
   `comments` TEXT NULL ,
   PRIMARY KEY (`id`) ,
+  INDEX `fk_quality_control_resources` (`resources_id` ASC) ,
   CONSTRAINT `fk_quality_control_resources`
     FOREIGN KEY (`resources_id` )
     REFERENCES `waTest`.`resources` (`id` )
@@ -352,37 +362,15 @@ CREATE  TABLE IF NOT EXISTS `waTest`.`quality_controls` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
-CREATE INDEX `fk_quality_control_resources` ON `waTest`.`quality_controls` (`resources_id` ASC) ;
-
 USE `waTest`;
-
--- -----------------------------------------------------
--- Data for table `waTest`.`conspectus`
--- -----------------------------------------------------
-SET AUTOCOMMIT=0;
-INSERT INTO `conspectus` (`category`, `comments`) VALUES ('matematika', NULL);
-INSERT INTO `conspectus` (`category`, `comments`) VALUES ('psychologie', NULL);
-INSERT INTO `conspectus` (`category`, `comments`) VALUES ('sociologie', NULL);
-
-COMMIT;
-
--- -----------------------------------------------------
--- Data for table `waTest`.`curators`
--- -----------------------------------------------------
-SET AUTOCOMMIT=0;
-INSERT INTO `curators` (`username`, `password`, `roles_id`, `firstname`, `lastname`, `email`, `icq`, `skype`, `comments`) VALUES ('lico', 'brumla', 1, 'Libor', 'Coufal', 'libor.coufal@nkp.cz', NULL, NULL, NULL);
-INSERT INTO `curators` (`username`, `password`, `roles_id`, `firstname`, `lastname`, `email`, `icq`, `skype`, `comments`) VALUES ('adam', 'brumla', 3, 'Adam', 'Brokeš', 'brokes@webarchiv.cz', 42799740, 'adam.brokes', NULL);
-INSERT INTO `curators` (`username`, `password`, `roles_id`, `firstname`, `lastname`, `email`, `icq`, `skype`, `comments`) VALUES ('sibek', 'brumla', 2, 'Tomáš', 'Šíbek', 'tomas.sibek@nkp.cz', NULL, NULL, NULL);
-
-COMMIT;
 
 -- -----------------------------------------------------
 -- Data for table `waTest`.`roles`
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
-INSERT INTO `roles` (`role`, `comments`) VALUES ('admin', NULL);
-INSERT INTO `roles` (`role`, `comments`) VALUES ('curator', NULL);
-INSERT INTO `roles` (`role`, `comments`) VALUES ('crawler_manager', NULL);
+INSERT INTO `roles` (`id`, `role`, `comments`) VALUES (0, 'admin', NULL);
+INSERT INTO `roles` (`id`, `role`, `comments`) VALUES (0, 'curator', NULL);
+INSERT INTO `roles` (`id`, `role`, `comments`) VALUES (0, 'crawler_manager', NULL);
 
 COMMIT;
 
@@ -390,14 +378,8 @@ COMMIT;
 -- Data for table `waTest`.`resource_status`
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
-INSERT INTO `resource_status` (`status`, `comments`) VALUES ('nový', NULL);
-INSERT INTO `resource_status` (`status`, `comments`) VALUES ('schválen', NULL);
-INSERT INTO `resource_status` (`status`, `comments`) VALUES ('neschválen', NULL);
-INSERT INTO `resource_status` (`status`, `comments`) VALUES ('ohodnocen', NULL);
-INSERT INTO `resource_status` (`status`, `comments`) VALUES ('k přehodnocení', NULL);
-INSERT INTO `resource_status` (`status`, `comments`) VALUES ('nepovolen vydavatelem', NULL);
-INSERT INTO `resource_status` (`status`, `comments`) VALUES ('povolen vydavatelem', NULL);
-INSERT INTO `resource_status` (`status`, `comments`) VALUES ('osloven', NULL);
+INSERT INTO `resource_status` (`id`, `status`, `comments`) VALUES (0, 'schválen', NULL);
+INSERT INTO `resource_status` (`id`, `status`, `comments`) VALUES (0, 'neschválen', NULL);
 
 COMMIT;
 
@@ -405,12 +387,21 @@ COMMIT;
 -- Data for table `waTest`.`suggested_by`
 -- -----------------------------------------------------
 SET AUTOCOMMIT=0;
-INSERT INTO `suggested_by` (`proposer`, `comments`) VALUES ('kurátor', NULL);
-INSERT INTO `suggested_by` (`proposer`, `comments`) VALUES ('web/vydavatel', NULL);
-INSERT INTO `suggested_by` (`proposer`, `comments`) VALUES ('web/návštěvník', NULL);
-INSERT INTO `suggested_by` (`proposer`, `comments`) VALUES ('ISSN', NULL);
+INSERT INTO `suggested_by` (`id`, `proposer`, `comments`) VALUES (1, 'kurátor', NULL);
+INSERT INTO `suggested_by` (`id`, `proposer`, `comments`) VALUES (2, 'web/vydavatel', NULL);
+INSERT INTO `suggested_by` (`id`, `proposer`, `comments`) VALUES (3, 'web/návštěvník', NULL);
+INSERT INTO `suggested_by` (`id`, `proposer`, `comments`) VALUES (4, 'ISSN', NULL);
 
 COMMIT;
+
+-- -----------------------------------------------------
+-- Data for table `waTest`.`seed_status`
+-- -----------------------------------------------------
+SET AUTOCOMMIT=0;
+INSERT INTO `seed_status` (`id`, `status`, `comments`) VALUES (0, 'valid', NULL);
+
+COMMIT;
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
