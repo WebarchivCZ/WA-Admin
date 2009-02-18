@@ -14,14 +14,16 @@ class Form_Submit_Core extends Form_Input {
 	protected $data = array
 	(
 		'type'  => 'submit',
-		'class' => 'submit'
+		'class' => 'submit',
+		'name' => ''
 	);
 
 	protected $protect = array('type');
 
-	public function __construct($value)
+	public function __construct($value, $name = '')
 	{
 		$this->data['value'] = $value;
+		$this->data['name'] = $name;
 	}
 
 	public function render()
@@ -29,7 +31,7 @@ class Form_Submit_Core extends Form_Input {
 		$data = $this->data;
 		unset($data['label']);
 
-		return form::button($data);
+		return form::input($data);
 	}
 
 	public function validate()

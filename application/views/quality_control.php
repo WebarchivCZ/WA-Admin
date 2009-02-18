@@ -1,5 +1,5 @@
 <div class="top-bar">
-	<h1>Hodnocení zdrojů</h1>
+	<h1>Kontrola kvality</h1>
 </div>
 <br />
 <div class="select-bar">
@@ -16,37 +16,65 @@
 	<tr>
 		<th class="first">Název</th>
 		<th>URL</th>
-		<th>V pořádku</th>
-		<th>Akceptovatelné</th>
-		<th class="last">Nevyhovující</th>
+		<th>Výsledek</th>
+		<th>Datum</th>
+		<th class="last">Kdo</th>
 	</tr>
 	<tr>
 		<td class="first">Ikaros</td>
 		<td><a href="http://www.ikaros.cz">http://www.ikaros.cz</a></td>
-		<td><a href="">V pořádku</a></td>
-		<td><a href="">Akceptovatelné</a></td>
-		<td><a href="">Nevyhovující</a></td>
+		<td>
+			<select name="">
+				<option></option>
+				<option>V pořádku</option>
+				<option>Akceptovatelné</option>
+				<option>Nevyhovující</option>
+			</select>
+		</td>
+		<td>18.1.2009</td>
+		<td><a href="">Coufal</a></td>
 	</tr>
 	<tr>
 		<td class="first">Národní knihovna ČR</td>
 		<td><a href="http://www.ikaros.cz">http://www.nkp.cz</a></td>
-		<td><a href="">V pořádku</a></td>
-		<td><a href="">Akceptovatelné</a></td>
-		<td><a href="">Nevyhovující</a></td>
+		<td>
+			<select name="">
+				<option></option>
+				<option>V pořádku</option>
+				<option>Akceptovatelné</option>
+				<option>Nevyhovující</option>
+			</select>
+		</td>
+		<td>19.1.2009</td>
+		<td><a href="">Gruber</a></td>
 	</tr>
 	<tr>
 		<td class="first">Otevřete.cz</td>
 		<td><a href="http://www.ikaros.cz">http://www.otevrete.cz</a></td>
-		<td><a href="">V pořádku</a></td>
-		<td><a href="">Akceptovatelné</a></td>
-		<td><a href="">Nevyhovující</a></td>
+		<td>
+			<select name="">
+				<option></option>
+				<option>V pořádku</option>
+				<option>Akceptovatelné</option>
+				<option>Nevyhovující</option>
+			</select>
+		</td>
+		<td>19.1.2009</td>
+		<td><a href="">Šíbek</a></td>
 	</tr>
 	<tr>
 		<td class="first">eCesty.cz</td>
 		<td><a href="http://www.ikaros.cz">http://www.ecesty.cz</a></td>
-		<td><a href="">V pořádku</a></td>
-		<td><a href="">Akceptovatelné</a></td>
-		<td><a href="">Nevyhovující</a></td>
+		<td>
+			<select name="">
+				<option></option>
+				<option>V pořádku</option>
+				<option>Akceptovatelné</option>
+				<option>Nevyhovující</option>
+			</select>
+		</td>
+		<td>21.1.2009</td>
+		<td><a href="">Šíbek</a></td>
 	</tr>
 </table>
 <p class="center">

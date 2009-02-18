@@ -23,7 +23,7 @@
 			
 		</div>
 <div id="center-column">
-			<?=$content;?>			
+			<?=$content;?>
 		</div>
 <div id="right-column"><strong class="h">INFO</strong>
 <div class="box" id="help-box">

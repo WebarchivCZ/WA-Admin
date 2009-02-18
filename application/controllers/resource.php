@@ -21,7 +21,7 @@ class Resource_Controller extends Template_Controller
 		$suggested_by_array = ORM::factory('suggested_by')->select_list('id', 'proposer');
 		$ratings_array = Kohana::config('wadmin.ratings_result');
 		
-		$form = new Forge(NULL, '', 'POST', array('id' => 'resource_form'));
+		$form = new Forge(NULL, '', 'POST', array('id' => 'resource_form', 'class' => 'form'));
 		$form->input('title')->label('Název')->rules('required|length[3,150]')->value($title_resource);
 		$form->input('publisher')->label('Vydavatel')->rules('required|length[3,150]');
 		$form->input('url')->label('URL')->value('http://')->rules('required|valid_url');
