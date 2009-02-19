@@ -1,3 +1,4 @@
+<?php defined('SYSPATH') OR die('No direct access allowed.'); ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
@@ -37,7 +38,7 @@ code { white-space: pre; display: none; }
 
 #container { position: relative; margin: 0 16em 2em 1em; border: solid 0 #e7f5d7; border-width: 0 0.2em 0.3em 0.2em; }
 
-#menu { float: left; top: 0; right: 1.5em; width: 14em; padding: 0.2em 0; }
+#menu { position: fixed; top: 0; right: 1.5em; width: 14em; padding: 0.2em 0; }
 * html body #menu { position: absolute; } /* Add this style for IE6 */
 #menu ul { margin: 0 0.2em; list-style: none; color: #b43f11; }
 #menu li.first { padding-top: 0.2em; }

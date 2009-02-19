@@ -1,8 +1,8 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php defined('SYSPATH') OR die('No direct access allowed.');
 /**
  * Archive driver interface.
  *
- * $Id: Archive.php 3138 2008-07-17 14:40:27Z Shadowhand $
+ * $Id: Archive.php 3917 2009-01-21 03:06:22Z zombor $
  *
  * @package    Archive
  * @author     Kohana Team

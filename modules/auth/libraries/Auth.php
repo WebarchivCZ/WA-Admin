@@ -1,4 +1,4 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php defined('SYSPATH') OR die('No direct access allowed.');
 /**
  * User authorization library. Handles user login and logout, as well as secure
  * password hashing.
@@ -88,6 +88,16 @@ class Auth_Core {
 	}
 
 	/**
+	 * Returns the currently logged in user, or FALSE.
+	 *
+	 * @return  mixed
+	 */
+	public function get_user()
+	{
+		return $this->driver->get_user();
+	}
+
+	/**
 	 * Attempt to log in a user by using an ORM object and plain-text password.
 	 *
 	 * @param   string   username to log in
@@ -136,7 +146,7 @@ class Auth_Core {
 	/**
 	 * Log out a user by removing the related session variables.
 	 *
-	 * @param   boolean   completely destroy the session
+	 * @param   boolean  completely destroy the session
 	 * @return  boolean
 	 */
 	public function logout($destroy = FALSE)
@@ -193,10 +203,10 @@ class Auth_Core {
 	/**
 	 * Perform a hash, using the configured method.
 	 *
-	 * @param   string   string to hash
+	 * @param   string  string to hash
 	 * @return  string
 	 */
-	protected function hash($str)
+	public function hash($str)
 	{
 		return hash($this->config['hash_method'], $str);
 	}
@@ -207,13 +217,13 @@ class Auth_Core {
 	 * @param   string  hashed password
 	 * @return  string
 	 */
-	protected function find_salt($password)
+	public function find_salt($password)
 	{
 		$salt = '';
 
 		foreach ($this->config['salt_pattern'] as $i => $offset)
 		{
-			// Find salt characters... take a good long look..
+			// Find salt characters, take a good long look...
 			$salt .= substr($password, $offset + $i, 1);
 		}
 

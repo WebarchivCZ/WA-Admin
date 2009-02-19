@@ -1,8 +1,8 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php defined('SYSPATH') OR die('No direct access allowed.');
 /**
  * Archive library zip driver.
  *
- * $Id: Zip.php 2007 2008-02-09 06:37:51Z PugFish $
+ * $Id: Zip.php 3917 2009-01-21 03:06:22Z zombor $
  *
  * @package    Archive
  * @author     Kohana Team
