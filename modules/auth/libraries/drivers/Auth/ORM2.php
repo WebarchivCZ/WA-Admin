@@ -25,7 +25,7 @@ class Auth_ORM_Driver extends Auth_Driver {
 		// Get the user from the session
 		$user = $this->session->get($this->config['session_key']);
 
-		if (is_object($user) AND $user instanceof Curator_Model AND $user->loaded)
+		if (is_object($user) AND $user instanceof User_Model AND $user->loaded)
 		{
 			// Everything is okay so far
 			$status = TRUE;
@@ -83,18 +83,16 @@ class Auth_ORM_Driver extends Auth_Driver {
 		if ( ! is_object($user))
 		{
 			// Load the user
-			$user = ORM::factory('curator', $user);
-			//$user = ORM::factory('curator')->where('username', $user)->find();
-			//echo Kohana::debug($user);
+			$user = ORM::factory('user', $user);
 		}
-			
+
 		// If the passwords match, perform a login
 		if ($user->has(ORM::factory('role', 'login')) AND $user->password === $password)
 		{
 			if ($remember === TRUE)
 			{
 				// Create a new autologin token
-				$token = ORM::factory('curator_token');
+				$token = ORM::factory('user_token');
 
 				// Set token data
 				$token->user_id = $user->id;
@@ -103,7 +101,6 @@ class Auth_ORM_Driver extends Auth_Driver {
 
 				// Set the autologin cookie
 				cookie::set('authautologin', $token->token, $this->config['lifetime']);
-				
 			}
 
 			// Finish the login
@@ -127,7 +124,7 @@ class Auth_ORM_Driver extends Auth_Driver {
 		if ( ! is_object($user))
 		{
 			// Load the user
-			$user = ORM::factory('curator', $user);
+			$user = ORM::factory('user', $user);
 		}
 
 		// Mark the session as forced, to prevent users from changing account information
@@ -147,7 +144,7 @@ class Auth_ORM_Driver extends Auth_Driver {
 		if ($token = cookie::get('authautologin'))
 		{
 			// Load the token and user
-			$token = ORM::factory('curator_token', $token);
+			$token = ORM::factory('user_token', $token);
 
 			if ($token->loaded AND $token->user->loaded)
 			{
@@ -202,7 +199,7 @@ class Auth_ORM_Driver extends Auth_Driver {
 		if ( ! is_object($user))
 		{
 			// Load the user
-			$user = ORM::factory('curator', $user);
+			$user = ORM::factory('user', $user);
 		}
 
 		return $user->password;
@@ -215,7 +212,7 @@ class Auth_ORM_Driver extends Auth_Driver {
 	 * @param   object   user model object
 	 * @return  void
 	 */
-	protected function complete_login(Curator_Model $user)
+	protected function complete_login(User_Model $user)
 	{
 		// Update the number of logins
 		$user->logins += 1;

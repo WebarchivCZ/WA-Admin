@@ -3,7 +3,7 @@ defined('SYSPATH') or die('No direct script access.');
 /**
  * Model representing Contacts
  */
-class Curator_Model extends User_Model
+class Curator_Model extends Auth_User_Model 
 {
 
 	public $headers = array(
@@ -20,11 +20,8 @@ class Curator_Model extends User_Model
 
 	protected $default_column = 'username';
 
-	protected $belongs_to = array(
-		'role');
-
-	protected $has_many = array(
-		'ratings');
+	protected $has_many = array('curator_tokens', 'ratings');
+	protected $has_and_belongs_to_many = array('roles');
 
 	public function __construct ($id = NULL)
 	{
@@ -39,17 +36,6 @@ class Curator_Model extends User_Model
 			$value = ucwords(strtolower($value));
 		}
 		parent::__set($key, $value);
-	}
-
-	public function add_role ($role)
-	{
-		if ($role instanceof Role_Model)
-		{
-			$this->role_id = $role->id;
-		} else
-		{
-			throw new InvalidArgumentException();
-		}
 	}
 }
 ?>

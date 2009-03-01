@@ -117,6 +117,8 @@ class Auth_Core {
 
 			// Create a hashed password using the salt from the stored password
 			$password = $this->hash_password($password, $salt);
+			
+
 		}
 
 		return $this->driver->login($username, $password, $remember);

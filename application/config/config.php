@@ -100,7 +100,7 @@ $config['modules'] = array
 	MODPATH.'forge',     // Form generation
 	MODPATH.'kodoc',     // Self-generating documentation
 	MODPATH.'media',     // Media caching and compression
-	// MODPATH.'scaffolding',
+	// MODPATH.'morf',
 	// MODPATH.'formation',
 	// MODPATH.'gmaps',     // Google Maps integration
 	// MODPATH.'archive',   // Archive utility

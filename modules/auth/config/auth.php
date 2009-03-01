@@ -26,7 +26,7 @@ $config['hash_method'] = 'sha1';
  * Defines the hash offsets to insert the salt at. The password hash length
  * will be increased by the total number of offsets.
  */
-$config['salt_pattern'] = '1, 3, 5, 9, 14, 15, 20, 21, 28, 30';
+$config['salt_pattern'] = '1, 3, 4, 8, 14, 15, 21, 23, 28, 38';
 
 /**
  * Set the auto-login (remember me) cookie lifetime, in seconds. The default
@@ -37,7 +37,7 @@ $config['lifetime'] = 1209600;
 /**
  * Set the session key that will be used to store the current user.
  */
-$config['session_key'] = 'auth_user';
+$config['session_key'] = 'auth_curator';
 
 /**
  * Usernames (keys) and hashed passwords (values) used by the File driver.

@@ -1,4 +1,5 @@
-<?php defined('SYSPATH') or die('No direct script access.');
+<?php
+defined('SYSPATH') or die('No direct script access.');
 /**
  * Allows a template to be automatically loaded and displayed. Display can be
  * dynamically turned off in the controller methods, and the template file
@@ -14,7 +15,8 @@
  * @copyright  (c) 2007-2008 Kohana Team
  * @license    http://kohanaphp.com/license.html
  */
-abstract class Template_Controller extends Controller {
+abstract class Template_Controller extends Controller
+{
 
 	// Template view name
 	public $template = 'template';
@@ -22,23 +24,30 @@ abstract class Template_Controller extends Controller {
 	// Default to do auto-rendering
 	public $auto_render = TRUE;
 
+	protected $need_auth = TRUE;
+	
+	protected $session;
+
 	/**
 	 * Template loading and setup routine.
 	 */
-	public function __construct()
+	public function __construct ()
 	{
+		$this->session = new Session();
+		
 		parent::__construct();
-
+		
 		// Load the template
 		$this->template = new View($this->template);
-
-		if ($this->auto_render == TRUE)
-		{
+		
+		if ($this->auto_render == TRUE) {
 			// Render the template immediately after the controller method
-			Event::add('system.post_controller', array($this, '_render'));
+			Event::add('system.post_controller', array(
+				$this , 
+				'_render'));
 		}
-
-		if ( ! empty($this->title)) {
+		
+		if (! empty($this->title)) {
 			$this->template->title = $this->title;
 		} else {
 			$this->template->title = " | ";
@@ -47,6 +56,8 @@ abstract class Template_Controller extends Controller {
 		$this->template->top_nav = new View("layout/top_nav");
 		$this->template->left_nav = new View("layout/left_nav");
 		
+		$this->login();
+		
 		// just for debug
 		$profiler = new Profiler();
 	}
@@ -54,23 +65,41 @@ abstract class Template_Controller extends Controller {
 	/**
 	 * Render the loaded template.
 	 */
-	public function _render()
+	public function _render ()
 	{
-		if ($this->auto_render == TRUE)
-		{
+		if ($this->auto_render == TRUE) {
 			// Render the template when the class is destroyed
 			$this->template->render(TRUE);
 		}
 	}
 
-	public function search() {
+	public function search ()
+	{
 		$pattern = $this->input->get('search_string');
 		
 		$view = new View('search');
 		$view->pattern = $pattern;
 		$view->publishers = ORM::factory('publisher')->like('name', $pattern)->find_all();
-		$view->resources = ORM::factory('resource')->orlike(array('url' => $pattern, 'title' => $pattern))->find_all();
+		$view->resources = ORM::factory('resource')->orlike(array(
+			'url' => $pattern , 
+			'title' => $pattern))->find_all();
 		$this->template->content = $view;
 	}
+
+	private function login ($role = 'login')
+	{
+		if (! $this->need_auth) {
+			return TRUE;
+		}
+		$this->session = Session::instance();
+		$authentic = new Auth();
+		if (! $authentic->logged_in($role)) {
+			$this->session->set("requested_url", "/" . url::current());
+			url::redirect('login');
+		} else {
+			$this->user = $authentic->get_user();
+		}
 	
+	}
+
 } // End Template_Controller

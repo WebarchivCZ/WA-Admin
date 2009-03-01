@@ -3,7 +3,7 @@ defined('SYSPATH') or die('No direct script access.');
 /**
  * Model representing Contacts
  */
-class Role_Model extends Table_Model
+class Role_Model extends Auth_Role_Model 
 {
 
 	public $headers = array(
@@ -13,7 +13,7 @@ class Role_Model extends Table_Model
 
 	protected $default_column = 'role';
 
-	protected $has_many = array('curators');
+	protected $has_and_belongs_to_many = array('curators');
 
 	public function __construct ($id = NULL)
 	{
