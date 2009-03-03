@@ -9,42 +9,29 @@
 	</form>
 </div>
 <h2>Výsledek vyhledávání dotazu: <em><?= $pattern ?></em></h2>
-<h3>Vydavatelé</h3>
+<h3>Zdroje</h3>
 <?php
 $output = '';
 
-if (count($publishers) != 0) {
-	$output .= '<div class="table">
-				<table class="listing" cellpadding="0" cellspacing="0">
-					<th>ID</th><th>Jméno</th>';
-	foreach ($publishers as $publisher) {
-		$output .=  '<tr>'.
-					'<td>' . $publisher->id . '</td>'.
-					'<td>' . $publisher->name . '</td>'.
-					'</tr>';
-	}
-	$output .= '</table>
-				</div>';
-} else {
-	$output .= 'Nebyl nalezen žádný vydavatel odpovídající hledanému řetězci';
-}
-
-$output .= '<h3>Zdroje</h3>';
-
-if (count($publishers) != 0) {
+if (count($resources) != 0) {
 	$output .= '<table class="listing" cellpadding="0" cellspacing="0">
-					<th>ID</th><th>Název</th><th>URL</th><th>Vydavatel</th>';
+					<th>Název</th><th>URL</th><th>Vydavatel</th>';
 	foreach ($resources as $resource) {
 		$output .=  '<tr>' .
-					'<td>' . $resource->id . '</td>'.
-					'<td>' . $resource->title . '</td>'.
-					'<td>' . $resource->url . '</td>'.
-					'<td>' . $resource->publisher . '</td>'.
+					'<td>' .
+					html::anchor('tables/resources/view/'.$resource->id, $resource->title).
+					'</td>'.
+					'<td>' .
+					html::anchor($resource->url) .
+					'</td>'.
+					'<td>' . 
+					html::anchor('tables/publishers/view/'.$resource->publisher->id, $resource->publisher).
+					'</td>'.
 					'</tr>';
 	}
 	$output .= '</table>';
 } else {
-	$output .= 'Nebyl nalezen žádný zdroj odpovídající hledanému řetězci';
+	$output .= '<p>Nebyl nalezen žádný zdroj odpovídající hledanému řetězci</p>';
 }
 
 $output .= '<hr /><p>Poznámka: výraz je hledán v URL a názvu zdroje a jména vydavatele.</p>';

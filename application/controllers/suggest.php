@@ -25,32 +25,15 @@ class Suggest_Controller extends Template_Controller
 			
 			$curators = ORM::factory('curator')->select_list('id', 'username');
 			$conspectus = ORM::factory('conspectus')->select_list('id', 'category');
-			$suggested_by = ORM::factory('suggested_by')->select_list('id', 'proposer');		
+			$suggested_by = ORM::factory('suggested_by')->select_list('id', 'proposer');
 			
-			$form->dropdown('curator')
-					->label('Kurátor')
-					->options($curators)
-					->value(Auth::instance()->get_user());
-			$form->dropdown('conspectus')
-					->label('Konspekt')
-					->options($conspectus);
+			$form->dropdown('curator')->label('Kurátor')->options($curators)->value(Auth::instance()->get_user());
+			$form->dropdown('conspectus')->label('Konspekt')->options($conspectus);
+			$form->dropdown('suggested_by')->label('Navrhl')->options($suggested_by);
 			$form->submit('Vložit', 'insert_button');
 			
 			if (isset($_POST['check_button'])) {
-
-			$publishers = ORM::factory('publisher')->like('name', $publisher_name)->find_all();
-			$resources = ORM::factory('resource')->orlike(array(
-				'title' => $title , 
-				'url' => $url))->find_all();
-			
-			if (($publishers->count() != 0) or ($resources->count() != 0)) {
-				$view->message = 'Byly nalezeny shody:';
-				$view->match_publishers = $publishers;
-				$view->match_resources = $resources;
-			} else {
-				$view->message = 'Nenalezeny shody.';
-			}
-			
+				$this->check_records($publisher_name, $title, $url, $view);
 			}
 			if (isset($_POST['insert_button'])) {
 				$form->curator->selected($_POST['curator']);
@@ -58,7 +41,8 @@ class Suggest_Controller extends Template_Controller
 				
 				$curator = $form->curator->selected;
 				$conspectus = $form->conspectus->selected;
-								
+				$suggested_by = $form->suggested_by->selected;
+				
 				$publisher = ORM::factory('publisher');
 				$publisher->name = $publisher_name;
 				$publisher->save();
@@ -69,18 +53,32 @@ class Suggest_Controller extends Template_Controller
 				$resource->conspectus_id = $conspectus;
 				$resource->curator_id = $curator;
 				//navrhl kurator
-				$resource->suggested_by_id = 1;
+				$resource->suggested_by_id = $suggested_by;
 				$resource->save();
-				//url::redirect('suggest/insert');
+				url::redirect('suggest/insert');
 			}
 		}
 		
 		$view->form = $form->render();
-
+		
 		$this->template->content = $view;
 	}
-	
-	
+
+	private function check_records ($publisher_name, $title, $url, & $view)
+	{
+		$publishers = ORM::factory('publisher')->like('name', $publisher_name)->find_all();
+		$resources = ORM::factory('resource')->orlike(array(
+			'title' => $title , 
+			'url' => $url))->find_all();
+		
+		if (($publishers->count() != 0) or ($resources->count() != 0)) {
+			$view->message = 'Byly nalezeny shody:';
+			$view->match_publishers = $publishers;
+			$view->match_resources = $resources;
+		} else {
+			$view->message = 'Nenalezeny shody.';
+		}
+	}
 
 }
 ?>

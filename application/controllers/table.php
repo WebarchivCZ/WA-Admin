@@ -40,15 +40,20 @@ abstract class Table_Controller extends Template_Controller
 		$this->template->title = Kohana::lang('tables.'.$this->title) . " | " . Kohana::lang('tables.index');
 	}
 
-	public function view($id = false)
+	public function view($id = FALSE)
 	{
-		
+		$model = inflector::singular($this->table);
+		$form = Formo::factory()->orm($model, $id);
+		// TODO vypisovani labelu
+		$view = new View('edit_table', $form->get(1));
+		$view->title = 'edit';
+		$this->template->content = $view;
 	}
 
 	public function add()
 	{}
 
-	public function delete($id = false)
+	public function delete($id = FALSE)
 	{
 		
 	}

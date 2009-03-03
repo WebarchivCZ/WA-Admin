@@ -75,13 +75,17 @@ abstract class Template_Controller extends Controller
 	public function search ()
 	{
 		$pattern = $this->input->get('search_string');
-		
+		// strip white space from search string
+		$pattern = trim($pattern);
+		 
+		$resources = ORM::factory('resource')
+						->join('publishers', 'resources.publisher_id = publishers.id')
+						->orlike(array('url' => $pattern , 'title' => $pattern, 'publishers.name'=>$pattern))
+						->find_all();
+						
 		$view = new View('search');
 		$view->pattern = $pattern;
-		$view->publishers = ORM::factory('publisher')->like('name', $pattern)->find_all();
-		$view->resources = ORM::factory('resource')->orlike(array(
-			'url' => $pattern , 
-			'title' => $pattern))->find_all();
+		$view->resources = $resources;		
 		$this->template->content = $view;
 	}
 

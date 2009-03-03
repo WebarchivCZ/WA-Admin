@@ -23,7 +23,7 @@ class Resource_Model extends Table_Model
 		'aleph_id' , 
 		'ISSN' , 
 		'conspectus' , 
-		'status' , 
+		'resource_status' , 
 		'creative_commons' , 
 		'metadata' , 
 		'catalogued' , 
