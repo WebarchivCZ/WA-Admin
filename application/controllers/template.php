@@ -32,9 +32,8 @@ abstract class Template_Controller extends Controller
 	 * Template loading and setup routine.
 	 */
 	public function __construct ()
-	{
-		$this->session = new Session();
-		
+	{		
+		$this->session = Session::instance();
 		parent::__construct();
 		
 		// Load the template
@@ -94,12 +93,20 @@ abstract class Template_Controller extends Controller
 		$this->session = Session::instance();
 		$authentic = new Auth();
 		if (! $authentic->logged_in($role)) {
-			$this->session->set("requested_url", "/" . url::current());
+			$this->session->set("login_requested_url", "/" . url::current());
 			url::redirect('login');
 		} else {
 			$this->user = $authentic->get_user();
 		}
 	
+	}
+	
+	public function logout ()
+	{
+		$url = '/' . $this->uri->segment(1);
+		$this->session->set("login_requested_url", $url);
+		Auth::instance()->logout();
+		url::redirect('login');
 	}
 
 } // End Template_Controller

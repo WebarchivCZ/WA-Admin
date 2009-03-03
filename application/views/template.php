@@ -28,8 +28,13 @@
 <div id="right-column"><strong class="h">INFO</strong>
 <div class="box" id="help-box">
 <p><?= date('h:i - d.m.Y'); ?></p>
+<?php if (Auth::instance()->logged_in()) { ?>
 <p>přihlášen: <?= Auth::instance()->get_user()->username ?><br /></p>
-<p><a href="<?= url::base() ?>login/logout">Odhlásit</a></p>
+<p><a href="<?= url::current() ?>/logout">Odhlásit</a></p>
+<? } else {
+	echo '<p>Nepřihlášen</p>';	
+}
+?>
 </div>
 </div>
 </div>

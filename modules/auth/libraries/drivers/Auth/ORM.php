@@ -149,7 +149,7 @@ class Auth_ORM_Driver extends Auth_Driver {
 			// Load the token and user
 			$token = ORM::factory('curator_token', $token);
 
-			if ($token->loaded AND $token->user->loaded)
+			if ($token->loaded AND $token->curator->loaded)
 			{
 				if ($token->user_agent === sha1(Kohana::$user_agent))
 				{
@@ -160,7 +160,7 @@ class Auth_ORM_Driver extends Auth_Driver {
 					cookie::set('authautologin', $token->token, $token->expires - time());
 
 					// Complete the login with the found data
-					$this->complete_login($token->user);
+					$this->complete_login($token->curator);
 
 					// Automatic login was successful
 					return TRUE;

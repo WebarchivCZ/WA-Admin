@@ -5,9 +5,16 @@ class Login_Controller extends Template_Controller
 	protected $title = "Přihlásit se";
 
 	protected $need_auth = FALSE;
-	
+
 	public function index ()
 	{
+		$auth = Auth::instance();
+		$session = Session::instance();
+		
+		if ($auth->auto_login()) {
+			url::redirect($session->get('login_requested_url'));
+			return TRUE;
+		}
 		$form = new Forge();
 		$form->input('username')->label('jmeno')->rules('required');
 		$form->password('password')->label('heslo')->rules('required');
@@ -18,29 +25,14 @@ class Login_Controller extends Template_Controller
 			$password = $form->password->value;
 			$remember = $form->remember->value;
 			
-			if (Auth::instance()->login($username, $password, $remember)) {
-				$session = Session::instance();
+			if ($auth->login($username, $password, $remember)) {
 				
-				url::redirect($session->get('requested_url'));
-			} else {
-				//echo 'spatne zadane heslo';
+				url::redirect($session->get('login_requested_url'));
+			} else {	//echo 'spatne zadane heslo';
 			}
 		}
-		$this->template->content = $form;		
+		$this->template->content = $form;
 	}
-	
-	public function add() {
-		$curator = new Curator_Model();
-		$curator->username = 'adam';
-		$curator->password = 'cyber';
-		$curator->add(ORM::factory('role', 'login'));
-		$curator->save();
-		Auth::instance()->login($curator->username,'cyber');
-	}
-	
-	public function logout() {
-		Auth::instance()->logout();
-		url::redirect('login');
-	}
+
 }
 ?>
