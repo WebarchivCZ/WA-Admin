@@ -104,26 +104,30 @@ if (isset($resource_id)) {
 	if (isset($message)) {
 		echo "<h3>$message</h3>";
 	}
-	if (isset($match_publishers) AND $match_publishers->count() != 0) {
-		echo '<h4>Vydavatelé</h4>
-				<table class="listing">
-				<th>Jméno</th>';
-		foreach ($match_publishers as $publisher) {
-			echo "<tr><td>$publisher->name</td></tr>";
-		}
-		echo '</table>';
-	}
 	
 	if (isset($match_resources) AND $match_resources->count() != 0) {
 		echo '<h4>Zdroje</h4>
 				<table class="listing">
-				<th>Název</th><th>URL</th>
+				<th>Název</th><th>URL</th><th>Vydavatel</th>
 				';
 		foreach ($match_resources as $resource) {
-			echo "<tr>
-					<td>$resource->title</td>
-					<td>$resource->url</td>
-				  </tr>";
+			echo 	'<tr>' .
+					'<td>' .
+					html::anchor('tables/resources/view/'.$resource->id, $resource->title).
+					'</td>'.
+					'<td>' .
+					html::anchor($resource->url) .
+					'</td>'.
+					'<td>' .
+					html::anchor('#', 
+								$resource->publisher,
+								array('class'=>'publisherName')).
+					/*
+					html::anchor('tables/publishers/view/'.$resource->publisher->id, 
+								$resource->publisher,
+								array('onclick'=>'use_publisher()')).*/
+					'</td>'.
+					"</tr>\n";
 		}
 		echo '</table>';
 	}

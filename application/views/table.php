@@ -1,4 +1,4 @@
-<div class="top-bar"><a href="#" class="button"><?= Kohana::lang('tables.add') ?></a>
+<div class="top-bar"><a href="<?= url::site(url::current().'/add') ?>" class="button"><?= Kohana::lang('tables.add') ?></a>
 	<h1><?= Kohana::lang('tables.'.$title) ?></h1>
 	<div class="breadcrumbs"><a href="<?= url::base() ?>">Home</a> / <a href="<?= url::base().url::current() ?>"><?= Kohana::lang('tables.'.$title) ?></a></div>
 </div>

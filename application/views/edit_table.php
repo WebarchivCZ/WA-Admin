@@ -12,6 +12,6 @@
 
 <?php
 if (isset($form)) {
-	echo "xx";
+	echo $form;
 }
 ?>

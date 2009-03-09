@@ -65,16 +65,17 @@ class Suggest_Controller extends Template_Controller
 	}
 
 	private function check_records ($publisher_name, $title, $url, & $view)
-	{
-		$publishers = ORM::factory('publisher')->like('name', $publisher_name)->find_all();
-		$resources = ORM::factory('resource')->orlike(array(
-			'title' => $title , 
-			'url' => $url))->find_all();
+	{		 
+		$resources = ORM::factory('resource')
+						->join('publishers', 'resources.publisher_id = publishers.id')
+						->orlike(array('url' => $url , 'title' => $title, 'publishers.name'=>$publisher_name))
+						->find_all();
+						
+		$view->match_resources = $resources;		
+		$this->template->content = $view;
 		
-		if (($publishers->count() != 0) or ($resources->count() != 0)) {
+		if ($resources->count() != 0) {
 			$view->message = 'Byly nalezeny shody:';
-			$view->match_publishers = $publishers;
-			$view->match_resources = $resources;
 		} else {
 			$view->message = 'Nenalezeny shody.';
 		}

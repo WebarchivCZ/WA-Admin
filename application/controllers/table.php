@@ -3,6 +3,12 @@ abstract class Table_Controller extends Template_Controller
 {
 	protected $table;
 	protected $title;
+	protected $model;
+	
+	public function __construct() {
+		$this->model = inflector::singular($this->table);
+		parent::__construct();
+	}
 
 	public function index()
 	{			
@@ -42,16 +48,23 @@ abstract class Table_Controller extends Template_Controller
 
 	public function view($id = FALSE)
 	{
-		$model = inflector::singular($this->table);
-		$form = Formo::factory()->orm($model, $id);
+		$form = Formo::factory()->orm($this->model, $id);
 		// TODO vypisovani labelu
-		$view = new View('edit_table', $form->get(1));
+		$view = new View('edit_table');
+		$view->form = $form->get();
 		$view->title = 'edit';
 		$this->template->content = $view;
 	}
 
 	public function add()
-	{}
+	{
+		$form = Formo::factory()->orm($this->model);
+		// TODO vypisovani labelu
+		$view = new View('edit_table');
+		$view->form = $form->get();
+		$view->title = 'insert';
+		$this->template->content = $view;
+	}
 
 	public function delete($id = FALSE)
 	{
