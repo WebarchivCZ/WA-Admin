@@ -22,82 +22,34 @@
 		<th>3. oslovení</th>
 		<th class="last">Stav</th>
 	</tr>
-	<tr>
-		<td class="first">Ikaros</td>
-		<td><a href="http://www.ikaros.cz">http://www.ikaros.cz</a></td>
+	<?php
+
+	foreach($resources as $resource) { 
+		$correspondence = ORM::factory('correspondence')->where('resource_id', $resource->id)->find_all(); 
+		//$this->debug($correspondence);
+		?>
+	
+		<tr>
+		<td class="first"><?=$resource->title ?></td>
+		<td><a href="<?=$resource->url ?>"><?=$resource->url ?></a></td>
 		<td class="center">
-			<?=html::image(array('src' => 'media/img/icons/pencil.png' , 'width' => '16' , 'height' => '16'))?>
+			<?=icon::img('pencil')?>
 		</td>
 		<td class="center">
-			<?=html::image(array('src' => 'media/img/icons/tick.png' , 'width' => '16' , 'height' => '16'))?>
+		<?php if($correspondence) {} ?>
+			<?=icon::img('tick')?>
 		</td>
 		<td class="center">
-			<?=html::image(array('src' => 'media/img/icons/email_open.png' , 'width' => '16' , 'height' => '16'))?>
+			<?=icon::img('email_open')?>
 		</td>
 		<td class="center">
-			<?=html::image(array('src' => 'media/img/icons/email.png' , 'width' => '16' , 'height' => '16'))?>
+			<?=icon::img('email')?>
 		</td>
 		<td class="center">
 			V jednání
 		</td>
-	</tr>
-	<tr>
-		<td class="first">Národní knihovna ČR</td>
-		<td><a href="http://www.ikaros.cz">http://www.nkp.cz</a></td>
-		<td class="center">
-			<?=html::image(array('src' => 'media/img/icons/pencil.png' , 'width' => '16' , 'height' => '16'))?>
-		</td>
-		<td class="center">
-			<?=html::image(array('src' => 'media/img/icons/email_open.png' , 'width' => '16' , 'height' => '16'))?>
-		</td>
-		<td class="center">
-			<?=html::image(array('src' => 'media/img/icons/email.png' , 'width' => '16' , 'height' => '16'))?>
-		</td>
-		<td class="center">
-			<?=html::image(array('src' => 'media/img/icons/email.png' , 'width' => '16' , 'height' => '16'))?>
-		</td>
-		<td class="center">
-			
-		</td>
-	</tr>
-	<tr>
-		<td class="first">Otevřete.cz</td>
-		<td><a href="http://www.ikaros.cz">http://www.otevrete.cz</a></td>
-		<td class="center">
-			<?=html::image(array('src' => 'media/img/icons/pencil.png' , 'width' => '16' , 'height' => '16'))?>
-		</td>
-		<td class="center">
-			<?=html::image(array('src' => 'media/img/icons/tick.png' , 'width' => '16' , 'height' => '16'))?>
-		</td>
-		<td class="center">
-			<?=html::image(array('src' => 'media/img/icons/tick.png' , 'width' => '16' , 'height' => '16'))?>
-		</td>
-		<td class="center">
-			<?=html::image(array('src' => 'media/img/icons/email.png' , 'width' => '16' , 'height' => '16'))?>
-		</td>
-		<td class="center">
-			<span class="alert_text">Bez odezvy</span>
-		</td>
-	</tr>
-	<tr>
-		<td class="first">eCesty.cz</td>
-		<td><a href="http://www.ikaros.cz">http://www.ecesty.cz</a></td>
-		<td class="center">
-			<?=html::image(array('src' => 'media/img/icons/pencil.png' , 'width' => '16' , 'height' => '16'))?>
-		</td>
-		<td class="center">
-			<?=html::image(array('src' => 'media/img/icons/email_open.png' , 'width' => '16' , 'height' => '16'))?>
-		</td>
-		<td class="center">
-			<?=html::image(array('src' => 'media/img/icons/email.png' , 'width' => '16' , 'height' => '16'))?>
-		</td>
-		<td class="center">
-			<?=html::image(array('src' => 'media/img/icons/email.png' , 'width' => '16' , 'height' => '16'))?>
-		</td>
-		<td class="center">
-			
-		</td>
-	</tr>
+	</tr>	
+	<? } ?>
 </table>
 <p class="center">
 <button>Zobrazit všechny neoslovené zdroje</button>

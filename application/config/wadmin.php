@@ -6,12 +6,20 @@ $config = array(
 		'rate' , 
 		'addressing' , 
 		'progress' , 
-		'catalogue',
+		'catalogue' , 
 		'quality_control') , 
 	
 	'ratings_result' => array(
 		'1' => 'NE' , 
 		'2' => 'ANO' , 
 		'3' => 'MOŽNÁ' , 
-		'4' => 'TECHNICKÉ NE'))
-?>
+		'4' => 'TECHNICKÉ NE') , 
+	
+	'rating_values' => array(
+		'NULL'   => '' , 
+		'-2' => 'ne' , 
+		'-1' => 'spíše ne' , 
+		'0'  => 'možná' , 
+		'1'  => 'spíše ano' , 
+		'2'  => 'ano' , 
+		'4'  => 'technické ne'))?>

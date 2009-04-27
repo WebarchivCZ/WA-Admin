@@ -38,6 +38,7 @@ class Suggest_Controller extends Template_Controller
 			if (isset($_POST['insert_button'])) {
 				$form->curator->selected($_POST['curator']);
 				$form->conspectus->selected($_POST['conspectus']);
+				$form->suggested_by->selected($_POST['suggested_by']);
 				
 				$curator = $form->curator->selected;
 				$conspectus = $form->conspectus->selected;
@@ -52,10 +53,10 @@ class Suggest_Controller extends Template_Controller
 				$resource->publisher_id = $publisher->id;
 				$resource->conspectus_id = $conspectus;
 				$resource->curator_id = $curator;
-				//navrhl kurator
+
 				$resource->suggested_by_id = $suggested_by;
 				$resource->save();
-				url::redirect('suggest/insert');
+				url::redirect('resource/edit/'.$resource->id);
 			}
 		}
 		

@@ -4,7 +4,7 @@
  * then a full URL will be used, eg: http://localhost/kohana/. If it only includes
  * the path, and a site_protocol is specified, the domain will be auto-detected.
  */
-$config['site_domain'] = '/wadmin/';
+$config['site_domain'] = 'localhost/wadmin/';
 
 /**
  * Force a default protocol to be used by the site. If no site_protocol is
@@ -109,3 +109,9 @@ $config['modules'] = array
 	// MODPATH.'unit_test', // Unit testing
 	// MODPATH.'object_db', // New OOP Database library (testing only!)
 );
+
+/**
+ * Enable debug mode. Display errors and profiler info.
+ * Error messages can be set by variable $this->template->debug
+ */
+$config['debug_mode'] = TRUE;

@@ -27,6 +27,8 @@ abstract class Template_Controller extends Controller
 	protected $need_auth = TRUE;
 	
 	protected $session;
+	
+	protected $log = '';
 
 	/**
 	 * Template loading and setup routine.
@@ -55,10 +57,17 @@ abstract class Template_Controller extends Controller
 		$this->template->top_nav = new View("layout/top_nav");
 		$this->template->left_nav = new View("layout/left_nav");
 		
+		$footer = new View("layout/footer");
+		$footer->bind('log', $this->log);
+		$this->template->footer = $footer;
+		
 		$this->login();
 		
 		// just for debug
-		$profiler = new Profiler();
+		
+		if (Kohana::config('config.debug_mode')) {
+			$profiler = new Profiler();
+		}
 	}
 
 	/**
@@ -111,6 +120,11 @@ abstract class Template_Controller extends Controller
 		$this->session->set("login_requested_url", $url);
 		Auth::instance()->logout();
 		url::redirect('login');
+	}
+	
+	public function debug($message) {
+		Kohana::log('debug', $message);
+		$this->log .= Kohana::debug($message);
 	}
 
 } // End Template_Controller

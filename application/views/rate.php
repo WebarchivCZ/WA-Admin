@@ -1,3 +1,7 @@
+<?php
+$rating_result_array = Kohana::config('wadmin.ratings_result');
+$rating_values_array = Kohana::config('wadmin.rating_values');
+?>
 <div class="top-bar">
 	<h1>Hodnocení zdrojů</h1>
 </div>
@@ -12,6 +16,10 @@
 <?=html::image(array('src' => 'media/img/bg-th-left.gif' , 'width' => '8' , 'height' => '7' , 'class' => 'left'))?>
 <?=html::image(array('src' => 'media/img/bg-th-right.gif' , 'width' => '7' , 'height' => '7' , 'class' => 'right'))?>
 
+<?php
+if (isset($resources)) {
+echo form::open(url::base(FALSE).url::current().'/save');
+?>
 <table class="listing" cellpadding="0" cellspacing="0">
 	<tr>
 		<th class="first">Název</th>
@@ -23,96 +31,34 @@
 		<th>Hod. ostatních</th>
 		<th class="last">Výsledek</th>
 	</tr>
-	<tr>
-		<td class="first">Ikaros</td>
-		<td><a href="http://www.ikaros.cz">http://www.ikaros.cz</a></td>
-		<td>Coufal</td>
-		<td>Knihovnictví</td>
-		<td><select>
-			<option></option>
-			<option>Ne</option>
-			<option>Spíše ne</option>
-			<option>Možná</option>
-			<option>Spíše ano</option>
-			<option>Ano</option>
-			<option>Technické ne</option>
-		</select></td>
+<?php foreach ($resources as $resource) { ?>
+<tr>
+		<td class="first"><?=$resource->title ?></td>
+		<td><a href="<?=$resource->url ?>"><?=$resource->url ?></a></td>
+		<td><?=$resource->curator->username ?></td>
+		<td><?=$resource->conspectus->category ?></td>
+		<td>
+			<?= form::dropdown("rating[$resource->id]", $rating_values_array, $ratings[$resource->id]); ?>
+		</td>
 		<td class="center">
 			<?=html::image(array('src' => 'media/img/icons/find.png' , 'width' => '16' , 'height' => '16'))?>
 		</td>
 		<td class="center">
 			<?=html::image(array('src' => 'media/img/icons/find.png' , 'width' => '16' , 'height' => '16'))?>
 		</td>
-		<td><a href=""><strong>ANO</strong></a></td>
+		<td>
+			<?php if($resource->resource_status->status == 'ohodnocen') 
+			{ 
+				echo "<a href=''><strong>".$rating_result_array[$resource->rating_result].'</strong></a>'; 
+			} ?>
+		</td>
 	</tr>
-	<tr>
-		<td class="first">Národní knihovna ČR</td>
-		<td><a href="http://www.ikaros.cz">http://www.nkp.cz</a></td>
-		<td>Šíbek</td>
-		<td>Knihovnictví</td>
-		<td><select>
-			<option></option>
-			<option>Ne</option>
-			<option>Spíše ne</option>
-			<option>Možná</option>
-			<option>Spíše ano</option>
-			<option>Ano</option>
-			<option>Technické ne</option>
-		</select></td>
-		<td class="center">
-			<?=html::image(array('src' => 'media/img/icons/find.png' , 'width' => '16' , 'height' => '16'))?>
-		</td>
-		<td class="center">
-			<?=html::image(array('src' => 'media/img/icons/find.png' , 'width' => '16' , 'height' => '16'))?>
-		</td>
-		<td></td>
-	</tr>
-	<tr>
-		<td class="first">Otevřete.cz</td>
-		<td><a href="http://www.ikaros.cz">http://www.otevrete.cz</a></td>
-		<td>Gruber</td>
-		<td>Filozofie</td>
-		<td><select>
-			<option></option>
-			<option>Ne</option>
-			<option>Spíše ne</option>
-			<option>Možná</option>
-			<option>Spíše ano</option>
-			<option>Ano</option>
-			<option>Technické ne</option>
-		</select></td>
-		<td class="center">
-			<?=html::image(array('src' => 'media/img/icons/find.png' , 'width' => '16' , 'height' => '16'))?>
-		</td>
-		<td class="center">
-			<?=html::image(array('src' => 'media/img/icons/find.png' , 'width' => '16' , 'height' => '16'))?>
-		</td>
-		<td></td>
-	</tr>
-	<tr>
-		<td class="first">eCesty.cz</td>
-		<td><a href="http://www.ikaros.cz">http://www.ecesty.cz</a></td>
-		<td>Coufal</td>
-		<td>Rekreace</td>
-		<td><select>
-			<option></option>
-			<option>Ne</option>
-			<option>Spíše ne</option>
-			<option>Možná</option>
-			<option>Spíše ano</option>
-			<option>Ano</option>
-			<option>Technické ne</option>
-		</select></td>
-		<td class="center">
-			<?=html::image(array('src' => 'media/img/icons/find.png' , 'width' => '16' , 'height' => '16'))?>
-		</td>
-		<td class="center">
-			<?=html::image(array('src' => 'media/img/icons/find.png' , 'width' => '16' , 'height' => '16'))?>
-		</td>
-		<td><a href=""><strong>TECH. NE</strong></a></td>
-	</tr>
+<?php }
+}
+?>
 </table>
 <p class="center">
-<button>Uložit hodnocení</button>
+<?=form::submit('submit', 'Uložit hodnocení') ?>
+<?=form::close() ?>
 </p>
 </div>

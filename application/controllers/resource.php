@@ -7,7 +7,7 @@ class Resource_Controller extends Template_Controller
 	public function index ()
 	{}
 
-	public function insert ($title_resource = NULL)
+	public function insert ($resource_id = NULL)
 	{
 		$view = new View('resource');
 		
@@ -22,7 +22,7 @@ class Resource_Controller extends Template_Controller
 		$ratings_array = Kohana::config('wadmin.ratings_result');
 		
 		$form = new Forge(NULL, '', 'POST', array('id' => 'resource_form', 'class' => 'form'));
-		$form->input('title')->label('Název')->rules('required|length[3,150]')->value($title_resource);
+		$form->input('title')->label('Název')->rules('required|length[3,150]');
 		$form->input('publisher')->label('Vydavatel')->rules('required|length[3,150]');
 		$form->input('url')->label('URL')->value('http://')->rules('required|valid_url');
 		$form->checkbox('url_valid')->label('Platné url')->class('right')->checked(TRUE);
@@ -80,6 +80,10 @@ class Resource_Controller extends Template_Controller
 			$view->content = $form;
 		}
 		$this->template->content = $view;
+	}
+	
+	public function edit($resource_id) {
+		$this->insert($resource_id);		
 	}
 }
 ?>

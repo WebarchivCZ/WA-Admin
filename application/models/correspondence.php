@@ -9,13 +9,15 @@ class Correspondence_Model extends Table_Model
 {
 
 	protected $default_column = 'result';
+	
+	protected $table_name = 'correspondence';
 
 	public function __construct ($id = NULL)
 	{
 		parent::__construct($id);
 	}
 
-	protected $headers = array(
+	public $headers = array(
 		'id' , 
 		'resources_id' , 
 		'date' , 

@@ -3,7 +3,7 @@ defined('SYSPATH') or die('No direct script access.');
 /**
  * Model representing Contacts
  */
-class Ratings_Model extends Table_Model
+class Rating_Model extends Table_Model
 {
 
 	public $headers = array(
