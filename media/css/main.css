@@ -111,10 +111,13 @@ a.logo {
 	background:url(../../media/img/tab-active-right.gif) no-repeat right top;
 	height:23px;
 	padding:11px 10px 0 10px;
-	line-height:19px;
+	line-height:17px;
 	color:#606060;
 	}
-	
+
+#top-navigation li.active a {
+	padding:0;
+}
 /* middle */
 #middle {
 	float:left;
@@ -354,3 +357,12 @@ div.table .select select {
 .dashboard li {
 	margin: 3px 0;
 	}
+	
+div#debug {
+	position: absolute;
+	left: 8px;
+	top: 8px;
+	padding: 5px 10px;
+	background: white;
+	border: 1px solid #333;
+}
