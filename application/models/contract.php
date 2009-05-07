@@ -8,8 +8,8 @@ defined('SYSPATH') or die('No direct script access.');
 class Contract_Model extends Table_Model
 {
 
-	protected $default_column = 'contract_no';
-
+	protected $primary_val = 'contract_no';
+	
 	public $headers = array(
 		'id' , 
 		'contract_no' , 

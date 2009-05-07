@@ -35,7 +35,7 @@ final class Kohana {
 	// Include paths
 	private static $include_paths;
 
-	// Logged messages
+	// Logged messages - changed
 	private static $log;
 
 	// Cache lifetime

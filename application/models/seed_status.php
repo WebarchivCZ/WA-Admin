@@ -11,7 +11,7 @@ class Seed_Status_Model extends Table_Model
 		'status' ,
 		'comments');
 
-	protected $default_column = 'status';
+	protected $primary_val = 'status';
 
 	protected $has_many = array('seeds');
 

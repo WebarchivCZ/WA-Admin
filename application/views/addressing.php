@@ -16,7 +16,6 @@
 	<tr>
 		<th class="first">Název</th>
 		<th>URL</th>
-		<th>Doplnit údaje</th>
 		<th>1. oslovení</th>
 		<th>2. oslovení</th>
 		<th>3. oslovení</th>
@@ -30,11 +29,8 @@
 		?>
 	
 		<tr>
-		<td class="first"><?=$resource->title ?></td>
+		<td class="first"><?=html::anchor('tables/resources/view/'.$resource->id, $resource->title) ?></td>
 		<td><a href="<?=$resource->url ?>"><?=$resource->url ?></a></td>
-		<td class="center">
-			<?=icon::img('pencil')?>
-		</td>
 		<td class="center">
 		<?php if($correspondence) {} ?>
 			<?=icon::img('tick')?>

@@ -13,7 +13,7 @@ class Quality_Control_Model extends Table_Model
 		'result' , 
 		'comments');
 
-	protected $default_column = 'proposer';
+	protected $primary_val = 'proposer';
 
 	protected $belongs_to = array(
 		'resources');

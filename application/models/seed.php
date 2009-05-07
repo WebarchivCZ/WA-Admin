@@ -15,7 +15,7 @@ class Seed_Model extends Table_Model
 		'valit_to' , 
 		'comments');
 
-	protected $default_column = 'url';
+	protected $primary_val = 'url';
 
 	protected $belongs_to = array(
 		'resources');

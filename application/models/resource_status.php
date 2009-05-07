@@ -13,7 +13,7 @@ class Resource_Status_Model extends Table_Model
 
 	protected $table_name = 'resource_status';
 	
-	protected $default_column = 'status';
+	protected $primary_val = 'status';
 
 	protected $has_many = array('resources');
 

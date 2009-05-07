@@ -1,9 +1,13 @@
 <?php
+/**
+ * TODO prokliky z jednotlivych radku na prohlizeni konkretnich zaznamu
+ */
 abstract class Table_Controller extends Template_Controller
 {
 	protected $table;
 	protected $title;
 	protected $model;
+	protected $view = 'table';
 	
 	public function __construct() {
 		$this->model = inflector::singular($this->table);
@@ -36,7 +40,7 @@ abstract class Table_Controller extends Template_Controller
 		
 		));
 		
-		$view = new View('table');
+		$view = new View($this->view);
 		$view->title = $this->title;
 		$view->headers = $model->headers;
 		$view->columns = $model->table_columns();
@@ -47,6 +51,16 @@ abstract class Table_Controller extends Template_Controller
 	}
 
 	public function view($id = FALSE)
+	{
+		$form = Formo::factory()->add_orm($this->model, $id);
+		// TODO vypisovani labelu
+		$view = new View('edit_table');
+		$view->form = $form->get();
+		$view->title = 'edit';
+		$this->template->content = $view;
+	}
+	
+	public function edit($id = FALSE)
 	{
 		$form = Formo::factory()->orm($this->model, $id);
 		// TODO vypisovani labelu

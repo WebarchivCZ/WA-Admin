@@ -18,7 +18,7 @@
 <table class="listing" cellpadding="0" cellspacing="0">
 	<tr>
 	<?php
-		array_push($headers, 'view', 'delete');
+		array_push($headers, 'delete');
 		echo display::display_headers($headers);
 	?>
 	</tr>
@@ -43,7 +43,7 @@
 			}
 			echo "<td>$value</td>\n";
 		}
-		echo "<td>Zobrazit</td><td>Smazat</td>";
+		echo "<td>Smazat</td>";
 		echo '</tr>';
 	}
 	?>

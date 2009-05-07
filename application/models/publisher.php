@@ -16,7 +16,7 @@ class Publisher_Model extends Table_Model
 		'name' , 
 		'comments');
 
-	protected $default_column = 'name';
+	protected $primary_val = 'name';
 
 	protected $has_many = array(
 		'contact' , 
@@ -26,6 +26,15 @@ class Publisher_Model extends Table_Model
 	{
 		parent::__construct($id);
 	}
+	
+	public function unique_key($id = NULL)
+	{
+		if ( ! empty($id) AND is_string($id) AND ! ctype_digit($id) )
+		{
+			return 'name';
+		}
+	return parent::unique_key($id);
+}
 	
 }
 

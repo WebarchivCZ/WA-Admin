@@ -11,7 +11,7 @@ class Role_Model extends Auth_Role_Model
 		'role' ,
 		'comments');
 
-	protected $default_column = 'role';
+	protected $primary_val = 'role';
 
 	protected $has_and_belongs_to_many = array('curators');
 

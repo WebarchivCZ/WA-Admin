@@ -22,6 +22,8 @@ $lang = array
 		'Correspondence' => 'Korespondence',
 		'Contacts' => 'Kontakty',
 		'Publishers' => 'Vydavatelé',
+		'edit' => 'Upravit',
+		'insert' => 'Vložit'
 		
 )
 ?>

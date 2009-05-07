@@ -1,4 +1,9 @@
 <?php
+/**
+ * TODO unikatni jmeno vydavatele
+ * TODO znovu nenacitat stranku pri vyberu jmena vydavatele
+ *
+ */
 class Suggest_Controller extends Template_Controller
 {
 
@@ -44,19 +49,21 @@ class Suggest_Controller extends Template_Controller
 				$conspectus = $form->conspectus->selected;
 				$suggested_by = $form->suggested_by->selected;
 				
-				$publisher = ORM::factory('publisher');
-				$publisher->name = $publisher_name;
-				$publisher->save();
+				$publisher = ORM::factory('publisher', $publisher_name);
+				if (! $publisher->loaded) {
+					$publisher->name = $publisher_name;
+					$publisher->save();
+				}
 				$resource = new Resource_Model();
 				$resource->title = $title;
 				$resource->url = $url;
 				$resource->publisher_id = $publisher->id;
 				$resource->conspectus_id = $conspectus;
 				$resource->curator_id = $curator;
-
 				$resource->suggested_by_id = $suggested_by;
+				$resource->resource_status_id = RS_NEW;
 				$resource->save();
-				url::redirect('resource/edit/'.$resource->id);
+				url::redirect('rate');
 			}
 		}
 		

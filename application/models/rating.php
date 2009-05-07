@@ -15,7 +15,7 @@ class Rating_Model extends Table_Model
 		'round' , 
 		'comments');
 
-	protected $default_column = 'rating';
+	protected $primary_val = 'rating';
 
 	protected $belongs_to = array(
 		'publisher' , 

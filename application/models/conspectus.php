@@ -13,7 +13,7 @@ class Conspectus_Model extends Table_Model
 	
 	protected $table_name = 'conspectus';
 
-	protected $default_column = 'category';
+	protected $primary_val = 'category';
 
 	protected $has_many = array(
 		'resources');

@@ -22,7 +22,7 @@ class Contact_Model extends Table_Model
 		'publisher'
 	);
 
-	protected $default_column = 'name';
+	protected $primary_val = 'name';
 
 	protected $belongs_to = array(
 		'publisher');

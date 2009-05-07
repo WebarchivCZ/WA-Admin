@@ -4,8 +4,6 @@ abstract class Table_Model extends ORM
 
 	public $headers;
 
-	protected $default_column;
-
 	public function table_columns ()
 	{
 		$columns = array();
@@ -23,17 +21,7 @@ abstract class Table_Model extends ORM
 
 	public function __toString ()
 	{
-		return $this->{$this->default_column};
-	}
-
-	public function get_default ()
-	{
-		return $default_column;
-	}
-
-	public function set_default ($value)
-	{
-		$default_column = $value;
+		return $this->{$this->primary_val};
 	}
 
 	public function is_related ($column)
@@ -46,7 +34,7 @@ abstract class Table_Model extends ORM
 	 */
 	public function find_insert ($default_value, $values = NULL)
 	{
-		$column = $this->default_column;
+		$column = $this->primary_val;
 		$model = ORM::factory($this->object_name)->where($column, $default_value)->find();
 		
 		if (empty($model->{$column})) {

@@ -20,6 +20,7 @@ $states = array('_blank_'=>'',
 /*=====================================================================================*/
 
 $config['defaults']['submit']	= array('class'=>'submit');
+$config['defaults']['button']	= array('class'=>'button');
 $config['defaults']['textarea']	= array('rows'=>8, 'style'=>'width: 300px');
 $config['defaults']['file']		= array('class'=>'file', 'style'=>'border:none');
 $config['defaults']['email']	= array('rule'=>array('email'));
@@ -28,7 +29,8 @@ $config['defaults']['fax']		= array('required'=>FALSE, 'rule'=>'phone');
 $config['defaults']['zip']		= array('rule'=>'numeric', 'size'=>5, 'maxlength'=>5);
 $config['defaults']['submit']	= array('type'=>'submit', 'class'=>'submit');
 $config['defaults']['state']	= array('type'=>'select', 'values'=>$states);
-$config['defaults']['all']	= array('open'=>'<tr><td>', 'close'=>'</td></tr>');
+
+//$config['plugins'] = array('orm');
 
 $config['label_filters'][] = 'ucwords';
 
@@ -36,8 +38,8 @@ $config['pre_filters']['username'][] = 'trim';
 $config['pre_filters']['email'][] = 'strtolower';
 $config['pre_filters']['ten'][] = 'trim';
 
-$config['auto_rules']['ten'][] = array('length[10]', 'This is not an element, yo');
-
 $config['globals']['class'] = 'input';
+
+$config['plugins'] = array('orm');
 
 // end formo config

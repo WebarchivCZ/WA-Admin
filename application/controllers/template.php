@@ -37,7 +37,10 @@ abstract class Template_Controller extends Controller
 	{		
 		$this->session = Session::instance();
 		parent::__construct();
-		
+
+		// load constants from config/constants.php file
+		Kohana::config_load('constants');
+	
 		// Load the template
 		$this->template = new View($this->template);
 		

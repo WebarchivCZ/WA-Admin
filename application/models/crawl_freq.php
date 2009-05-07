@@ -18,7 +18,7 @@ class Crawl_Freq_Model extends Table_Model
 
 	protected $table_name = 'crawl_freq';
 
-	protected $default_column = 'frequency';
+	protected $primary_val = 'frequency';
 
 	public function __construct ($id = NULL)
 	{

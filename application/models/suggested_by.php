@@ -13,7 +13,7 @@ class Suggested_By_Model extends Table_Model
 
 	protected $table_name = 'suggested_by';
 	
-	protected $default_column = 'proposer';
+	protected $primary_val = 'proposer';
 
 	protected $has_many = array(
 		'resources');

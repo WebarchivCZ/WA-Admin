@@ -7,9 +7,15 @@ defined('SYSPATH') or die('No direct script access.');
 class Resource_Model extends Table_Model
 {
 
-	protected $default_column = 'title';
+	protected $primary_val = 'title';
 
 	public $headers = array(
+		'title',
+		'url',
+		'publisher'
+	);
+	
+	/**public $headers = array(
 		'id' , 
 		'curator' , 
 		'contact' , 
@@ -30,6 +36,7 @@ class Resource_Model extends Table_Model
 		'crawl_freq' , 
 		'tech_problems' , 
 		'comments');
+*/
 
 	protected $belongs_to = array(
 		'contact' , 

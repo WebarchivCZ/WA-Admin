@@ -8,7 +8,7 @@ defined('SYSPATH') or die('No direct script access.');
 class Correspondence_Model extends Table_Model
 {
 
-	protected $default_column = 'result';
+	protected $primary_val = 'result';
 	
 	protected $table_name = 'correspondence';
 
