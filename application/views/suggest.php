@@ -119,7 +119,7 @@ if (isset($resource_id)) {
 					html::anchor($resource->url) .
 					'</td>'.
 					'<td>' .
-					html::anchor('#', 
+					html::anchor('#publisher',
 								$resource->publisher,
 								array('class'=>'publisherName')).
 					/*
