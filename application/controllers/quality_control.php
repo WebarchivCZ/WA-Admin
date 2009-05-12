@@ -10,7 +10,7 @@ class Quality_Control_Controller extends Template_Controller {
 	
 	public function edit($id = NULL) {
 		$view = new View('quality_control_form');
-		
+                
 		/*$form = new Forge();
 		$form->radiolist('quality')->options(array('co', 'neco'));
 		$view->form = $form;*/

@@ -13,7 +13,7 @@
 if (isset($resource_id)) {
 	$resource = ORM::factory('resource', $resource_id);
 	$ratings_array = Kohana::config('wadmin.ratings_result');
-	echo '<h2>Zdroj byl uspesne vlozen</h2>';
+	echo '<h2>Zdroj byl úspěšně vložen</h2>';
 	?>
 
 <table border="1 ">

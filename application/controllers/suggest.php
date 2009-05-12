@@ -1,7 +1,4 @@
 <?php
-/**
- *
- */
 class Suggest_Controller extends Template_Controller
 {
 
@@ -42,6 +39,7 @@ class Suggest_Controller extends Template_Controller
             }
             if (isset($_POST['insert_button']))
             {
+                // TODO automaticke nastaveni kuratora
                 $form->curator->selected($_POST['curator']);
                 $form->conspectus->selected($_POST['conspectus']);
                 $form->suggested_by->selected($_POST['suggested_by']);
