@@ -1,4 +1,5 @@
 <?php
+//TODO refaktorovat duplicitni kod (zobrazovani tabulky pro zdroje nove/k prehodnoceni)
 $rating_result_array = Kohana::config('wadmin.ratings_result');
 $rating_values_array = Kohana::config('wadmin.rating_values');
 ?>
@@ -16,7 +17,7 @@ $rating_values_array = Kohana::config('wadmin.rating_values');
 <?php
 if (isset($resources_new) AND $resources_new)
 {
-    echo form::open(url::base(FALSE).url::current().'/save');
+    echo form::open(url::base(FALSE).url::current().'/save/'.RS_NEW, array('id'=>'form_resources_new', 'name'=>'form_resources_new'));
     ?>
 
 <h2>Zdroje k hodnocení</h2>
@@ -65,7 +66,7 @@ if (isset($resources_new) AND $resources_new)
     }
     if (isset($resources_reevaluate) AND $resources_reevaluate)
     {
-        echo form::open(url::base(FALSE).url::current().'/save');
+        echo form::open(url::base(FALSE).url::current().'/save/'.RS_RE_EVALUATE, array('id'=>'form_resources_re', 'name'=>'form_resources_re'));
         ?>
 
     <h2>Zdroje k přehodnocení</h2>
