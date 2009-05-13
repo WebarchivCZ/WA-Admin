@@ -14,7 +14,7 @@ $rating_values_array = Kohana::config('wadmin.rating_values');
 </div>
 
 <?php
-if (isset($resources_new))
+if (isset($resources_new) AND $resources_new)
 {
     echo form::open(url::base(FALSE).url::current().'/save');
     ?>
@@ -55,7 +55,7 @@ if (isset($resources_new))
             <?php } ?>
 
     </table>
-
+</div>
     <p class="center">
             <?=form::submit('submit', 'Uložit hodnocení') ?>
             <?=form::close() ?>
@@ -63,7 +63,7 @@ if (isset($resources_new))
 
     <?php
     }
-    if (isset($resources_reevaluate))
+    if (isset($resources_reevaluate) AND $resources_reevaluate)
     {
         echo form::open(url::base(FALSE).url::current().'/save');
         ?>
@@ -107,5 +107,5 @@ if (isset($resources_new))
             <?=form::submit('submit', 'Uložit hodnocení') ?>
             <?=form::close() ?>
     </p>
+
     <?php } ?>
-</div>

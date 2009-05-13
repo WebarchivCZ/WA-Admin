@@ -1,59 +1,18 @@
 <?php
-/**
- * TODO radit zdroje podle data, vzestupne
- * TODO refaktorovat duplicitni kod
- */
 class Rate_Controller extends Template_Controller {
 
     protected $title = 'Hodnocení zdrojů';
     
     public function index() {
         $view =	new View('rate');
-
         $db = Database::instance();
-        $resource_status = RS_NEW;
-        $sql_query = 'SELECT r.id
-                    FROM `resources` r
-                    WHERE r.id NOT IN (
 
-                    SELECT r.id
-                    FROM resources r, curators c, ratings g
-                    WHERE r.id = g.resource_id
-                    AND c.id = g.curator_id
-                    AND c.id = '.$this->user->id."
-                    )
-
-                    AND r.resource_status_id = {$resource_status}";
-        $query = $db->query($sql_query);
-        //FIXME pokud je vysledek $query prazdny, nefunguje ORM::factory
-        $id_array = array();
-        foreach($query->result_array(FALSE) as $row) {
-            array_push($id_array, $row['id']);
-        }
-        $resources_new = ORM::factory('resource')->in('id', $id_array)->find_all();
-        unset($query, $id_array);
+        $id_array = $this->find_resources(RS_NEW);
+        $resources_new = ($id_array != FALSE) ? ORM::factory('resource')->in('id', $id_array)->find_all() : FALSE;
         
-        $resource_status = RS_RE_EVALUATE;
-        $sql_query = 'SELECT r.id
-                    FROM `resources` r
-                    WHERE r.id NOT IN (
-
-                    SELECT r.id
-                    FROM resources r, curators c, ratings g
-                    WHERE r.id = g.resource_id
-                    AND c.id = g.curator_id
-                    AND c.id = '.$this->user->id."
-                    )
-
-                    AND r.resource_status_id = {$resource_status}";
-        $query = $db->query($sql_query);
-
-        $id_array = array();
-        foreach($query->result_array(FALSE) as $row) {
-            array_push($id_array, $row['id']);
-        }
-        $resources_reevaluate = ORM::factory('resource')->in('id', $id_array)->find_all();
-
+        $id_array = $this->find_resources(RS_RE_EVALUATE);
+        $resources_reevaluate = ($id_array != FALSE) ? ORM::factory('resource')->in('id', $id_array)->find_all() : FALSE;
+        
         $view->resources_new = $resources_new;
         $view->resources_reevaluate = $resources_reevaluate;
         $view->ratings = NULL;
@@ -61,6 +20,8 @@ class Rate_Controller extends Template_Controller {
     }
 
     public function save() {
+
+        //FIXME ulozi se vzdy vsechny hodnoceni, i kdyz nebyly vyplnene
 
         $curator = $this->user;
 
@@ -90,6 +51,33 @@ class Rate_Controller extends Template_Controller {
         }
         $view = new View('rating_save');
         $this->template->content = $view;
+        url::redirect('rate');
+    }
+
+    private function find_resources($resource_status = RS_NEW) {
+        $db = Database::instance();
+        
+        $sql_query = 'SELECT r.id
+                    FROM `resources` r
+                    WHERE r.id NOT IN (
+
+                    SELECT r.id
+                    FROM resources r, curators c, ratings g
+                    WHERE r.id = g.resource_id
+                    AND c.id = g.curator_id
+                    AND c.id = '.$this->user->id."
+                    )
+
+                    AND r.resource_status_id = {$resource_status}
+                    ORDER BY date ASC";
+        $query = $db->query($sql_query);
+        
+        $id_array = array();
+        foreach($query->result_array(FALSE) as $row) {
+            array_push($id_array, $row['id']);
+        }
+        $result = count($id_array) != 0? $id_array : FALSE;
+        return $result;
     }
 }
 ?>
