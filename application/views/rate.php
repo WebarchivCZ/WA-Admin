@@ -1,7 +1,8 @@
 <?php
-//TODO refaktorovat duplicitni kod (zobrazovani tabulky pro zdroje nove/k prehodnoceni)
+//DONE refaktorovat duplicitni kod (zobrazovani tabulky pro zdroje nove/k prehodnoceni)
 $rating_result_array = Kohana::config('wadmin.ratings_result');
 $rating_values_array = Kohana::config('wadmin.rating_values');
+
 ?>
 <div class="top-bar">
     <h1>Hodnocení zdrojů</h1>
@@ -15,98 +16,41 @@ $rating_values_array = Kohana::config('wadmin.rating_values');
 </div>
 
 <?php
+if(isset($message))
+{
+    echo "<h2>{$message}</h2>";
+}
+?>
+
+<?php
 if (isset($resources_new) AND $resources_new)
 {
-    echo form::open(url::base(FALSE).url::current().'/save/'.RS_NEW, array('id'=>'form_resources_new', 'name'=>'form_resources_new'));
-    ?>
 
-<h2>Zdroje k hodnocení</h2>
+    $view = View::factory('tables/ratings');
+    $view->title = 'Zdroje k hodnocení';
+    $view->status = RS_NEW;
+    $view->form_name = 'form_resources_new';
+    $view->resources = $resources_new;
+    $view->rating_values_array = $rating_values_array;
+    $view->ratings = $ratings;
+    $view->render(TRUE);
 
-<div class="table">
-        <?=html::image(array('src' => 'media/img/bg-th-left.gif' , 'width' => '8' , 'height' => '7' , 'class' => 'left'))?>
-        <?=html::image(array('src' => 'media/img/bg-th-right.gif' , 'width' => '7' , 'height' => '7' , 'class' => 'right'))?>
+}
+if (isset($resources_reevaluate) AND $resources_reevaluate)
+{
+    $view = View::factory('tables/ratings');
+    $view->title = 'Zdroje k přehodnocení';
+    $view->status = RS_RE_EVALUATE;
+    $view->form_name = 'form_resources_reevaluate';
+    $view->resources = $resources_reevaluate;
+    $view->rating_values_array = $rating_values_array;
+    $view->ratings = $ratings;
+    $view->render(TRUE);
 
-    <table class="listing" cellpadding="0" cellspacing="0">
-        <tr>
-            <th class="first">Název</th>
-            <th>URL</th>
-            <th>Kurátor</th>
-            <th>Konspekt</th>
-            <th>Hodnocení</th>
-            <th>Podobné</th>
-            <th class="last">Hod. ostatních</th>
-        </tr>
-            <?php foreach ($resources_new as $resource)
-            { ?>
-        <tr>
-            <td class="first"><?=$resource->title ?></td>
-            <td><a href="<?=$resource->url ?>"><?=$resource->url ?></a></td>
-            <td><?=$resource->curator->username ?></td>
-            <td><?=$resource->conspectus->category ?></td>
-            <td>
-                        <?= form::dropdown("rating[$resource->id]", $rating_values_array, $ratings[$resource->id]); ?>
-            </td>
-            <td class="center">
-                        <?=html::image(array('src' => 'media/img/icons/find.png' , 'width' => '16' , 'height' => '16'))?>
-            </td>
-            <td class="center">
-                        <?=html::image(array('src' => 'media/img/icons/find.png' , 'width' => '16' , 'height' => '16'))?>
-            </td>
-        </tr>
-            <?php } ?>
-
-    </table>
-</div>
-    <p class="center">
-            <?=form::submit('submit', 'Uložit hodnocení') ?>
-            <?=form::close() ?>
-    </p>
-
-    <?php
+} 
+if (isset($rated_resources_new) AND $rated_resources_new)
+{
+    foreach($rated_resources_new as $resource) {
+        echo $resource->compute_rating(1) . ' -- ' . $resource->title . '<br/>';
     }
-    if (isset($resources_reevaluate) AND $resources_reevaluate)
-    {
-        echo form::open(url::base(FALSE).url::current().'/save/'.RS_RE_EVALUATE, array('id'=>'form_resources_re', 'name'=>'form_resources_re'));
-        ?>
-
-    <h2>Zdroje k přehodnocení</h2>
-
-    <div class="table">
-            <?=html::image(array('src' => 'media/img/bg-th-left.gif' , 'width' => '8' , 'height' => '7' , 'class' => 'left'))?>
-            <?=html::image(array('src' => 'media/img/bg-th-right.gif' , 'width' => '7' , 'height' => '7' , 'class' => 'right'))?>
-        <table class="listing" cellpadding="0" cellspacing="0">
-            <tr>
-                <th class="first">Název</th>
-                <th>URL</th>
-                <th>Kurátor</th>
-                <th>Konspekt</th>
-                <th>Hodnocení</th>
-                <th>Podobné</th>
-                <th class="last">Hod. ostatních</th>
-            </tr>
-                <?php foreach ($resources_reevaluate as $resource)
-                { ?>
-            <tr>
-                <td class="first"><?=$resource->title ?></td>
-                <td><a href="<?=$resource->url ?>"><?=$resource->url ?></a></td>
-                <td><?=$resource->curator->username ?></td>
-                <td><?=$resource->conspectus->category ?></td>
-                <td>
-                            <?= form::dropdown("rating[$resource->id]", $rating_values_array, $ratings[$resource->id]); ?>
-                </td>
-                <td class="center">
-                            <?=html::image(array('src' => 'media/img/icons/find.png' , 'width' => '16' , 'height' => '16'))?>
-                </td>
-                <td class="center">
-                            <?=html::image(array('src' => 'media/img/icons/find.png' , 'width' => '16' , 'height' => '16'))?>
-                </td>
-            </tr>
-                <?php } ?>
-        </table>
-    </div>
-    <p class="center">
-            <?=form::submit('submit', 'Uložit hodnocení') ?>
-            <?=form::close() ?>
-    </p>
-
-    <?php } ?>
+}

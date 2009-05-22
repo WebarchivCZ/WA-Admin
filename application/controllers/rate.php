@@ -1,4 +1,5 @@
 <?php
+// TODO zobrazovat hodnoceni jiz ohodnocenych zdroju (vsemi aktivnimi uzivateli)
 class Rate_Controller extends Template_Controller
 {
 
@@ -7,7 +8,6 @@ class Rate_Controller extends Template_Controller
     public function index()
     {
         $view =	new View('rate');
-        $db = Database::instance();
 
         $id_array = $this->find_resources(RS_NEW);
         $resources_new = ($id_array != FALSE) ? ORM::factory('resource')->in('id', $id_array)->find_all() : FALSE;
@@ -15,8 +15,17 @@ class Rate_Controller extends Template_Controller
         $id_array = $this->find_resources(RS_RE_EVALUATE);
         $resources_reevaluate = ($id_array != FALSE) ? ORM::factory('resource')->in('id', $id_array)->find_all() : FALSE;
 
+        $id_array = $this->find_resources(RS_NEW, true);
+        $resources_rated_new = ($id_array != FALSE) ? ORM::factory('resource')->in('id', $id_array)->find_all() : FALSE;
+
+        $id_array = $this->find_resources(RS_RE_EVALUATE, true);
+        $resources_rated_reevaluate = ($id_array != FALSE) ? ORM::factory('resource')->in('id', $id_array)->find_all() : FALSE;
+
         $view->resources_new = $resources_new;
         $view->resources_reevaluate = $resources_reevaluate;
+
+        $view->rated_resources_new = $resources_rated_new;
+        $view->rated_resources_reevaluate = $resources_rated_reevaluate;
         $view->ratings = NULL;
         $this->template->content = $view;
     }
@@ -24,6 +33,11 @@ class Rate_Controller extends Template_Controller
     public function save($status)
     {
 
+        // TODO neukladat hodnoceni znovu, pokud bylo zmacknuto f5 - redirect
+        // TODO message ukladat do session
+
+        $view = new View('rate');
+        
         $ratings = $this->input->post('rating');
 
         foreach ($ratings as $resource_id => $rating)
@@ -56,34 +70,45 @@ class Rate_Controller extends Template_Controller
                 $o_rating->save();
                 if ($o_rating->saved)
                 {
-                //TODO zobrazovat informace
-                    $message = "Hodnocení bylo uloženo";
+                    $view->message = "Hodnocení bylo úspěšně uloženo";
                 }
             }
         }
-
-        $view = new View('rate');
         $this->template->content = $view;
     }
 
-    private function find_resources($resource_status = RS_NEW)
+    private function find_resources($resource_status = RS_NEW, $only_rated = FALSE)
     {
         $db = Database::instance();
         $round = ($resource_status == RS_NEW) ? 1: 2;
-        $sql_query = "SELECT r.id
-                    FROM `resources` r
-                    WHERE r.id NOT IN
-                    (
-                        SELECT r.id
-                        FROM resources r, curators c, ratings g
-                        WHERE r.id = g.resource_id
-                        AND c.id = g.curator_id
-                        AND c.id = {$this->user->id}
-                        AND g.round = {$round}
-                    )
-
-                    AND r.resource_status_id = {$resource_status}
-                    ORDER BY date ASC";
+        if ($only_rated == TRUE) {
+            $sql_query = "SELECT g.resource_id AS id
+                            FROM ratings g, curators c, resources r
+                            WHERE r.curator_id = {$this->user->id}
+                            AND g.resource_id = r.id
+                            AND g.curator_id = c.id
+                            GROUP BY g.resource_id
+                            HAVING count( * ) >= (
+                            SELECT count( id )
+                            FROM curators
+                            WHERE active =1 )
+                        ORDER BY g.date ASC
+                        ";
+        } else {
+            $sql_query = "SELECT r.id
+                        FROM `resources` r
+                        WHERE r.resource_status_id = {$resource_status}
+                        AND r.id NOT IN
+                        (
+                            SELECT r.id
+                            FROM resources r, curators c, ratings g
+                            WHERE r.id = g.resource_id
+                            AND c.id = g.curator_id
+                            AND c.id = {$this->user->id}
+                            AND g.round = {$round}
+                        )
+                        ORDER BY date ASC";
+        }
         $query = $db->query($sql_query);
 
         $id_array = array();

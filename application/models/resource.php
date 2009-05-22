@@ -108,7 +108,11 @@ class Resource_Model extends Table_Model
 			throw new InvalidArgumentException();
 		}
 	}
-	
+
+        public function compute_rating($round = 1) {
+            $ratings = ORM::factory('rating')->where(array('resource_id'=> $this->id))->find_all();
+            return $ratings->count();
+        }
 	
 }
 ?>
