@@ -5,7 +5,7 @@ body {
 	background:#BBD9EE;
   	color:#000;
 	font-family:tahoma,arial,sans-serif;
-	font-size:11px;
+	font-size: 13px;
 	}
 form {
 	margin:0;
@@ -46,7 +46,7 @@ input.text {
 	}
 /* main container */
 #main {
-	width:992px;
+	width:1020px;
 	margin:0 auto;
 	}
 /* header */

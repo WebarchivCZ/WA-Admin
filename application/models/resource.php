@@ -15,29 +15,6 @@ class Resource_Model extends Table_Model
 		'publisher'
 	);
 	
-	/**public $headers = array(
-		'id' , 
-		'curator' , 
-		'contact' , 
-		'publisher' , 
-		'contract' , 
-		'title' , 
-		'url' , 
-		'rating_result' , 
-		'suggested_by' , 
-		'date' , 
-		'aleph_id' , 
-		'ISSN' , 
-		'conspectus' , 
-		'resource_status' , 
-		'creative_commons' , 
-		'metadata' , 
-		'catalogued' , 
-		'crawl_freq' , 
-		'tech_problems' , 
-		'comments');
-*/
-
 	protected $belongs_to = array(
 		'contact' , 
 		'curator' , 
@@ -110,8 +87,24 @@ class Resource_Model extends Table_Model
 	}
 
         public function compute_rating($round = 1) {
+            $ratings_result = Kohana::config('wadmin.ratings_result');
             $ratings = ORM::factory('rating')->where(array('resource_id'=> $this->id))->find_all();
-            return $ratings->count();
+            $result = 0;
+            foreach ($ratings as $rating) {
+                $rating = $rating->rating;
+                if ($rating == 4) {
+                    return $rating;
+                }
+                $result += $rating;
+            }
+            $result = $result / $ratings->count();
+            if ($result < 0.5) {
+                return 1;
+            } elseif ($result >= 0.5 AND $rating < 1) {
+                return 3;
+            } else {
+                return 2;
+            }
         }
 	
 }

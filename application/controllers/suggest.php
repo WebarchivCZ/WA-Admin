@@ -24,7 +24,7 @@ class Suggest_Controller extends Template_Controller
             $title = $form->title->value;
             $url = $form->url->value;
 
-            $curators = ORM::factory('curator')->select_list('id', 'username');
+            $curators = ORM::factory('curator')->where('active', 1)->select_list('id', 'username');
             $conspectus = ORM::factory('conspectus')->select_list('id', 'category');
             $suggested_by = ORM::factory('suggested_by')->select_list('id', 'proposer');
 
