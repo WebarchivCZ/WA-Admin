@@ -75,7 +75,9 @@ class Rate_Controller extends Template_Controller
 
     public function save_final()
     {
+        // TODO ukladani finalnich hodnoceni musi probihat v davkach (v soucasnosti se uklada po jednom zdroji)
         $ratings = $this->input->post('rating');
+        
         foreach ($ratings as $id => $rating)
         {
             $resource = ORM::factory('resource', $id);

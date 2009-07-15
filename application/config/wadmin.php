@@ -22,4 +22,7 @@ $config = array(
 		'0'  => 'možná' , 
 		'1'  => 'spíše ano' , 
 		'2'  => 'ano' , 
-		'4'  => 'technické ne'))?>
+		'4'  => 'technické ne') ,
+
+        'date_format' => 'Y-m-d H:i:s');
+?>

@@ -1,13 +1,3 @@
-<div class="top-bar">
-	<h1>Kontrola kvality</h1>
-</div>
-<br />
-<div class="select-bar">
-	<form action="<?= url::base().url::current() ?>/search/">
-		<label> <input type="text" name="search_string" /> </label>
-		<label> <input type="submit" name="Submit" value="<?= Kohana::lang('tables.search');?>" /> </label>
-	</form>
-</div>
 <div class="table">
 <?=html::image(array('src' => 'media/img/bg-th-left.gif' , 'width' => '8' , 'height' => '7' , 'class' => 'left'))?>
 <?=html::image(array('src' => 'media/img/bg-th-right.gif' , 'width' => '7' , 'height' => '7' , 'class' => 'right'))?>

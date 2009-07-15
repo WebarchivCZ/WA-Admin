@@ -34,17 +34,16 @@ class Resource_Model extends Table_Model
 	public function __construct ($id = NULL)
 	{
 		parent::__construct($id);
-		//TODO format presunout do configu
-		$format = 'Y-m-d H:m:s';
-		$this->date = date($format);
+		// DONE format presunout do configu
+		$date_format = Kohana::config('wadmin.date_format');
+		$this->date = date($date_format);
 	}
 	
 	public function __set ($key, $value) {
-				//TODO format presunout do configu
-		
+		// DONE format presunout do configu
 		if (($key === 'metadata' OR $key === 'catalogued') AND $value == TRUE) {
-			$format = 'Y-m-d H:m:s';
-			$value = date($format);
+			$date_format = Kohana::config('wadmin.date_format');
+			$value = date($date_format);
 		}
 		parent::__set($key, $value);
 	}
@@ -87,7 +86,7 @@ class Resource_Model extends Table_Model
 	}
 
         /**
-         * Funkce vraci pole korespondenci, ktere jsou vedeny k danemu zdroji
+         * Funkce vraci korespondenci daneho typu, ktera je vedena k danemu zdroji
          */
         public function get_correspondence ($type) {
             $correspondence = ORM::factory('correspondence')

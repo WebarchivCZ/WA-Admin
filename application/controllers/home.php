@@ -1,7 +1,8 @@
 <?php
 class Home_Controller extends Template_Controller {
 	protected $title = 'Home';
-	
+	protected $page_title = 'Dashboard';
+        
 	public function index() {		
 		$content = new View('home');
 		$dash_view = new View('dashboard');

@@ -1,7 +1,7 @@
 <?php
 class Quality_Control_Controller extends Template_Controller {
 	
-	protected $title = 'Hodnocení zdrojů';
+	protected $title = 'Kontrola kvality';
 	
 	public function index() {
 		$view =	new View('quality_control');

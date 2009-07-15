@@ -7,6 +7,7 @@
 class Catalogue_Controller extends Template_Controller {
 	
 	protected $title = 'Katalogizace';
+        protected $page_header = 'Zdroje ke katalogizaci';
 	
 	public function index() {
 		$view = new View('catalogue');

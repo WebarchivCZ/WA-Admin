@@ -1,5 +1,5 @@
 <?php
-//TODO doplnit konstanty do tabulky resource_status
+//DONE doplnit konstanty do tabulky resource_status
 define('RS_NEW', 1);
 define('RS_APPROVED_WA', 2);
 define('RS_RE_EVALUATE', 3);
