@@ -1,7 +1,7 @@
 <?php
 defined('SYSPATH') or die('No direct script access.');
 /**
- * Model representing Contacts
+ * Model
  */
 class Suggested_By_Model extends Table_Model
 {

@@ -1,7 +1,7 @@
 <?php
 defined('SYSPATH') or die('No direct script access.');
 /**
- * Model representing Contacts
+ * Model representing status of a seed
  */
 class Seed_Status_Model extends Table_Model
 {

@@ -1,6 +1,7 @@
 <?php
 /**
  * TODO zobrazovat jen zdroje, ktere spravuje kurator a ktere nebyly katalogizovany AND zapsany metadata
+ * TODO proklik na editace zdroje
  *
  */
 class Catalogue_Controller extends Template_Controller {

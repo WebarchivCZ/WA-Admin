@@ -35,7 +35,7 @@ class Resource_Model extends Table_Model
 	{
 		parent::__construct($id);
 		//TODO format presunout do configu
-		$format = 'Y-m-d h:m:s';
+		$format = 'Y-m-d H:m:s';
 		$this->date = date($format);
 	}
 	
@@ -43,7 +43,7 @@ class Resource_Model extends Table_Model
 				//TODO format presunout do configu
 		
 		if (($key === 'metadata' OR $key === 'catalogued') AND $value == TRUE) {
-			$format = 'Y-m-d h:m:s';
+			$format = 'Y-m-d H:m:s';
 			$value = date($format);
 		}
 		parent::__set($key, $value);
@@ -86,8 +86,19 @@ class Resource_Model extends Table_Model
 		}
 	}
 
+        /**
+         * Funkce vraci pole korespondenci, ktere jsou vedeny k danemu zdroji
+         */
+        public function get_correspondence ($type) {
+            $correspondence = ORM::factory('correspondence')
+                                    ->where(array('resource_id' => $this->id, 'correspondence_type_id' => $type))
+                                    ->find();
+            return $correspondence;
+        }
+
         public function compute_rating($round = 1) {
             $ratings_result = Kohana::config('wadmin.ratings_result');
+            // FIXME zjistit hodnoceni daneho kola
             $ratings = ORM::factory('rating')->where(array('resource_id'=> $this->id))->find_all();
             $result = 0;
             foreach ($ratings as $rating) {

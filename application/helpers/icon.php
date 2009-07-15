@@ -12,9 +12,10 @@ class icon
 	
 	private static $height = '16';
 	
-	static function img($icon = NULL) {
+	static function img($icon = NULL, $text = 'icon') {
 		$src = self::$default_path . $icon . '.' . self::$extension;
-		return html::image(array('src' => $src , 'width' => self::$width , 'height' => self::$height));
+		return html::image(array('src' => $src , 'width' => self::$width , 'height' => self::$height,
+                                         'alt' => $text, 'title' => $text));
 	}
 }
 ?>

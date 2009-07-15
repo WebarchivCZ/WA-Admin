@@ -1,53 +1,64 @@
 <div class="top-bar">
-	<h1>Oslovení vydavatelů</h1>
+    <h1>Oslovení vydavatelů</h1>
 </div>
 <br />
 <div class="select-bar">
-	<form action="<?= url::base().url::current() ?>/search/">
-		<label> <input type="text" name="search_string" /> </label>
-		<label> <input type="submit" name="Submit" value="<?= Kohana::lang('tables.search');?>" /> </label>
-	</form>
+    <form action="<?= url::base().url::current() ?>/search/">
+        <label> <input type="text" name="search_string" /> </label>
+        <label> <input type="submit" name="Submit" value="<?= Kohana::lang('tables.search');?>" /> </label>
+    </form>
 </div>
 <div class="table">
-<?=html::image(array('src' => 'media/img/bg-th-left.gif' , 'width' => '8' , 'height' => '7' , 'class' => 'left'))?>
-<?=html::image(array('src' => 'media/img/bg-th-right.gif' , 'width' => '7' , 'height' => '7' , 'class' => 'right'))?>
+    <?=html::image(array('src' => 'media/img/bg-th-left.gif' , 'width' => '8' , 'height' => '7' , 'class' => 'left'))?>
+    <?=html::image(array('src' => 'media/img/bg-th-right.gif' , 'width' => '7' , 'height' => '7' , 'class' => 'right'))?>
 
-<table class="listing" cellpadding="0" cellspacing="0">
-	<tr>
-		<th class="first">Název</th>
-		<th>URL</th>
-		<th>1. oslovení</th>
-		<th>2. oslovení</th>
-		<th>3. oslovení</th>
-		<th class="last">Stav</th>
-	</tr>
-	<?php
+    <table class="listing" cellpadding="0" cellspacing="0">
+        <tr>
+            <th class="first">Název</th>
+            <th>URL</th>
+            <th>1. oslovení</th>
+            <th>2. oslovení</th>
+            <th>3. oslovení</th>
+            <th class="last">Stav</th>
+        </tr>
+        <?php
 
-	foreach($resources as $resource) { 
-		$correspondence = ORM::factory('correspondence')->where('resource_id', $resource->id)->find_all(); 
-		//$this->debug($correspondence);
-		?>
-	
-		<tr>
-		<td class="first"><?=html::anchor('tables/resources/view/'.$resource->id, $resource->title) ?></td>
-		<td><a href="<?=$resource->url ?>"><?=$resource->url ?></a></td>
-		<td class="center">
-		<?php if($correspondence) {} ?>
-			<?=icon::img('tick')?>
-		</td>
-		<td class="center">
-			<?=icon::img('email_open')?>
-		</td>
-		<td class="center">
-			<?=icon::img('email')?>
-		</td>
-		<td class="center">
-			V jednání
-		</td>
-	</tr>	
-	<? } ?>
-</table>
-<p class="center">
-<button>Zobrazit všechny neoslovené zdroje</button>
-</p>
+        foreach($resources as $resource)
+        {
+            ?>
+
+        <tr>
+            <td class="first"><?=html::anchor('tables/resources/view/'.$resource->id, $resource->title) ?></td>
+            <td><a href="<?=$resource->url ?>"><?=$resource->url ?></a></td>
+
+                <?php
+                $new_email = true;
+                for($i = 1; $i<=3; $i++)
+                {
+                    $correspondence = $resource->get_correspondence($i);
+                    echo '<td class="center">';
+                    if ($correspondence->id != 0)
+                    {
+                        echo icon::img('tick', 'Oslovení odesláno: '.$correspondence->date);
+                    } elseif ($new_email == true)
+                    {
+                        $url = 'addressing/send/'.$resource->id.'/'.$i;
+                        echo html::anchor(url::site().$url, icon::img('email_open', 'Odeslat oslovení'));
+                        $new_email = false;
+                    } else
+                    {
+                        echo icon::img('email', 'Toto oslovení nelze odeslat');
+                    }
+                    echo '</td>';
+                }
+?>
+            <td class="center">
+		<?= $resource->resource_status ?>
+            </td>
+        </tr>
+<? } ?>
+    </table>
+    <p class="center">
+        <button>Zobrazit všechny neoslovené zdroje</button>
+    </p>
 </div>
