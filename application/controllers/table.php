@@ -53,7 +53,7 @@ abstract class Table_Controller extends Template_Controller
 
     public function view($id = FALSE)
     {
-        $form = Formo::factory()->add_orm($this->model, $id);
+        $form = Formo::factory()->orm($this->model, $id);
         // TODO vypisovani labelu
         $view = new View('edit_table');
         $view->form = $form->get();

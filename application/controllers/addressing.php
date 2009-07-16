@@ -2,7 +2,6 @@
 /**
  * TODO oslovene zdroje se objevi az po mesici, kdy byly naposledy osloveny
  * TODO seradit zdroje podle poctu osloveni a pak podle data (nejdrive neoslovene)
- * DONE send() - zaslat korespondenci - vytvorit objekt correspospondence a ulozit do db
  */
 
 class Addressing_Controller extends Template_Controller {
@@ -27,7 +26,6 @@ class Addressing_Controller extends Template_Controller {
         $correspondence = ORM::factory('correspondence');
         $correspondence->resource_id = $resource_id;
         $correspondence->correspondence_type_id = $correspondence_type_id;
-        // DONE format presunout do configu
         $date_format = Kohana::config('wadmin.date_format');
         $correspondence->date = date($date_format);
         $correspondence->save();

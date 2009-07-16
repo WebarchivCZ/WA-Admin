@@ -38,4 +38,6 @@ $config['pre_filters']['email'][] = 'strtolower';
 
 $config['globals']['class'] = 'input';
 
+$config['plugins'] = array('orm');
+
 // end formo config

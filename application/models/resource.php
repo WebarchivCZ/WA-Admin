@@ -34,13 +34,11 @@ class Resource_Model extends Table_Model
 	public function __construct ($id = NULL)
 	{
 		parent::__construct($id);
-		// DONE format presunout do configu
 		$date_format = Kohana::config('wadmin.date_format');
 		$this->date = date($date_format);
 	}
 	
 	public function __set ($key, $value) {
-		// DONE format presunout do configu
 		if (($key === 'metadata' OR $key === 'catalogued') AND $value == TRUE) {
 			$date_format = Kohana::config('wadmin.date_format');
 			$value = date($date_format);

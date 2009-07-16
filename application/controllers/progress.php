@@ -1,7 +1,6 @@
 <?php
 /**
  * TODO priradit smlouvu ala stary wadmin + creative commons
- * DONE odstranit ikony editace zdroju, vymenit za prokliky
  *
  */
 class Progress_Controller extends Template_Controller
@@ -26,8 +25,14 @@ class Progress_Controller extends Template_Controller
      * Zobrazí formulář pro přiřazení nové smlouvy ke zdroji s daným ID.
      * @param int $id
      */
-    public function new_contract($id) {
-        
+    public function new_contract($resource_id) {
+        $view = View::factory('new_contract');
+        $view->resource = ORM::factory('resource', $resource_id);
+        $form = Formo::factory('add_contract');
+        $form->add('contract_no')->label('Číslo smlouvy')->value('doplnit generovane cislo');
+        $form->add('checkbox', 'cc')->label('Creative Commons');
+        $view->form = $form;
+        $this->template->content = $view;
     }
 
     public function reject($reason, $id) {
