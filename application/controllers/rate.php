@@ -6,8 +6,6 @@ class Rate_Controller extends Template_Controller
 
     public function index()
     {
-
-
         $view =	new View('rate');
 
         $id_array = $this->find_resources(RS_NEW);
@@ -75,9 +73,9 @@ class Rate_Controller extends Template_Controller
 
     public function save_final()
     {
-        // DONE ukladani finalnich hodnoceni musi probihat v davkach (v soucasnosti se uklada po jednom zdroji)
+    // DONE ukladani finalnich hodnoceni musi probihat v davkach (v soucasnosti se uklada po jednom zdroji)
         $ratings = $this->input->post('rating');
-        
+
         foreach ($ratings as $id => $rating)
         {
             $resource = ORM::factory('resource', $id);

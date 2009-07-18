@@ -13,8 +13,7 @@ class Publisher_Model extends Table_Model
 
 	public $headers = array(
 		'id' , 
-		'name' , 
-		'comments');
+		'name');
 
 	protected $primary_val = 'name';
 

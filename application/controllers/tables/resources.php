@@ -1,7 +1,6 @@
 <?php
 class Resources_Controller extends Table_Controller {
-	protected $table = 'resource';
+	protected $table = 'resources';
 	protected $title = 'Resources';
-        protected $model = 'resource';
 }
 ?>

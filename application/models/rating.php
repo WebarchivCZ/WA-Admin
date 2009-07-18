@@ -8,18 +8,18 @@ class Rating_Model extends Table_Model
 
 	public $headers = array(
 		'id' , 
-		'curator' , 
+		'curator' ,
 		'resource' , 
 		'rating' , 
 		'date' , 
-		'round' , 
-		'comments');
+		'round' );
 
 	protected $primary_val = 'rating';
 
 	protected $belongs_to = array(
 		'publisher' , 
-		'resource');
+		'resource',
+                'curator');
 
 	public function __construct ($id = NULL)
 	{

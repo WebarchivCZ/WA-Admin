@@ -23,28 +23,20 @@ class Dashboard_Model extends Model
 	public $to_address;
 	public $no_response;
 	
-	
-	/**
-	 * Method returning new instance of Dashboard model.
-	 */
-	public static function factory()
-	{
-		return new Dashboard_Model();
-	}
-	
-	public function __construct() {
-		$this->fill_dashboard();
-	}
-	
-	private function fill_dashboard() {
-		$res = new Resource_Model();
-		
-		$this->to_rate = 5;
-		$this->new_rated = 4;
-		$this->re_rate = 3;
-		$this->to_catalogue = 2;
-		$this->to_address = 1;
-		$this->no_response = 0;
+	public function fill_dashboard($user) {
+		$this->to_rate = -1;
+		$this->new_rated = -1;
+		$this->re_rate = -1;
+		$this->to_catalogue = $resources = ORM::factory('resource')
+            ->in('resource_status_id', array(2, 3, 4, 5, 6, 7, 8))
+            ->where('curator_id', $user->id)
+            ->orwhere('catalogued', 'NULL')
+            ->count_all();
+		$this->to_address = ORM::factory('resource')
+            ->in('resource_status_id', array(2, 8))
+            ->where('curator_id', $user->id)
+            ->count_all();
+		$this->no_response = -1;
 	}
 }
 ?>

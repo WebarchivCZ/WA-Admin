@@ -19,11 +19,27 @@ $lang = array
 		'date' => 'datum',
 		'type' => 'typ',
 		'result' => 'výsledek',
+                'Resources' => 'Zdroje',
 		'Correspondence' => 'Korespondence',
 		'Contacts' => 'Kontakty',
 		'Publishers' => 'Vydavatelé',
+                'Seeds' => 'Semínka',
+                'Ratings' => 'Hodnocení',
 		'edit' => 'Upravit',
-		'insert' => 'Vložit'
-		
+		'insert' => 'Vložit',
+		'resource' => 'zdroj',
+                'correspondence_type' => 'typ',
+                'title' => 'název',
+                'url' => 'url',
+                'addendum' => 'doplněk',
+                'cc' => 'CC',
+                'curator' => 'kurátor',
+                'rating' => 'hodnocení',
+                'round' => 'kolo',
+                'cc' => 'CC',
+                'redirect' => 'přesměrování',
+                'valid_from' => 'od',
+                'valid_to' => 'do',
+                'seed_status' => 'status'
 )
 ?>

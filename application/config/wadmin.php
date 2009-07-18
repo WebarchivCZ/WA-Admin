@@ -24,5 +24,13 @@ $config = array(
 		'2'  => 'ano' , 
 		'4'  => 'technické ne') ,
 
-        'date_format' => 'Y-m-d H:i:s');
+        'date_format' => 'Y-m-d H:i:s' , );
+
+/**
+ * Enable debug mode. Display errors and profiler info.
+ * Error messages can be set by variable $this->template->debug
+ */
+$config['debug_mode'] = FALSE;
+
+$config['version'] = '2.01';
 ?>

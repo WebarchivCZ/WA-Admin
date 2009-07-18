@@ -67,6 +67,10 @@
 	color: #3e60f5;
 }
 
+#menu {
+	float: left;
+}
+
 .success {
 	color: #496da2;
 	margin-bottom: 1em;
@@ -101,7 +105,7 @@ a.autocomplete_item {
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	text-decoration: none; }
-
+	
 a.autocomplete_item:hover {
 	background-color: #cecece;
 	border-color: #777;

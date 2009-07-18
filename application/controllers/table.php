@@ -1,6 +1,6 @@
 <?php
 /**
- * TODO prokliky z jednotlivych radku na prohlizeni konkretnich zaznamu
+ * DONE prokliky z jednotlivych radku na prohlizeni konkretnich zaznamu
  */
 abstract class Table_Controller extends Template_Controller
 {
@@ -22,7 +22,7 @@ abstract class Table_Controller extends Template_Controller
         $page_num = $this->input->get('page', 1);
         $offset   = ($page_num - 1) * $per_page;
 
-        $model = ORM::factory($this->table);
+        $model = ORM::factory($this->model);
         $pages = Pagination::factory(array
             (
             'style' => 'dropdown',
@@ -56,52 +56,76 @@ abstract class Table_Controller extends Template_Controller
         $form = Formo::factory()->orm($this->model, $id);
         // TODO vypisovani labelu
         $view = new View('edit_table');
+        $url = url::site("/tables/{$this->table}/edit/{$id}");
+        $view->edit_url = $url;
+        $view->type = 'view';
         $view->form = $form->get();
-        $view->title = 'edit';
         $this->template->content = $view;
     }
 
     public function edit($id = FALSE)
     {
-        $form = Formo::factory()->orm($this->model, $id);
+        $form = Formo::factory()->orm($this->model, $id)->add('submit', 'Upravit');
         // TODO vypisovani labelu
         $view = new View('edit_table');
+        $view->type = 'edit';
         $view->form = $form->get();
-        $view->title = 'edit';
         $this->template->content = $view;
+        if ($form->validate())
+        {
+            $form->save();
+            $this->session->set_flash('message', 'Zaznam uspesne zmenen');
+        }
     }
 
     public function add()
     {
-        $form = Formo::factory()->orm($this->model);
+         $form = Formo::factory()->orm($this->model)->add('submit', 'Vlozit');
         // TODO vypisovani labelu
         $view = new View('edit_table');
+        $view->type = 'add';
         $view->form = $form->get();
-        $view->title = 'insert';
         $this->template->content = $view;
+        if ($form->validate())
+        {
+            $form->save();
+            $this->session->set_flash('message', 'Zaznam uspesne pridan');
+        }
     }
 
     public function delete($id = FALSE)
     {
-
+        $form = Formo::factory()->orm($this->model, $id)->add('submit', 'SMAZAT');
+        // TODO vypisovani labelu
+        $view = new View('edit_table');
+        $view->type = 'delete';
+        $view->form = $form->get();
+        $this->template->content = $view;
+        if ($form->validate())
+        {
+            ORM::factory($this->model)->delete($id);
+            $this->session->set_flash('message', 'Zaznam uspesne smazan');
+            url::redirect(url::site('/tables/'.$this->table));
+        }
+        
     }
 
-    public function find()
-    {}
-
-    public function search($search_string)
+    public function search()
     {
+        $search_string = $this->input->post('search_string');
+
         $per_page = $this->input->get('limit', 20);
         $page_num = $this->input->get('page', 1);
         $offset   = ($page_num - 1) * $per_page;
 
-        $model = ORM::factory($this->table);
+        $model = ORM::factory($this->model);
+        $result = $model->like($model->__get('primary_val'), $search_string)->find_all($per_page,$offset);
         $pages = Pagination::factory(array
             (
             'style' => 'dropdown',
             'items_per_page' => $per_page,
             'query_string' => 'page',
-            'total_items' => $model->count_all(),
+            'total_items' => $result->count(),
 
         ));
 
@@ -110,7 +134,7 @@ abstract class Table_Controller extends Template_Controller
             'style' => 'digg',
             'items_per_page' => $per_page,
             'query_string' => 'page',
-            'total_items' => $model->count_all(),
+            'total_items' => $result->count(),
 
         ));
 
@@ -118,7 +142,8 @@ abstract class Table_Controller extends Template_Controller
         $view->title = $this->title;
         $view->headers = $model->headers;
         $view->columns = $model->table_columns();
-        $view->items = $model->find_all($per_page,$offset)->where($model->get_default(), $search_string);
+        // TODO predefinovat hledani - prohledavane sloupce definovat v modelu
+        $view->items = $result;
         $view->pages = $pages . $pages_inline;
         $this->template->content = $view;
         $this->template->title = Kohana::lang('tables.'.$this->title) . " | " . Kohana::lang('tables.index');

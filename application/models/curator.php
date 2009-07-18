@@ -19,6 +19,7 @@ class Curator_Model extends Auth_User_Model
 		'comments');
 
 	protected $primary_val = 'username';
+        protected $primary_var = 'aa';
 	
 	protected $has_many = array('curator_tokens', 'ratings');
 	protected $has_and_belongs_to_many = array('roles');

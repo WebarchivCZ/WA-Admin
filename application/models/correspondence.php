@@ -12,6 +12,8 @@ class Correspondence_Model extends Table_Model
 	
 	protected $table_name = 'correspondence';
 
+        protected $belongs_to = array('correspondence_type', 'resource');
+
 	public function __construct ($id = NULL)
 	{
 		parent::__construct($id);
@@ -19,11 +21,10 @@ class Correspondence_Model extends Table_Model
 
 	public $headers = array(
 		'id' , 
-		'resources_id' , 
+		'resource' , 
 		'date' , 
-		'type' , 
-		'result' , 
-		'comments');
+		'correspondence_type' ,
+		'result');
 
 }
 

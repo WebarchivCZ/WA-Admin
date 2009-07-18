@@ -5,20 +5,19 @@ defined('SYSPATH') or die('No direct script access.');
  */
 class Seed_Model extends Table_Model
 {
-
 	public $headers = array(
-		'id' , 
-		'resource' , 
-		'url' , 
+                'id',
+		'resource' ,
+		'url' ,
+                'seed_status' ,
 		'redirect' , 
 		'valid_from' , 
-		'valit_to' , 
-		'comments');
+		'valid_to');
 
 	protected $primary_val = 'url';
 
 	protected $belongs_to = array(
-		'resources');
+		'resource', 'seed_status');
 
 	public function __construct ($id = NULL)
 	{

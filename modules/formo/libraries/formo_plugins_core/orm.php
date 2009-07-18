@@ -155,7 +155,7 @@ class Formo_orm {
 				{
 					$primary_val = $value->primary_val;
 					$primary_key = $value->primary_key;
-					$values[$value->$primary_val] = $value->$primary_key;
+					$values[$value->$primary_key] = $value->$primary_val;
 				}
 				$this->form->add_select($alias_field,$values,array('value'=>$this->model[$_model]->$field));
 			}

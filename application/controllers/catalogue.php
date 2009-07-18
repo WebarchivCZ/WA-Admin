@@ -15,6 +15,11 @@ class Catalogue_Controller extends Template_Controller
         $view = new View('catalogue');
         $this->template->content = $view;
 
+//        $sql = "SELECT `id` FROM `resources` WHERE `curator_id` = {$this->user->id} AND
+//                                        ((catalogued IS NULL) OR (metadata IS NULL)) AND
+//                                        resource_status_id IN (2,3,4,5,6,7,8)";
+//        $result = Database::instance()->query($sql)->result();
+
         $resources = ORM::factory('resource')
             ->in('resource_status_id', array(2, 3, 4, 5, 6, 7, 8))
             ->where('curator_id', $this->user->id)

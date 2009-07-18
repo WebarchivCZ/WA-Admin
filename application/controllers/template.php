@@ -69,9 +69,12 @@ abstract class Template_Controller extends Controller
 
         $this->login();
 
-        // just for debug
+/**
+ * Display errors and profiler info. Can be set in config wadmin.debug_mode
+ * Error messages can be set by variable $this->template->debug
+ */
 
-        if (Kohana::config('config.debug_mode'))
+        if (Kohana::config('wadmin.debug_mode'))
         {
             $profiler = new Profiler();
         }

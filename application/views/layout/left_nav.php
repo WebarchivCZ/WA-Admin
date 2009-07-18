@@ -10,7 +10,7 @@
 	<li><a href="<?= $base_url ?>correspondence">Oslovení</a></li>
 	<li><a href="<?= $base_url ?>contracts">Smlouvy</a></li>
 	<li><a href="<?= $base_url ?>ratings"><b>Hodnocení</b></a></li>
-	<li class="last"><a href="<?= $base_url ?>urls">URL</a></li>
+	<li class="last"><a href="<?= $base_url ?>seeds">Semínka</a></li>
 </ul>
 <h3>Veřejné</h3>
 <a href="http://www.webarchiv.cz" class="link">webarchiv.cz</a>

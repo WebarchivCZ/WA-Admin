@@ -1,0 +1,10 @@
+MIGRACE
+
+--- Contracts
+
+pridany sloupce contract_no a year do tabulky contracts
+
+sql dotaz pro update
+UPDATE `contracts` SET `contract_no` = LEFT(`contract_no_o`, LOCATE('/', `contract_no_o`)-1) and `year` = YEAR(`date_signed`)
+
+- moznost smazat contract_no_o z contracts

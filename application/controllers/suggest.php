@@ -54,7 +54,7 @@ class Suggest_Controller extends Template_Controller
                     $publisher->name = $publisher_name;
                     $publisher->save();
                 }
-                $resource = new Resource_Model();
+                $resource = ORM::factory('resource');
                 $resource->title = $title;
                 $resource->url = $url;
                 $resource->publisher_id = $publisher->id;
@@ -63,6 +63,15 @@ class Suggest_Controller extends Template_Controller
                 $resource->suggested_by_id = $suggested_by;
                 $resource->resource_status_id = RS_NEW;
                 $resource->save();
+
+                $seed = ORM::factory('seed');
+                $seed->url = $url;
+                $seed->resource_id = $resource->id;
+                $seed->seed_status_id = ORM::factory('seed_status', 1)->id;
+                $seed->valid_from = date('Y-m-d');
+
+                $seed->save();
+                
                 url::redirect('rate');
             }
         }
