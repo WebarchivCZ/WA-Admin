@@ -75,7 +75,7 @@ class Rate_Controller extends Template_Controller
 
     public function save_final()
     {
-        // TODO ukladani finalnich hodnoceni musi probihat v davkach (v soucasnosti se uklada po jednom zdroji)
+        // DONE ukladani finalnich hodnoceni musi probihat v davkach (v soucasnosti se uklada po jednom zdroji)
         $ratings = $this->input->post('rating');
         
         foreach ($ratings as $id => $rating)
@@ -102,8 +102,8 @@ class Rate_Controller extends Template_Controller
             $resource->resource_status_id = $status;
             $resource->save();
             $this->session->set_flash('message', 'Finalni hodnoceni bylo uspesne ulozeno');
-            url::redirect('rate');
         }
+        url::redirect('rate');
     }
 
     private function find_resources($resource_status = RS_NEW, $only_rated = FALSE)

@@ -32,14 +32,18 @@ $config['defaults']['state']	= array('type'=>'select', 'values'=>$states);
 
 //$config['plugins'] = array('orm');
 
-$config['label_filters'][] = 'ucwords';
+$config['label_filters'] = '';
 
 $config['pre_filters']['username'][] = 'trim';
 $config['pre_filters']['email'][] = 'strtolower';
 $config['pre_filters']['ten'][] = 'trim';
 
 $config['globals']['class'] = 'input';
+$config['globals']['required'] = FALSE;
+
 
 $config['plugins'] = array('orm');
 
 // end formo config
+
+?>

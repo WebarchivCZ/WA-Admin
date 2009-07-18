@@ -14,7 +14,7 @@
  * The ReflectionParameter class would be the 'proper' way to tackle this problem...
  * See: http://uk3.php.net/manual/en/language.oop5.reflection.php#language.oop5.reflection.reflectionparameter
  */
-class Zend_ide_Controller extends Controller {
+class Zend_Autocomplete_Controller extends Controller {
 
 	public function index()
 	{

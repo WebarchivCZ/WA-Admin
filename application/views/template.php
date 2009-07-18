@@ -4,6 +4,7 @@
         <title>WA Admin - <?=$title;?></title>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <?php
+        echo html::stylesheet('media/css/formo');
         echo html::stylesheet('media/css/main');
         echo html::script('media/js/jquery.js');
         echo html::script('media/js/wadmin.js');

@@ -1,15 +1,23 @@
 <?php
-class Login_Controller extends Template_Controller {
+class Login_Controller extends Template_Controller
+{
 
     protected $title = "Přihlásit se";
 
     protected $need_auth = FALSE;
 
-    public function index () {
+    public function index ()
+    {
         $auth = Auth::instance();
         $session = Session::instance();
 
-        if ($auth->auto_login()) {
+        if ($auth->logged_in())
+        {
+            url::redirect('home');
+        }
+
+        if ($auth->auto_login())
+        {
             url::redirect($session->get('login_requested_url'));
             return TRUE;
         }
@@ -17,16 +25,19 @@ class Login_Controller extends Template_Controller {
         $form->input('username')->label('jmeno')->rules('required');
         $form->password('password')->label('heslo')->rules('required');
         $form->checkbox('remember')->label('zapamatovat si prihlaseni');
-        $form->submit('odeslat');
-        if ($form->validate()) {
+        $form->submit('Přihlásit');
+        if ($form->validate())
+        {
             $username = $form->username->value;
             $password = $form->password->value;
             $remember = $form->remember->value;
 
-            if ($auth->login($username, $password, $remember)) {
-
+            if ($auth->login($username, $password, $remember))
+            {
                 url::redirect($session->get('login_requested_url'));
-            } else {	//echo 'spatne zadane heslo';
+            } else
+            {
+                $this->session->set_flash('message', 'Špatně zadaná kombinace uživatelského jména a hesla');
             }
         }
         $this->template->content = $form;
