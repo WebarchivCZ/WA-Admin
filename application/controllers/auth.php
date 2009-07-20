@@ -42,9 +42,11 @@ public function create()
 		$this->template->title = 'Create User';
 
 		$form = new Forge;
-		$form->input('email')->label(TRUE)->rules('required|length[4,32]|valid_email');
 		$form->input('username')->label(TRUE)->rules('required|length[4,32]');
-		$form->password('password')->label(TRUE)->rules('required|length[5,40]');
+		$form->password('password')->label(TRUE)->rules('required|length[4,40]');
+                $form->input('email')->label(TRUE)->rules('required|length[4,32]|valid_email');
+                $form->input('firstname')->label(TRUE)->rules('required|length[2,32]|valid_email');
+                $form->input('lastname')->label(TRUE)->rules('required|length[2,32]|valid_email');
 		$form->submit('Create New User');
 
 		if ($form->validate())
