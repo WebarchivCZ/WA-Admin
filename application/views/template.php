@@ -29,6 +29,7 @@
                      * pokud je radic jeden z hlavnich, zobrazi se automaticky
                      * vyhledavaci box, nadpis a pripadne chybova hlaska
                      * viz view layout/top_content
+                     * TODO refaktorovat
                      */
                     $top_menu = Kohana::config('wadmin.top_menu');
                     if (in_array(URI::$controller, $top_menu)) {
@@ -41,24 +42,16 @@
                         }
                         View::factory('layout/top_content')->set('title', $title)->render(TRUE);
                     }
-                    ?>
                     
+                    if (isset($message) AND $message != '') {
+                        echo "<p class='message'>{$message}</p>";
+                    }
+
+                    ?>
+
                     <?=$content;?>
                 </div>
-                <div id="right-column"><strong class="h">INFO</strong>
-                    <div class="box" id="help-box">
-                        <p><?= date('H:i - d.m.Y'); ?></p>
-<?php if (Auth::instance()->logged_in())
-                        { ?>
-                        <p>přihlášen: <?= Auth::instance()->get_user()->username ?><br /></p>
-                        <p><a href="<?= url::current() ?>/logout">Odhlásit</a></p>
-                        <? } else
-{
-    echo '<p>Nepřihlášen</p>';
-}
-            ?>
-                    </div>
-                </div>
+                <?= View::factory('layout/right_column')->render(TRUE) ?>
             </div>
 <?=$footer ?>
         </div>

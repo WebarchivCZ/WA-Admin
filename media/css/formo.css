@@ -15,8 +15,9 @@
 	clear: both;
 }
 
-.standardform .input {
+.standardform .input, input {
 	border: 1px solid #ccc;
+        padding: 2px;
 }
 
 .standardform .errorInput {

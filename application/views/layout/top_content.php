@@ -8,10 +8,3 @@
         <label> <input type="submit" name="Submit" value="<?= Kohana::lang('tables.search');?>" /> </label>
     </form>
 </div>
-<?php
-$session = Session::instance();
-if($session->get('message') != "")
-{
-    echo "<h3>{$session->get_once('message')}</h3>";
-}
-?>

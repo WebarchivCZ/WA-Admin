@@ -80,7 +80,7 @@ abstract class Table_Controller extends Template_Controller
 
     public function add()
     {
-         $form = Formo::factory()->orm($this->model)->add('submit', 'Vlozit');
+         $form = Formo::factory()->orm($this->model)->add('submit', 'Vlozit')->remove('id');
         // TODO vypisovani labelu
         $view = new View('edit_table');
         $view->type = 'add';

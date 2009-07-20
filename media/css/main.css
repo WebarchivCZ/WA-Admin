@@ -341,7 +341,9 @@ div.table .select select {
 	background:#EBEBEB;
 	margin:0 0 15px 0;
 	}
-	
+#right-column .box a {
+        font-weight: bold;
+        }
 /* right column buttons */
 .buttons {
 	clear:both;
@@ -365,4 +367,8 @@ div#debug {
 	padding: 5px 10px;
 	background: white;
 	border: 1px solid #333;
+}
+
+p.message {
+    font-size: 1.3em;
 }

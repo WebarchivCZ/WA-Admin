@@ -7,9 +7,8 @@ class Suggest_Controller extends Template_Controller
     public function index ()
     {
         $form = new Forge('suggest', '', 'POST', array(
-            'id' => 'resource_form'));
-
-        $form->set_attr('class', 'form_class')->set_attr('method', 'post');
+            'id' => 'resource_form', 'class' => 'standardform'));
+    
         $form->input('title')->label('Název')->rules('required|length[1,100]');
         $form->input('publisher')->label('Vydavatel')->rules('required|length[1,100]');
         $form->input('url')->label('URL')->value('http://')->rules('required|valid_url');

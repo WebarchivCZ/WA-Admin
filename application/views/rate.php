@@ -2,11 +2,6 @@
 $rating_result_array = Kohana::config('wadmin.ratings_result');
 $rating_values_array = Kohana::config('wadmin.rating_values');
 
-$session = Session::instance();
-if($session->get('message') != "")
-{
-    echo "<h3>{$session->get_once('message')}</h3>";
-}
 ?>
 
 <?php
@@ -54,4 +49,8 @@ if (isset($rated_resources_reevaluate) AND $rated_resources_reevaluate)
     $view->resources = $rated_resources_reevaluate;
     $view->rating_values_array = $rating_result_array;
     $view->render(TRUE);
+}
+
+if (!$rated_resources_reevaluate AND !$rated_resources_new AND !$resources_reevaluate AND !$resources_new) {
+    echo '<p>Nebyly nalezeny žádné zdroje k hodnocení</p>';
 }

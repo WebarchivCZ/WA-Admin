@@ -21,11 +21,14 @@ class Login_Controller extends Template_Controller
             url::redirect($session->get('login_requested_url'));
             return TRUE;
         }
-        $form = new Forge();
-        $form->input('username')->label('jmeno')->rules('required');
-        $form->password('password')->label('heslo')->rules('required');
-        $form->checkbox('remember')->label('zapamatovat si prihlaseni');
-        $form->submit('Přihlásit');
+
+        $form = Formo::factory('login_form');
+        $form->add_html('<h2>Přihlásit do systému</h2>');
+
+        $form->add('username')->label('Uživatel')->required(TRUE);
+        $form->add('password', 'password')->label('Heslo')->required(TRUE);
+        $form->add('checkbox', 'remember')->label('Zapamatovat přihlášení');
+        $form->add('submit', 'Přihlásit');
         if ($form->validate())
         {
             $username = $form->username->value;
@@ -37,7 +40,7 @@ class Login_Controller extends Template_Controller
                 url::redirect($session->get('login_requested_url'));
             } else
             {
-                $this->session->set_flash('message', 'Špatně zadaná kombinace uživatelského jména a hesla');
+                $this->template->message = 'Špatně zadaná kombinace uživatelského jména a hesla';
             }
         }
         $this->template->content = $form;

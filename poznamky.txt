@@ -1,5 +1,8 @@
 MIGRACE
 
+Celkovy model bylo nutne upravit, aby cizi klice neblokovaly mazani zaznamu.
+Proto mohou byt sloupce s cizimi klicemy nastaveny na hodnotu NULL.
+
 --- Contracts
 
 pridany sloupce contract_no a year do tabulky contracts

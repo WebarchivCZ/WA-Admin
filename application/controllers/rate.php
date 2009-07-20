@@ -64,7 +64,7 @@ class Rate_Controller extends Template_Controller
                 $o_rating->save();
                 if ($o_rating->saved)
                 {
-                    $this->session->set_flash('message', 'Hodnocení bylo úspěšně uloženo');
+                    $this->session->set_flash('message', 'Hodnocení bylo úspěšně uloženo.');
                 }
             }
         }
