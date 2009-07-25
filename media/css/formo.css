@@ -15,7 +15,7 @@
 	clear: both;
 }
 
-.standardform .input, input {
+.standardform .input, input, button {
 	border: 1px solid #ccc;
         padding: 2px;
 }
