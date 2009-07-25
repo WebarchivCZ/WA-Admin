@@ -51,7 +51,7 @@
 
                     <?=$content;?>
                 </div>
-                <?= View::factory('layout/right_column')->render(TRUE) ?>
+                <?= $right_column ?>
             </div>
 <?=$footer ?>
         </div>

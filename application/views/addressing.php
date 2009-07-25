@@ -23,7 +23,7 @@ if(isset($resources) AND $resources->count() != 0)
 
         <tr>
             <td class="first"><?=html::anchor('tables/resources/view/'.$resource->id, $resource->title) ?></td>
-            <td><a href="<?=$resource->url ?>"><?=$resource->url ?></a></td>
+            <td><a href="<?=$resource->url ?>" target="_blank"><?=$resource->url ?></a></td>
 
                     <?php
                     $new_email = true;

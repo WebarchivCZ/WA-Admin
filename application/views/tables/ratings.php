@@ -19,7 +19,7 @@
                 { ?>
             <tr>
                 <td class="first"><?=$resource->title ?></td>
-                <td><a href="<?=$resource->url ?>"><?=$resource->url ?></a></td>
+                <td><a href="<?=$resource->url ?>" target="_blank"><?=$resource->url ?></a></td>
                 <td><?=$resource->curator->username ?></td>
                 <td><?=$resource->conspectus->category ?></td>
                 <td>

@@ -61,10 +61,12 @@ abstract class Template_Controller extends Controller
         }
         
         $this->template->message = $this->session->get_once('message');
-        $this->template->content = new View("layout/center");
-        $this->template->top_nav = new View("layout/top_nav");
-        $this->template->left_nav = new View("layout/left_nav");
-
+        $this->template->content = View::factory("layout/center");
+        $this->template->top_nav = View::factory("layout/top_nav");
+        $this->template->left_nav = View::factory("layout/left_nav");
+        $this->template->right_column = View::factory('layout/right_column')
+                                            ->bind('help_box', $this->help_box);
+        
         $footer = new View("layout/footer");
         $footer->bind('log', $this->log);
         $this->template->footer = $footer;

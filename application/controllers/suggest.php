@@ -6,97 +6,128 @@ class Suggest_Controller extends Template_Controller
 
     public function index ()
     {
-        $form = new Forge('suggest', '', 'POST', array(
-            'id' => 'resource_form', 'class' => 'standardform'));
-    
-        $form->input('title')->label('Název')->rules('required|length[1,100]');
-        $form->input('publisher')->label('Vydavatel')->rules('required|length[1,100]');
-        $form->input('url')->label('URL')->value('http://')->rules('required|valid_url');
-        $form->submit('Ověřit', 'check_button');
+        $view = View::factory('form');
 
-        $view = new View('suggest');
+        $form = Formo::factory('add_form');
+        $form->add('title')->label('Název');
+        $form->add('publisher')->label('Vydavatel');
+        $form->add('url')->label('URL')->value('http://')->add_rule('url', 'url', 'Musí být ve tvaru url.');
+        $form->add_rules('required', 'title|publisher|url', 'Povinná položka');
+        $form->add('submit', 'Ověřit');
 
+        $view->form = $form;
+        $view->header = 'Ověřit vkládaný zdroj';
+        
         if ($form->validate())
         {
-
             $publisher_name = $form->publisher->value;
             $title = $form->title->value;
             $url = $form->url->value;
 
-            $curators = ORM::factory('curator')->where('active', 1)->select_list('id', 'username');
-            $conspectus = ORM::factory('conspectus')->select_list('id', 'category');
-            $suggested_by = ORM::factory('suggested_by')->select_list('id', 'proposer');
+            // nastaveni promennych pro vyuziti v metode insert()
+            $resource_array = array('title' => $title,
+                'url' => $url,
+                'publisher' => $publisher_name);
+            $this->session->set('resource_val', $resource_array);
 
-            $form->dropdown('curator')->label('Kurátor')->options($curators)->value(Auth::instance()->get_user());
-            $form->dropdown('conspectus')->label('Konspekt')->options($conspectus);
-            $form->dropdown('suggested_by')->label('Navrhl')->options($suggested_by);
-            $form->submit('Vložit', 'insert_button');
-
-            if (isset($_POST['check_button']))
-            {
-                $this->check_records($publisher_name, $title, $url, $view);
-            }
-            if (isset($_POST['insert_button']))
-            {
-                // TODO automaticke nastaveni kuratora
-                $form->curator->selected($_POST['curator']);
-                $form->conspectus->selected($_POST['conspectus']);
-                $form->suggested_by->selected($_POST['suggested_by']);
-
-                $curator = $form->curator->selected;
-                $conspectus = $form->conspectus->selected;
-                $suggested_by = $form->suggested_by->selected;
-
-                $publisher = ORM::factory('publisher', $publisher_name);
-                if (! $publisher->loaded)
-                {
-                    $publisher->name = $publisher_name;
-                    $publisher->save();
-                }
-                $resource = ORM::factory('resource');
-                $resource->title = $title;
-                $resource->url = $url;
-                $resource->publisher_id = $publisher->id;
-                $resource->conspectus_id = $conspectus;
-                $resource->curator_id = $curator;
-                $resource->suggested_by_id = $suggested_by;
-                $resource->resource_status_id = RS_NEW;
-                $resource->save();
-
-                $seed = ORM::factory('seed');
-                $seed->url = $url;
-                $seed->resource_id = $resource->id;
-                $seed->seed_status_id = ORM::factory('seed_status', 1)->id;
-                $seed->valid_from = date('Y-m-d');
-
-                $seed->save();
-                
-                url::redirect('rate');
-            }
+            $view = View::factory('match_resources');
+            $resources = $this->check_records($publisher_name, $title, $url);
+            $view->match_resources = $resources;
+            $this->help_box = 'Kliknutím na konkrétního vydavatele
+                přiřadíte již existujícího vydavatele nově vkládanému zdroji';
+        } else
+        {
+            $view->form = $form->get();
         }
-
-        $view->form = $form->render();
 
         $this->template->content = $view;
     }
 
-    private function check_records ($publisher_name, $title, $url, & $view)
+    public function insert ($publisher = NULL)
+    {
+    // nacteni hodnot z predchoziho formulare
+        $resource_val = $this->session->get('resource_val');
+
+        $title = $resource_val['title'];
+        $url = $resource_val['url'];
+
+        if ($publisher != NULL) {
+            $publisher_name = $publisher;
+        } else {
+            $publisher_name = $resource_val['publisher'];
+        }
+
+        $curators = ORM::factory('curator')->where('active', 1)->select_list('id', 'username');
+        $conspectus = ORM::factory('conspectus')->select_list('id', 'category');
+        $suggested_by = ORM::factory('suggested_by')->select_list('id', 'proposer');
+
+        $curator_id = Auth::instance()->get_user()->id;
+
+        $form = Formo::factory('insert_resource');
+        $form->add('title')->label('Název zdroje')->value($title)->disabled(TRUE);
+        $form->add('url')->label('URL')->value($url)->disabled(TRUE);
+        $form->add('publisher')->label('Vydavatel')->value($publisher_name)->disabled(TRUE);
+        $form->add_select('curator', $curators)->label('Kurátor')->value($curator_id);
+        $form->add_select('conspectus', $conspectus)->label('Konspekt');
+        $form->add_select('suggested_by', $suggested_by)->label('Navrhl');
+        $form->add('submit', 'Vložit zdroj');
+
+
+        if ($form->validate())
+        {
+
+            $publisher = ORM::factory('publisher', $publisher_name);
+            if (! $publisher->loaded)
+            {
+                $publisher->name = $publisher_name;
+                $publisher->save();
+            }
+
+            $resource = ORM::factory('resource');
+            $resource->title = $title;
+            $resource->url = $url;
+            $resource->publisher_id = $publisher->id;
+            $resource->conspectus_id = $form->conspectus->value;
+            $resource->curator_id = $form->curator->value;
+            $resource->suggested_by_id = $form->suggested_by->value;
+            $resource->resource_status_id = RS_NEW;
+            $resource->save();
+
+            $seed = ORM::factory('seed');
+            $seed->url = $url;
+            $seed->resource_id = $resource->id;
+            $seed->seed_status_id = ORM::factory('seed_status', 1)->id;
+            $seed->valid_from = date('Y-m-d');
+
+            $seed->save();
+
+            $this->session->delete('resource_val');
+
+            url::redirect('rate');
+        } else
+        {
+            $this->template->content = View::factory('form')->bind('form', $form)
+                ->set('header', 'Vložit zdroj');
+        }
+    }
+
+    private function check_records ($publisher_name, $title, $url)
     {
         $resources = ORM::factory('resource')
             ->join('publishers', 'resources.publisher_id = publishers.id')
             ->orlike(array('url' => $url , 'title' => $title, 'publishers.name'=>$publisher_name))
             ->find_all();
 
-        $view->match_resources = $resources;
-        $this->template->content = $view;
+        return $resources;
 
-        if ($resources->count() != 0)
-        {
-            $view->message = 'Byly nalezeny shody:';
-        } else
-        {
-            $view->message = 'Nenalezeny shody.';
-        }
+    //        if ($resources->count() != 0)
+    //        {
+    //            $message = 'Byly nalezeny shody.';
+    //        } else
+    //        {
+    //            $message = 'Nenalezeny shody.';
+    //        }
+    //        $this->session->set_flash('message', $message);
     }
 
 }

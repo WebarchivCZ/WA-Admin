@@ -1,16 +1,22 @@
-<div id="right-column"><strong class="h">Informace</strong>
-    <div class="box" id="help-box">
+<div id="right-column">
+    <?php if ($help_box) { ?>
+    <strong class="h help">NÁPOVĚDA</strong>
+    <div class="box help">
+        <p><?= $help_box ?></p>
+    </div>
+    <? } ?>
+    
+    <strong class="h">Informace</strong>
+    <div class="box">
         <p><?= date('H:i - d.m.Y'); ?></p>
-        <?php if (Auth::instance()->logged_in())
-        { ?>
+        <?php if (Auth::instance()->logged_in()) { ?>
         <p>přihlášen: <?= Auth::instance()->get_user()->username ?><br /></p>
         <p><a href="<?= url::current() ?>/logout">Odhlásit</a></p>
-        <? } else
-        {
+        <? } else {
             echo '<p>Nepřihlášen</p>';
-        }
-        ?>
+        } ?>
     </div>
+    
     <strong class="h">VÝVOJ</strong>
     <div class="box">
         <p><a href="<?= Kohana::config('wadmin.ticket_url') ?>" target="_blank">Vytvořit ticket</a></p>
