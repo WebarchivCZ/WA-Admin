@@ -1,6 +1,6 @@
 <?php $base_url = url::base().'tables/'; ?>
 
-<h3>Tabulky</h3>
+<h3>Prohlížet</h3>
 
 <ul class="nav">
 
