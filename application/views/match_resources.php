@@ -24,9 +24,7 @@
     </table>
 </div>
 
-<?php
-} else {
-    echo '<h3>Nebyly nalezeny shody.</h3>';
-    } ?>
+<?php } ?>
+
 <a href="/wadmin/suggest"><button>Zpět</button></a>
 <a href="/wadmin/suggest/insert"><button>Pokračovat</button></a>

@@ -30,11 +30,17 @@ class Suggest_Controller extends Template_Controller
                 'publisher' => $publisher_name);
             $this->session->set('resource_val', $resource_array);
 
-            $view = View::factory('match_resources');
             $resources = $this->check_records($publisher_name, $title, $url);
+            if ($resources->count() == 0) {
+                $this->session->set_flash('message', 'Nebyly nalezeny shody.');
+                url::redirect('suggest/insert/');
+            } else {
+            $view = View::factory('match_resources');
+
             $view->match_resources = $resources;
             $this->help_box = 'Kliknutím na konkrétního vydavatele
                 přiřadíte již existujícího vydavatele nově vkládanému zdroji';
+            }
         } else
         {
             $view->form = $form->get();
@@ -110,7 +116,13 @@ class Suggest_Controller extends Template_Controller
                 ->set('header', 'Vložit zdroj');
         }
     }
-
+/**
+ * Vyhleda zdroje a vydavatele vyhovujici zadanym podminkam a vrati je jako iterator
+ * @param String $publisher_name jmeno vydavatele
+ * @param String $title nazev zdroje
+ * @param String $url url zdroje
+ * @return Resource_Iterator mnozina vyhovujicich zdroju
+ */
     private function check_records ($publisher_name, $title, $url)
     {
         $resources = ORM::factory('resource')
@@ -119,15 +131,6 @@ class Suggest_Controller extends Template_Controller
             ->find_all();
 
         return $resources;
-
-    //        if ($resources->count() != 0)
-    //        {
-    //            $message = 'Byly nalezeny shody.';
-    //        } else
-    //        {
-    //            $message = 'Nenalezeny shody.';
-    //        }
-    //        $this->session->set_flash('message', $message);
     }
 
 }
