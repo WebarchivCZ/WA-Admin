@@ -7,9 +7,9 @@ if ($message != '') {
 
 if ($type == 'view') {
     echo "<h3>Zobrazení záznamu</h3>";
-    echo "<a href='{$edit_url}'>Klikni pro editaci záznamu</a>";
+    echo "<a href='{$edit_url}'><button>Klikni pro editaci záznamu</button></a>";
 } elseif ($type == 'edit') {
-    echo "<h3>Editace záznamu</h3>";
+    echo "<h2>Editace záznamu</h2>";
 } elseif($type == 'delete') {
     echo "<h3>Opravdu chcete smazat zaznam?</h3>";
 } elseif ($type == 'add') {

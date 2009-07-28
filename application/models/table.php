@@ -69,5 +69,13 @@ abstract class Table_Model extends ORM
 
         return parent::unique_key($id);
     }
+
+//    public function __get ($column) {
+//        if ($this->is_related($column)) {
+//            return $this->{$column}->primary_val
+//        } else {
+//            return parent::__get($column);
+//        }
+//    }
 }
 ?>

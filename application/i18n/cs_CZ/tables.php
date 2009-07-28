@@ -42,6 +42,21 @@ $lang = array
     'redirect' => 'přesměrování',
     'valid_from' => 'od',
     'valid_to' => 'do',
-    'seed_status' => 'status'
+    'seed_status' => 'status',
+    'resource_status' => 'status zdroje',
+    'conspectus' => 'konspekt',
+    'suggested_by' => 'navrhl',
+    'tech_problems' => 'technické problémy',
+    'contact' => 'kontakt',
+    'crawl_freq' => 'frekvence sklízení',
+    'rating_result' => 'výsledek hodnocení',
+    'aleph' => 'aleph ID',
+    'ISSN' => 'ISSN',
+    'metadata' => 'metadata',
+    'catalogued' => 'katalogizováno',
+    'creative_commons' => 'creative commons',
+    '' => '',
+    '' => '',
+    '' => '',
     )
 ?>

@@ -23,5 +23,10 @@ class display
 	static function top_menu() {
 				
 	}
+
+        static function translate_orm ($column) {
+            $column = str_replace('_id', '',$column);
+            return Kohana::lang('tables.'.$column);
+        }
 }
 ?>

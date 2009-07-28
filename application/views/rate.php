@@ -7,7 +7,7 @@ $rating_values_array = Kohana::config('wadmin.rating_values');
 <?php
 if (isset($resources_new) AND $resources_new)
 {
-    $view = View::factory('tables/ratings');
+    $view = View::factory('forms/ratings');
     $view->title = 'Zdroje k hodnocení';
     $view->status = RS_NEW;
     $view->form_name = 'form_rate_new';
@@ -19,7 +19,7 @@ if (isset($resources_new) AND $resources_new)
 }
 if (isset($resources_reevaluate) AND $resources_reevaluate)
 {
-    $view = View::factory('tables/ratings');
+    $view = View::factory('forms/ratings');
     $view->title = 'Zdroje k přehodnocení';
     $view->status = RS_RE_EVALUATE;
     $view->form_name = 'form_rate_reevaluate';
@@ -31,7 +31,7 @@ if (isset($resources_reevaluate) AND $resources_reevaluate)
 } 
 if (isset($rated_resources_new) AND $rated_resources_new)
 {
-    $view = View::factory('tables/ratings_final');
+    $view = View::factory('forms/ratings_final');
     $view->title = 'Ohodnocené zdroje';
     $view->status = RS_NEW;
     $view->form_name = 'form_final_new';
@@ -42,7 +42,7 @@ if (isset($rated_resources_new) AND $rated_resources_new)
 
 if (isset($rated_resources_reevaluate) AND $rated_resources_reevaluate)
 {
-    $view = View::factory('tables/ratings_final');
+    $view = View::factory('forms/ratings_final');
     $view->title = 'Přehodnocené zdroje';
     $view->status = RS_RE_EVALUATE;
     $view->form_name = 'form_final_reevaluate';
