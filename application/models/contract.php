@@ -28,6 +28,11 @@ class Contract_Model extends Table_Model {
         parent::__set($key, $value);
     }
 
+    public function  __toString()
+    {
+        return $this->contract_no . '/' . $this->year;
+    }
+
     /**
      * Create new contract_no in format count_this_year+1/year
      * @param year

@@ -8,6 +8,9 @@ abstract class Table_Controller extends Template_Controller
     protected $title;
     protected $model;
     protected $view = 'table';
+    protected $columns_ignored = array();
+    protected $columns_order = array();
+    protected $record = NULL;
 
     public function __construct()
     {
@@ -41,7 +44,7 @@ abstract class Table_Controller extends Template_Controller
 
         ));
 
-        $view = new View($this->view);
+        $view = View::factory($this->view);
         $view->title = $this->title;
         $view->headers = $model->headers;
         $view->columns = $model->table_columns();
@@ -51,31 +54,42 @@ abstract class Table_Controller extends Template_Controller
         $this->template->title = Kohana::lang('tables.'.$this->title) . " | " . Kohana::lang('tables.index');
     }
 
-    public function view($id = FALSE) {
+    public function view($id = FALSE)
+    {
         $this->template->title = 'Zobrazení záznamu';
-        $resource = ORM::factory($this->model, $id);
-        $resource_values = $resource->as_array();
+        $this->view = 'tables/record_view';
+        if (is_null($this->record))
+        {
+            $record = ORM::factory($this->model, $id);
+        }
+        $record_values = $record->as_array();
         $values = array();
-        foreach ($resource_values as $key => $value) {
-            if ($resource->__isset($key)) {
-                // TODO elegantnejsi vypisovani cizich klicu
+        foreach ($record_values as $key => $value)
+        {
+            if ($record->__isset($key) AND ! in_array($key, $this->columns_ignored))
+            {
+            // TODO elegantnejsi vypisovani cizich klicu
+                if ($record->is_related(str_replace('_id', '', $key)))
+                {
                     $key = str_replace('_id', '',$key);
-                    $values[$key] = $resource->{$key};
+                }
+                $values[$key] = $record->{$key};
 
             }
         }
+        $this->record = $record;
         $url = url::site("/tables/{$this->table}/edit/{$id}");
-        $this->template->content = View::factory('tables/record_view')
-                                            ->bind('values', $values)
-                                            ->set('edit_url', $url);
+        $this->template->content = View::factory($this->view)
+            ->bind('values', $values)
+            ->set('edit_url', $url);
     }
 
     public function edit($id = FALSE)
     {
         $form = Formo::factory()->orm($this->model, $id)
-                                ->add('submit', 'Upravit')
-                                ->label_filter('display::translate_orm')
-                                ->label_filter('ucfirst');
+            ->add('submit', 'Upravit')
+            ->label_filter('display::translate_orm')
+            ->label_filter('ucfirst');
         $view = new View('edit_table');
         $view->type = 'edit';
         $view->form = $form->get();
@@ -83,13 +97,13 @@ abstract class Table_Controller extends Template_Controller
         if ($form->validate())
         {
             $form->save();
-            $this->session->set_flash('message', 'Zaznam uspesne zmenen');
+            $this->session->set_flash('message', 'Záznam byl úspěšně změněn');
         }
     }
 
     public function add()
     {
-         $form = Formo::factory()->orm($this->model)->add('submit', 'Vlozit')->remove('id');
+        $form = Formo::factory()->orm($this->model)->add('submit', 'Vlozit')->remove('id');
         // TODO vypisovani labelu
         $view = new View('edit_table');
         $view->type = 'add';
@@ -116,7 +130,7 @@ abstract class Table_Controller extends Template_Controller
             $this->session->set_flash('message', 'Zaznam uspesne smazan');
             url::redirect(url::site('/tables/'.$this->table));
         }
-        
+
     }
 
     public function search()

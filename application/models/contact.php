@@ -41,11 +41,6 @@ class Contact_Model extends Table_Model
 		{
 			// Ensure the name is formatted correctly
 			$value = ucwords(strtolower($value));
-		} else if ($key === 'phone') {
-			// Validate phone number
-			if ( ! valid::phone($value)) {
-				throw new InvalidArgumentException;
-			}
 		}
 		parent::__set($key, $value);
 	}

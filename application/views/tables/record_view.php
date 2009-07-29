@@ -1,11 +1,13 @@
 <h2>Zobrazit záznam</h2>
 
-<p>
-    <a href="<?= $edit_url ?>"><button>Editace záznamu</button></a>
-</p>
+<?php if (isset($append_view))
+{
+    $append_view->render(TRUE);
+}
 
+?>
 <?php if (isset($values)): ?>
-    
+
 <div class="table">
 
         <?= html::image(array('src'=>'media/img/bg-th-left.gif', 'width'=>'8', 'height'=>'7', 'class'=>'left')) ?>
@@ -23,6 +25,9 @@
                 {
                     $value = "<a href='{$value}' target='_blank'>{$value}</a>";
                 }
+                if ($key == 'email') {
+                    $value = "<a href='mailto:{$value}'>{$value}</a>";
+                }
                 ?>
 
         <tr>
@@ -35,3 +40,7 @@
 </div>
 
 <?php endif; ?>
+
+<p>
+    <a href="<?= $edit_url ?>"><button>Editace záznamu</button></a>
+</p>

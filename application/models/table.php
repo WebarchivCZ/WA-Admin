@@ -1,8 +1,12 @@
 <?php
 abstract class Table_Model extends ORM
 {
-
     public $headers;
+
+    public function __construct($id = NULL)
+    {
+        parent::__construct($id);
+    }
 
     public function table_columns ()
     {
@@ -25,14 +29,25 @@ abstract class Table_Model extends ORM
         return $columns;
     }
 
+    public function __set($key, $value) {
+        // TODO elegantnejsi prace s cizim klicem
+        if ($this->is_related(str_replace('_id', '', $key)) AND $value == 0) {
+            $value = '';
+        }
+        if ($value == '') {
+            $value = NULL;
+        }
+        parent::__set($key, $value);
+    }
+
     public function __toString ()
     {
-        return $this->{$this->primary_val};
+        return (string) $this->{$this->primary_val};
     }
 
     public function is_related ($column)
     {
-        return (boolean) in_array($column, $belongs_to);
+        return (boolean) in_array($column, $this->belongs_to);
     }
 
     /**

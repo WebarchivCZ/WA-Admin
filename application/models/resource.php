@@ -63,7 +63,7 @@ class Resource_Model extends Table_Model
 
     public function is_related ($column)
     {
-        return in_array($column, $this->belongs_to);
+        return in_array($column, $this->belongs_to) ;
     }
 
     public function add_curator ($curator)

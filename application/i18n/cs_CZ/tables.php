@@ -50,13 +50,13 @@ $lang = array
     'contact' => 'kontakt',
     'crawl_freq' => 'frekvence sklízení',
     'rating_result' => 'výsledek hodnocení',
-    'aleph' => 'aleph ID',
+    'aleph_id' => 'aleph ID',
     'ISSN' => 'ISSN',
     'metadata' => 'metadata',
     'catalogued' => 'katalogizováno',
     'creative_commons' => 'creative commons',
-    '' => '',
-    '' => '',
+    'contract' => 'smlouva',
+    'position' => 'pozice',
     '' => '',
     )
 ?>

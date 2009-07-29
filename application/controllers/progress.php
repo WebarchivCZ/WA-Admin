@@ -45,8 +45,6 @@ class Progress_Controller extends Template_Controller
         if( ! $form->validate()) {
             $view = View::factory('new_contract');
             $view->form = $form;
-
-            // DONE upravit format formulare (css, view)
             $this->template->content = $view;
         } else {
             $form->remove('resource_title');
@@ -54,8 +52,9 @@ class Progress_Controller extends Template_Controller
             foreach ($values as $name => $value) {
                 $contract->__set($name, $value);
             }
-            $resource->resource_status_id = RS_APPROVED_PUB;
             $contract->save();
+            $resource->resource_status_id = RS_APPROVED_PUB;
+            $resource->contract_id = $contract->id;
             $resource->save();
             $contract_no = $contract->contract_no.'/'.$contract->year;
             $message = "Zdroj <em>{$resource->title}</em> - smlouva {$contract_no} uložena.";
