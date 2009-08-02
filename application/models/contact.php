@@ -6,23 +6,14 @@ defined('SYSPATH') or die('No direct script access.');
 class Contact_Model extends Table_Model
 {
 
-	/*public $headers = array(
-		'id' , 
-		'name' , 
-		'email' , 
-		'phone' , 
-		'address' , 
-		'publisher' , 
-		'position' , 
-		'comments');*/
-	
 	public $headers = array(
-		'id',
 		'name',
+                'email',
 		'publisher'
 	);
 
 	protected $primary_val = 'name';
+        protected $sorting = array('email' => 'asc');
 
 	protected $belongs_to = array(
 		'publisher');

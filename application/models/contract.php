@@ -8,9 +8,9 @@ defined('SYSPATH') or die('No direct script access.');
 class Contract_Model extends Table_Model {
 
     protected $primary_val = 'contract_no';
+    protected $sorting = array('date_signed' => 'asc');
 
     public $headers = array(
-    'id' ,
     'contract_no' ,
     'date_signed' ,
     'addendum' ,

@@ -12,10 +12,10 @@ class Publisher_Model extends Table_Model
 {
 
 	public $headers = array(
-		'id' , 
 		'name');
 
-	protected $primary_val = 'name';
+        protected $primary_val = 'name';
+        protected $sorting = array('name' => 'asc');
 
 	protected $has_many = array(
 		'contact' , 

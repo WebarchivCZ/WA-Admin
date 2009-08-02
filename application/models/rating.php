@@ -7,7 +7,6 @@ class Rating_Model extends Table_Model
 {
 
 	public $headers = array(
-		'id' , 
 		'curator' ,
 		'resource' , 
 		'rating' , 
@@ -15,6 +14,7 @@ class Rating_Model extends Table_Model
 		'round' );
 
 	protected $primary_val = 'rating';
+        protected $sorting = array('date' => 'asc');
 
 	protected $belongs_to = array(
 		'publisher' , 

@@ -8,6 +8,7 @@ class Resource_Model extends Table_Model
 {
 
     protected $primary_val = 'title';
+    protected $sorting = array('title' => 'asc');
 
     public $headers = array(
     'title',

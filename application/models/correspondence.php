@@ -9,6 +9,7 @@ class Correspondence_Model extends Table_Model
 {
 
 	protected $primary_val = 'result';
+        protected $sorting = array('date' => 'asc');
 	
 	protected $table_name = 'correspondence';
 
@@ -20,7 +21,6 @@ class Correspondence_Model extends Table_Model
 	}
 
 	public $headers = array(
-		'id' , 
 		'resource' , 
 		'date' , 
 		'correspondence_type' ,

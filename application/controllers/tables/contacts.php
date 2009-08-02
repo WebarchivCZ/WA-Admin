@@ -29,26 +29,32 @@ class Contacts_Controller extends Table_Controller
         //TODO presunout do vlastni metody
         if ($publisher_id)
         {
-            $form->add('publisher_id');
-            $form->publisher_id->disabled(TRUE);
-            $form->publisher_id->value = $publisher_id;
+            $publisher = ORM::factory('publisher', $publisher_id);
+            $form->add('publisher')->required(TRUE);
+            $form->publisher->readonly(TRUE);
+            $form->publisher->value = $publisher->name;
         } else
         {
             $publishers = ORM::factory('publisher')->select_list();
-            $form->add_select('publisher_id', $publishers);
+            $form->add_select('publisher', $publishers);
         }
         if ($resource_id)
         {
-            $form->add('resource_id');
-            $form->resource_id->value = $resource_id;
-            $form->resource_id->disabled(TRUE);
+            $resource = ORM::factory('resource', $resource_id);
+            $form->add('resource')->required(TRUE);
+            $form->resource->readonly(TRUE);
+            $form->resource->value = $resource->title;
         } else
         {
             $resources = ORM::factory('resource')->select_list();
-            $form->add_select('resource_id', $resources);
+            $form->add_select('resource', $resources);
         }
-        $form->add('name')->add('email');
-        $form->remove($this->columns_ignored);
+        $form->add('name')
+             ->add('email')->required(TRUE)
+             ->add('phone')
+             ->add('address')
+             ->add('position')
+             ->add('comments');
         $form->add('submit', 'Vložit')
             ->label_filter('display::translate_orm')
             ->label_filter('ucfirst');
@@ -58,13 +64,24 @@ class Contacts_Controller extends Table_Controller
         $view->form = $form->get();
         $this->template->content = $view;
         if ($form->validate())
-        {
-            $form->save();
-            $contact_id = $this->session->get('__formo_model_contact');
-            $resource = ORM::factory('resource', $resource_id);
-            echo($form->resource_id->value);
-            $resource->contact_id = $contact_id;
-        //$resource->save();
+        {    
+            $publisher_title = $form->publisher->value;
+            
+            $contact = ORM::factory('contact');
+            $contact->publisher_id = ORM::factory('publisher', $publisher_title)->id;
+            $contact->name = $form->name->value;
+            $contact->email = $form->email->value;
+            $contact->phone = $form->phone->value;
+            $contact->address = $form->address->value;
+            $contact->position = $form->position->value;
+            $contact->comments = $form->comments->value;
+            
+            $contact->save();
+            
+            $resource = ORM::factory('resource', $form->resource->value);
+            $resource->contact_id = $contact->id;
+            echo Kohana::debug($resource);
+            $resource->save();
         }
     }
 }
