@@ -207,6 +207,10 @@ ul.nav li.last {background:none;}
     padding:0 0 0 9px;
     margin:0 0 4px 0;
 }
+.top-bar#solo {
+    margin-bottom: 15px;
+    border-bottom: 2px solid #f70;
+}
 /* text page header */
 .top-bar h1 {
     font:20px/21px verdana,sans-serif;

@@ -1,11 +1,7 @@
-<h2>Zobrazit záznam</h2>
+<div class="top-bar" id ="solo">
+    <h1><?= $header ?></h1>
+</div>
 
-<?php if (isset($append_view))
-{
-    $append_view->render(TRUE);
-}
-
-?>
 <?php if (isset($values)): ?>
 
 <div class="table">
@@ -38,6 +34,12 @@
             <?php endforeach; ?>
     </table>
 </div>
+
+<?php if (isset($append_view))
+{
+    $append_view->render(TRUE);
+}
+?>
 
 <?php endif; ?>
 

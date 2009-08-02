@@ -4,6 +4,7 @@ class Resources_Controller extends Table_Controller
     protected $table = 'resources';
     protected $title = 'Resources';
     protected $columns_ignored = array('id', 'publisher_id');
+    protected $header = 'Zdroj';
     
     public function view($id = FALSE)
     {

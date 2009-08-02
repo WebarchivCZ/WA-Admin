@@ -13,7 +13,7 @@ if (isset($resource->publisher_id)) {
         $contact_add = url::site("/tables/contacts/add/{$resource->publisher_id}/{$resource->id}");
         $contact = "<a href='{$contact_add}'>vytvořit</a>";
     }
-    echo "<h3>Tento zdroj vydává: {$publisher}</h3>";
-    echo "<h3>Kontakt ke zdroji: {$contact}</h3>";
+    echo "<h3>Vydavatel: {$publisher}</h3>";
+    echo "<h3>Kontakt: {$contact}</h3>";
 }
 ?>

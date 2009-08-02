@@ -21,7 +21,7 @@ $states = array('_blank_'=>'',
 
 $config['defaults']['submit']	= array('class'=>'submit');
 $config['defaults']['button']	= array('class'=>'button');
-$config['defaults']['textarea']	= array('rows'=>8, 'style'=>'width: 300px');
+$config['defaults']['textarea']	= array('rows'=>4, 'style'=>'width: 200px');
 $config['defaults']['file']		= array('class'=>'file', 'style'=>'border:none');
 $config['defaults']['email']	= array('rule'=>array('email'));
 //$config['defaults']['phone']	= array('rule'=>'phone');
@@ -29,6 +29,7 @@ $config['defaults']['fax']		= array('required'=>FALSE, 'rule'=>'phone');
 $config['defaults']['zip']		= array('rule'=>'numeric', 'size'=>5, 'maxlength'=>5);
 $config['defaults']['submit']	= array('type'=>'submit', 'class'=>'submit');
 $config['defaults']['state']	= array('type'=>'select', 'values'=>$states);
+$config['defaults']['comments'] = array('type'=>'textarea');
 
 //$config['plugins'] = array('orm');
 

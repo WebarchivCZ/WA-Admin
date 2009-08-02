@@ -1,10 +1,9 @@
 <?php
 class Curators_Controller extends Table_Controller
 {
-
     protected $table = 'curators';
-
     protected $title = 'Curators';
+    protected $header = 'Kurátor';
 
     public function add ()
     {

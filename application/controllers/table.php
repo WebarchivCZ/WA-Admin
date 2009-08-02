@@ -11,6 +11,7 @@ abstract class Table_Controller extends Template_Controller
     protected $columns_ignored = array();
     protected $columns_order = array();
     protected $record = NULL;
+    protected $header = 'Záznam';
 
     public function __construct()
     {
@@ -81,6 +82,7 @@ abstract class Table_Controller extends Template_Controller
         $url = url::site("/tables/{$this->table}/edit/{$id}");
         $this->template->content = View::factory($this->view)
             ->bind('values', $values)
+            ->bind('header', $this->header)
             ->set('edit_url', $url);
     }
 
@@ -90,7 +92,8 @@ abstract class Table_Controller extends Template_Controller
             ->add('submit', 'Upravit')
             ->label_filter('display::translate_orm')
             ->label_filter('ucfirst');
-        $view = new View('edit_table');
+        $view = new View('tables/record_edit');
+        $view->bind('header', $this->header);
         $view->type = 'edit';
         $view->form = $form->get();
         $this->template->content = $view;
@@ -98,6 +101,9 @@ abstract class Table_Controller extends Template_Controller
         {
             $form->save();
             $this->session->set_flash('message', 'Záznam byl úspěšně změněn');
+            $url = 'tables/'.$this->uri->segment(2).'/view/'.$id;
+            url::redirect($url);
+            
         }
     }
 
@@ -105,8 +111,7 @@ abstract class Table_Controller extends Template_Controller
     {
         $form = Formo::factory()->orm($this->model)->add('submit', 'Vlozit')->remove('id');
         // TODO vypisovani labelu
-        $view = new View('edit_table');
-        $view->type = 'add';
+        $view = new View('tables/record_add');
         $view->form = $form->get();
         $this->template->content = $view;
         if ($form->validate())
