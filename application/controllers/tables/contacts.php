@@ -80,8 +80,10 @@ class Contacts_Controller extends Table_Controller
             
             $resource = ORM::factory('resource', $form->resource->value);
             $resource->contact_id = $contact->id;
-            echo Kohana::debug($resource);
             $resource->save();
+
+            $this->session->set_flash('message', 'Kontakt byl úspěšně přidán');
+            url::redirect('tables/contacts/view/'.$contact->id);
         }
     }
 }
