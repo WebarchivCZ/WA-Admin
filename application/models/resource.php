@@ -18,7 +18,8 @@ class Resource_Model extends Table_Model
 
     protected $belongs_to = array(
     'contact' ,
-    'curator' ,
+    'creator' => 'curator',
+    'curator' => 'curator',
     'publisher' ,
     'contract' ,
     'conspectus' ,
@@ -35,8 +36,10 @@ class Resource_Model extends Table_Model
     public function __construct ($id = NULL)
     {
         parent::__construct($id);
-        $date_format = Kohana::config('wadmin.date_format');
-        $this->date = date($date_format);
+        if (is_null($id)) {
+            $date_format = Kohana::config('wadmin.date_format');
+            $this->date = date($date_format);
+        }
     }
 
     public function __set ($key, $value)
@@ -64,7 +67,8 @@ class Resource_Model extends Table_Model
 
     public function is_related ($column)
     {
-        return in_array($column, $this->belongs_to) ;
+        // TODO prepsat natvrdo napsaneho kuratora, ktery zdroj vlozil
+        return in_array($column, $this->belongs_to) or $column == 'creator';
     }
 
     public function add_curator ($curator)

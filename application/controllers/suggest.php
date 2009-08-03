@@ -94,6 +94,7 @@ class Suggest_Controller extends Template_Controller
             $resource->url = $url;
             $resource->publisher_id = $publisher->id;
             $resource->conspectus_id = $form->conspectus->value;
+            $resource->creator_id = $curator_id;
             $resource->curator_id = $form->curator->value;
             $resource->suggested_by_id = $form->suggested_by->value;
             $resource->resource_status_id = RS_NEW;
@@ -112,8 +113,9 @@ class Suggest_Controller extends Template_Controller
             url::redirect('rate');
         } else
         {
-            $this->template->content = View::factory('form')->bind('form', $form)
-                ->set('header', 'Vložit zdroj');
+            $this->template->content = View::factory('form')
+                                            ->bind('form', $form)
+                                            ->set('header', 'Vložit zdroj');
         }
     }
 /**
