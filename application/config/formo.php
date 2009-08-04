@@ -30,6 +30,10 @@ $config['defaults']['zip']		= array('rule'=>'numeric', 'size'=>5, 'maxlength'=>5
 $config['defaults']['submit']	= array('type'=>'submit', 'class'=>'submit');
 $config['defaults']['state']	= array('type'=>'select', 'values'=>$states);
 $config['defaults']['comments'] = array('type'=>'textarea');
+$config['defaults']['tech_problems'] = array('type'=>'textarea');
+$config['defaults']['metadata'] = array('type'=>'bool');
+$config['defaults']['catalogued'] = array('type'=>'bool');
+$config['defaults']['contract_cc'] = array('type'=>'bool');
 
 //$config['plugins'] = array('orm');
 

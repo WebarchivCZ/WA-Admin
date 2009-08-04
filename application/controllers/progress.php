@@ -53,13 +53,16 @@ class Progress_Controller extends Template_Controller
                 $contract->__set($name, $value);
             }
             $contract->save();
+
             $resource->resource_status_id = RS_APPROVED_PUB;
             $resource->contract_id = $contract->id;
             $resource->save();
+
             $contract_no = $contract->contract_no.'/'.$contract->year;
             $message = "Zdroj <em>{$resource->title}</em> - smlouva {$contract_no} uložena.";
             $this->session->set_flash('message', $message);
-            url::redirect('progress');
+
+            url::redirect('tables/resources/view/'.$resource_id);
         }
         
     }

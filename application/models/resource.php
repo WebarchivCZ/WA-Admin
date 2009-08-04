@@ -42,6 +42,7 @@ class Resource_Model extends Table_Model
         }
     }
 
+    // FIXME opravit nastavovani data
     public function __set ($key, $value)
     {
         if (($key === 'metadata' OR $key === 'catalogued') AND $value == TRUE)
@@ -61,6 +62,11 @@ class Resource_Model extends Table_Model
             {
                 return date('d.m.Y', strtotime($value));
             }
+        }
+        // TODO prepracovat data v databazi a tahat je z DB
+        if ($column === 'rating_result' AND $this->resource_status_id != RS_NEW) {
+            $ratings_result = Kohana::config('wadmin.ratings_result');
+            return $ratings_result[$this->compute_rating()];
         }
         return parent::__get($column);
     }
@@ -106,7 +112,8 @@ class Resource_Model extends Table_Model
 
     public function compute_rating($round = 1)
     {
-        $ratings_result = Kohana::config('wadmin.ratings_result');
+        // TODO rozhodnout jestli vracet INT nebo rovnou hodnoceni
+        //$ratings_result = Kohana::config('wadmin.ratings_result');
         // FIXME zjistit hodnoceni daneho kola
         $ratings = ORM::factory('rating')->where(array('resource_id'=> $this->id))->find_all();
         $result = 0;

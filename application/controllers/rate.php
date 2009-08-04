@@ -98,6 +98,7 @@ class Rate_Controller extends Template_Controller
                     url::redirect('rate');
             }
             $resource->resource_status_id = $status;
+            $resource->rating_result = $rating;
             $resource->save();
             $this->session->set_flash('message', 'Finalni hodnoceni bylo uspesne ulozeno');
         }

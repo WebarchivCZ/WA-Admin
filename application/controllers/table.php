@@ -109,7 +109,7 @@ abstract class Table_Controller extends Template_Controller
 
     public function add()
     {
-        $form = Formo::factory()->orm($this->model)->add('submit', 'Vlozit')->remove('id');
+        $form = Formo::factory()->orm($this->model)->add('submit', 'Vložit')->remove('id');
         // TODO vypisovani labelu
         $view = new View('tables/record_add');
         $view->form = $form->get();
@@ -117,7 +117,7 @@ abstract class Table_Controller extends Template_Controller
         if ($form->validate())
         {
             $form->save();
-            $this->session->set_flash('message', 'Zaznam uspesne pridan');
+            $this->session->set_flash('message', 'Záznam úspěšně přidán');
         }
     }
 
@@ -132,7 +132,7 @@ abstract class Table_Controller extends Template_Controller
         if ($form->validate())
         {
             ORM::factory($this->model)->delete($id);
-            $this->session->set_flash('message', 'Zaznam uspesne smazan');
+            $this->session->set_flash('message', 'Záznam úspěšně smazán');
             url::redirect(url::site('/tables/'.$this->table));
         }
 

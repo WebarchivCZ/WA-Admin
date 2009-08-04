@@ -19,6 +19,9 @@
 	border: 1px solid #ccc;
         padding: 2px;
 }
+.standardform .input {
+        width: 200px;
+}
 
 .standardform .errorInput {
 	border: 1px solid red;

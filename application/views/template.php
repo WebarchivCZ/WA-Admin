@@ -32,7 +32,8 @@
                      * TODO refaktorovat
                      */
                     $top_menu = Kohana::config('wadmin.top_menu');
-                    if (in_array(URI::$controller, $top_menu)) {
+                    if (in_array(URI::$controller, $top_menu))
+                    {
                         if (isset($this->page_header) AND $this->page_header != "")
                         {
                             $title = $this->page_header;
@@ -42,16 +43,17 @@
                         }
                         View::factory('layout/top_content')->set('title', $title)->render(TRUE);
                     }
-                    
-                    if (isset($message) AND $message != '') {
+
+                    if (isset($message) AND $message != '')
+                    {
                         echo "<p class='message'>{$message}</p>";
                     }
 
                     ?>
 
-                    <?=$content;?>
+                <?=$content;?>
                 </div>
-                <?= $right_column ?>
+            <?= $right_column ?>
             </div>
 <?=$footer ?>
         </div>
