@@ -33,7 +33,7 @@ class Rate_Controller extends Template_Controller
     public function save($status)
     {
         $ratings = $this->input->post('rating');
-
+        $comments = $this->input->post('comments');
         foreach ($ratings as $resource_id => $rating)
         {
             if ($rating != 'NULL')
@@ -61,6 +61,10 @@ class Rate_Controller extends Template_Controller
                 $o_rating->round = $round;
                 $o_rating->date = date('Y-m-d H:i:s');
                 $o_rating->rating = $rating;
+
+                if ($comments[$resource_id] != '') {
+                    $o_rating->comments = $comments[$resource_id];
+                }
                 $o_rating->save();
                 if ($o_rating->saved)
                 {
@@ -119,11 +123,8 @@ class Rate_Controller extends Template_Controller
                             AND g.round = {$round}
                             AND r.resource_status_id = {$resource_status}
                             GROUP BY g.resource_id
-                            HAVING count( * ) >= (
-                            SELECT count( id )
-                            FROM curators
-                            WHERE active =1 )
-                        ORDER BY g.date ASC
+                            HAVING count( * ) >= 1
+                        ORDER BY count(g.resource_id) ASC
                 ";
         } else
         {

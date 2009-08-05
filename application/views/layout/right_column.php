@@ -11,7 +11,7 @@
         <p><?= date('H:i - d.m.Y'); ?></p>
         <?php if (Auth::instance()->logged_in()) { ?>
         <p>přihlášen: <?= Auth::instance()->get_user()->username ?><br /></p>
-        <p><a href="<?= url::current() ?>/logout">Odhlásit</a></p>
+        <p><a href="<?= url::site('home') ?>/logout">Odhlásit</a></p>
         <? } else {
             echo '<p>Nepřihlášen</p>';
         } ?>

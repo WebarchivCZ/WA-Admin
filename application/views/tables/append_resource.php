@@ -44,15 +44,23 @@ if ($ratings->count() > 0)
 
     <table class="listing" cellpadding="0" cellspacing="0">
         <tr>
+            <th width="15%" class="first">Datum</th>
                 <?php
+                // TODO zmenit round
+                $sql = "SELECT MAX(date) as datum FROM ratings WHERE resource_id = $resource->id AND round = 1";
+                $result = Database::instance()->query($sql);
+                $datum_result = $result->current()->datum;
+                $datum = date("d.m.Y", strtotime($datum_result));
+
                 $curators_count = $active_curators->count();
-                $cell_width = (100 / $curators_count);
+                $cell_width = (85 / $curators_count);
                 foreach ($active_curators as $i => $curator)
                 {
                     switch ($i)
                     {
                         case 0:
-                            $class = ' class="first"';
+                            //$class = ' class="first"';
+                            $class = '';
                             break;
                         case $curators_count-1:
                             $class = ' class="last"';
@@ -62,11 +70,11 @@ if ($ratings->count() > 0)
                     }
 
                     echo "<th{$class} width='$cell_width'>$curator</th>";
-    }?>
+                }?>
         </tr>
         <tr>
-                <?php
-                $is_comment = FALSE;
+            <td><?= $datum ?></td>
+                <?
                 foreach ($active_curators as $curator)
                 {
                     $rating = ORM::factory('rating')->where(array(
@@ -74,28 +82,29 @@ if ($ratings->count() > 0)
                         'curator_id'=>$curator->id,
                         'resource_id'=>$resource->id))
                         ->find();
-                    $is_comment = $is_comment + $rating->__isset('comments');
-        ?>
-            <td><?= $rating_values[$rating->rating] ?></td>
-
-    <?php } ?>
+                        
+                        if ($rating->id != 0) {
+                            $rating = $rating_values[$rating->rating];
+                        } elseif ($resource->resource_status_id == RS_NEW) {
+                            $rating = icon::img('cross', 'Kurátor ještě neohodnotil zdroj');
+                        } else {
+                            $rating = icon::img('bullet_black', 'Kurátor neohodnotil zdroj a hodnocení je již uzavřeno');
+                        }
+                        //echo Kohana::debug($rating);
+                    ?>
+            <td class="center"><?= $rating ?></td>
+                <?php } ?>
         </tr>
-    <?php if ($is_comment)
-                { ?>
-        <tr>
-                    <?php foreach ($active_curators as $curator)
-                    {
-                        $rating = ORM::factory('rating')->where(array(
-                            'round' => 1,
-                'curator_id'=>$curator->id,
-                'resource_id'=>$resource->id))
-                            ->find(); ?>
-
-            <td><?= $rating->comments ?></td>
-        <?php } ?>
-        </tr>
-    <? } ?>
     </table>
 </div>
+    <?php
+    $ratings = ORM::factory('rating')->where(array(
+                'resource_id'=>$resource->id, 'comments !=' => ''))->find_all();
+    foreach($ratings as $rating) {
+        echo "<p>{$rating->curator}: {$rating->comments}</p>";
+    }
+
+?>  
+
 
 <? } ?>

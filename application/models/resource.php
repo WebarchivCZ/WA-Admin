@@ -116,6 +116,7 @@ class Resource_Model extends Table_Model
         //$ratings_result = Kohana::config('wadmin.ratings_result');
         // FIXME zjistit hodnoceni daneho kola
         $ratings = ORM::factory('rating')->where(array('resource_id'=> $this->id))->find_all();
+        
         $result = 0;
         foreach ($ratings as $rating)
         {
@@ -137,6 +138,13 @@ class Resource_Model extends Table_Model
         {
             return 2;
         }
+    }
+
+    public function rating_count($round = 1) {
+        $ratings = ORM::factory('rating')->where(array('resource_id'=> $this->id,
+                                                       'round' => $round))
+                                         ->find_all();
+        return $ratings->count();
     }
 
 }

@@ -32,7 +32,7 @@ $config = array(
  */
 $config['debug_mode'] = TRUE;
 
-$config['version'] = '2.017';
+$config['version'] = '2.018';
 
 $config['ticket_url'] = 'http://raptor.webarchiv.cz:8000/trac/newticket?component=wa_admin&amp;milestone=WA Admin v2.02&amp;owner=brokes';
 ?>
