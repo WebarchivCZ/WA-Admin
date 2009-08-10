@@ -23,7 +23,7 @@ class Resource_Model extends Table_Model
     'publisher' ,
     'contract' ,
     'conspectus' ,
-    'crawl_freq' , 
+    'crawl_freq' ,
     'resource_status' ,
     'suggested_by');
 
@@ -36,7 +36,8 @@ class Resource_Model extends Table_Model
     public function __construct ($id = NULL)
     {
         parent::__construct($id);
-        if (is_null($id)) {
+        if (is_null($id))
+        {
             $date_format = Kohana::config('wadmin.date_format');
             $this->date = date($date_format);
         }
@@ -50,31 +51,58 @@ class Resource_Model extends Table_Model
             $date_format = Kohana::config('wadmin.date_format');
             $value = date($date_format);
         }
+        if ($key == 'date')
+        {
+            $date = new DateTime($value);
+            $value = $date->format(DATE_ATOM);
+        }
         parent::__set($key, $value);
     }
 
     public function __get ($column)
     {
+        $value = parent::__get($column);
         if ($column === 'date' OR $column === 'metadata' OR $column === 'catalogued')
         {
-            $value = parent::__get($column);
             if ( ! is_null($value))
             {
                 return date('d.m.Y', strtotime($value));
             }
         }
         // TODO prepracovat data v databazi a tahat je z DB
-        if ($column === 'rating_result' AND $this->resource_status_id != RS_NEW) {
-            $ratings_result = Kohana::config('wadmin.ratings_result');
-            return $ratings_result[$this->compute_rating()];
+        if ($column === 'rating_result')
+        {
+            $value = $this->compute_rating();
         }
-        return parent::__get($column);
+        return $value;
     }
 
     public function is_related ($column)
     {
-        // TODO prepsat natvrdo napsaneho kuratora, ktery zdroj vlozil
+    // TODO prepsat natvrdo napsaneho kuratora, ktery zdroj vlozil
         return in_array($column, $this->belongs_to) or $column == 'creator';
+    }
+
+    /**
+     * Rozhoduje, zda zdroj spravuje dany kurator
+     * @param Curator_Model $curator
+     * @return bool pravda pokud kurator spravuje zdroj
+     */
+    public function is_curated_by ($curator)
+    {
+        if ($curator instanceof Curator_Model AND $curator->__isset('id'))
+        {
+            if ($this->curator_id == $curator->id)
+            {
+                return TRUE;
+            } else
+            {
+                return FALSE;
+            }
+        } else
+        {
+            throw new InvalidArgumentException('Predany argument neni kurator');
+        }
     }
 
     public function add_curator ($curator)
@@ -110,40 +138,61 @@ class Resource_Model extends Table_Model
         return $correspondence;
     }
 
-    public function compute_rating($round = 1)
+    /**
+     * Pokud je jiz zaznam finalniho hodnoceni v databazi (rating_result sloupec), pak je vracena tato hodnota.
+     * V opacnem pripade je hodnoceni spocitano z hodnoceni jednotlivych kuratoru.
+     * @param int $round
+     * @param String $return_type
+     * @return int
+     */
+    public function compute_rating($round = 1, $return_type = 'string')
     {
-        // TODO rozhodnout jestli vracet INT nebo rovnou hodnoceni
-        //$ratings_result = Kohana::config('wadmin.ratings_result');
-        // FIXME zjistit hodnoceni daneho kola
-        $ratings = ORM::factory('rating')->where(array('resource_id'=> $this->id))->find_all();
-        
-        $result = 0;
-        foreach ($ratings as $rating)
+    // TODO rozhodnout jestli vracet INT nebo rovnou hodnoceni
+    //$ratings_result = Kohana::config('wadmin.ratings_result');
+    // FIXME zjistit hodnoceni daneho kola
+        $value = parent::__get('rating_result');
+        if ($value == '')
         {
-            $rating = $rating->rating;
-            if ($rating == 4)
+            $ratings = ORM::factory('rating')->where(array('resource_id'=> $this->id))->find_all();
+
+            $result = 0;
+            foreach ($ratings as $rating)
             {
-                return $rating;
+                $rating = $rating->rating;
+                if ($rating == 4)
+                {
+                    $final_rating = $rating;
+                }
+                $result += $rating;
             }
-            $result += $rating;
-        }
-        $result = $result / $ratings->count();
-        if ($result < 0.5)
-        {
-            return 1;
-        } elseif ($result >= 0.5 AND $rating < 1)
-        {
-            return 3;
+            $result = $result / $ratings->count();
+            if ($result < 0.5)
+            {
+                $final_rating = 1;
+            } elseif ($result >= 0.5 AND $rating < 1)
+            {
+                $final_rating = 3;
+            } else
+            {
+                $final_rating = 2;
+            }
         } else
         {
-            return 2;
+            $final_rating = $value;
+        }
+        if ($return_type == 'string') {
+            $values = Rating_Model::get_final_array();
+            return $values[$final_rating];
+        } else {
+            return $final_rating;
         }
     }
 
-    public function rating_count($round = 1) {
+    public function rating_count($round = 1)
+    {
         $ratings = ORM::factory('rating')->where(array('resource_id'=> $this->id,
-                                                       'round' => $round))
-                                         ->find_all();
+            'round' => $round))
+            ->find_all();
         return $ratings->count();
     }
 

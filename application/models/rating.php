@@ -47,5 +47,10 @@ class Rating_Model extends Table_Model
 			throw new InvalidArgumentException();
 		}
 	}
+
+        public static function get_final_array() {
+
+            return Kohana::config('wadmin.ratings_result');
+        }
 }
 ?>

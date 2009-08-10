@@ -80,10 +80,11 @@ abstract class Table_Controller extends Template_Controller
         }
         $this->record = $record;
         $url = url::site("/tables/{$this->table}/edit/{$id}");
-        $this->template->content = View::factory($this->view)
-            ->bind('values', $values)
-            ->bind('header', $this->header)
-            ->set('edit_url', $url);
+        $view = View::factory($this->view);
+        $view->bind('values', $values);
+        $view->bind('header', $this->header);
+        $view->set('edit_url', $url);
+        $this->template->content = $view;     
     }
 
     public function edit($id = FALSE)
@@ -107,12 +108,21 @@ abstract class Table_Controller extends Template_Controller
         }
     }
 
-    public function add()
+    public function add($values = NULL)
     {
-        $form = Formo::factory()->orm($this->model)->add('submit', 'Vložit')->remove('id');
-        // TODO vypisovani labelu
+        $form = Formo::factory()->orm($this->model)
+            ->label_filter('display::translate_orm')
+            ->label_filter('ucfirst')
+            ->add('submit', 'Vložit')
+            ->remove($this->columns_ignored);
+        if (! is_null($values)) {
+            foreach ($values as $column => $value) {
+                $form->{$column}->value = $value;
+            }
+        }
         $view = new View('tables/record_add');
         $view->form = $form->get();
+        $view->bind('header', $this->header);
         $this->template->content = $view;
         if ($form->validate())
         {

@@ -12,7 +12,7 @@
     <table class="listing" cellpadding="0" cellspacing="0">
 
         <tr>
-            <th class="first">Sloupec</th>
+            <th class="first" width="30%">Sloupec</th>
             <th class="last">Hodnota</th>
         </tr>
 
@@ -45,4 +45,4 @@
 
 <p>
     <a href="<?= $edit_url ?>"><button>Editace záznamu</button></a>
-</p>
+    <button onclick="history.back()" class="floatright">Zpět</button></p>

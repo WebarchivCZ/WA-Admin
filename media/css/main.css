@@ -246,7 +246,7 @@ div.table {
     float:left;
     position:relative;
     width:614px;
-    margin:0 0 37px 0;
+    margin:0 0 15px 0;
 }
 table.listing {
     border-bottom:1px solid #9097A9;
@@ -386,4 +386,11 @@ div#debug {
 
 p.message {
     font-size: 1.3em;
+}
+
+h3.record-information {
+    clear: both;
+    margin: 8px;
+    padding-left: 5px;
+    border-left: 10px solid #9a9a9a;
 }

@@ -62,7 +62,8 @@ class Rate_Controller extends Template_Controller
                 $o_rating->date = date('Y-m-d H:i:s');
                 $o_rating->rating = $rating;
 
-                if ($comments[$resource_id] != '') {
+                if ($comments[$resource_id] != '')
+                {
                     $o_rating->comments = $comments[$resource_id];
                 }
                 $o_rating->save();
@@ -71,40 +72,6 @@ class Rate_Controller extends Template_Controller
                     $this->session->set_flash('message', 'Hodnocení bylo úspěšně uloženo.');
                 }
             }
-        }
-        url::redirect('rate');
-    }
-
-    public function save_final()
-    {
-    // DONE ukladani finalnich hodnoceni musi probihat v davkach (v soucasnosti se uklada po jednom zdroji)
-        $ratings = $this->input->post('rating');
-
-        foreach ($ratings as $id => $rating)
-        {
-            $resource = ORM::factory('resource', $id);
-            switch ($rating)
-            {
-                case 1:
-                    $status = RS_REJECTED_WA;
-                    break;
-                case 2:
-                    $status = RS_APPROVED_WA;
-                    break;
-                case 3:
-                    $status = RS_RE_EVALUATE;
-                    break;
-                case 4:
-                    $status = RS_REJECTED_WA;
-                    break;
-                default:
-                    $this->session->set_flash('message', 'Nespravne vysledne hodnoceni');
-                    url::redirect('rate');
-            }
-            $resource->resource_status_id = $status;
-            $resource->rating_result = $rating;
-            $resource->save();
-            $this->session->set_flash('message', 'Finalni hodnoceni bylo uspesne ulozeno');
         }
         url::redirect('rate');
     }

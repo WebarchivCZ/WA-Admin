@@ -9,11 +9,17 @@ class Resources_Controller extends Table_Controller
     public function view($id = FALSE)
     {
         parent::view($id);
+
+        $resource = $this->record;
+        /* @var $resource Resource_Model */
         $append_view = View::factory('tables/append_resource');
-        $append_view->resource = $this->record;
+        $append_view->resource = $resource;
         $append_view->active_curators = ORM::factory('curator')->where('active', 1)->find_all();
-        $append_view->ratings = ORM::factory('rating')->where('resource_id', $this->record->id)
+        $append_view->ratings = ORM::factory('rating')->where('resource_id', $resource->id)
             ->find_all();
+        $append_view->show_final_rating = $resource->is_curated_by($this->user);
+        $append_view->seeds = ORM::factory('seed')->where('resource_id', $resource->id)->find_all();
+
         $view = $this->template->content;
         $view->set('append_view', $append_view);
     }
@@ -32,6 +38,9 @@ class Resources_Controller extends Table_Controller
                 ->label_filter('display::translate_orm')
                 ->label_filter('ucfirst');
 
+            $form->rating_result->type('select');
+            $form->rating_result->values(Rating_Model::get_final_array());
+            $form->rating_result->value($resource->compute_rating(1, 'int'));
             $form->contract_cc->checked((bool)$resource->contract->cc);
             $form->contract_comments->value($resource->contract->comments)
                 ->readonly(true);
@@ -60,6 +69,38 @@ class Resources_Controller extends Table_Controller
             $this->session->set_flash('message', 'Zdroj s daným ID neexistuje');
             url::redirect('tables/resources');
         }
+    }
+
+    public function save_final_rating($id, $rating = NULL)
+    {
+        if ($rating == NULL)
+        {
+            $rating = $this->input->post('final_rating');
+        }
+        $resource = ORM::factory('resource')->find($id);
+        switch ($rating)
+        {
+            case 1:
+                $status = RS_REJECTED_WA;
+                break;
+            case 2:
+                $status = RS_APPROVED_WA;
+                break;
+            case 3:
+                $status = RS_RE_EVALUATE;
+                break;
+            case 4:
+                $status = RS_REJECTED_WA;
+                break;
+            default:
+                $this->session->set_flash('message', 'Nesprávné výsledné hodnocení');
+        }
+        $resource->resource_status_id = $status;
+        $resource->rating_result = $rating;
+        $resource->save();
+        $this->session->set_flash('message', 'Finální hodnocení bylo úspěšně uloženo');
+
+        url::redirect(url::site('tables/resources/view/'.$resource->id));
     }
 }
 ?>

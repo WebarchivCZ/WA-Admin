@@ -19,6 +19,15 @@ class Seed_Model extends Table_Model
 	protected $belongs_to = array(
 		'resource', 'seed_status');
 
+        public function __get($column) {
+            $value = parent::__get($column);
+            if ($this->__isset($column) AND ($column == 'valid_to' OR $column == 'valid_from')) {
+                $date_format = Kohana::config('wadmin.short_date_format');
+                $value = date($date_format, strtotime($value));
+            }
+            return $value;
+        }
+
 	public function __construct ($id = NULL)
 	{
 		parent::__construct($id);
