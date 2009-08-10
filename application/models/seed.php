@@ -10,7 +10,6 @@ class Seed_Model extends Table_Model
 		'resource' ,
 		'url' ,
                 'seed_status' ,
-		'redirect' , 
 		'valid_from' , 
 		'valid_to');
 

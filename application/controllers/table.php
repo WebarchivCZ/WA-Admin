@@ -84,7 +84,7 @@ abstract class Table_Controller extends Template_Controller
         $view->bind('values', $values);
         $view->bind('header', $this->header);
         $view->set('edit_url', $url);
-        $this->template->content = $view;     
+        $this->template->content = $view;
     }
 
     public function edit($id = FALSE)
@@ -104,7 +104,7 @@ abstract class Table_Controller extends Template_Controller
             $this->session->set_flash('message', 'Záznam byl úspěšně změněn');
             $url = 'tables/'.$this->uri->segment(2).'/view/'.$id;
             url::redirect($url);
-            
+
         }
     }
 
@@ -115,8 +115,11 @@ abstract class Table_Controller extends Template_Controller
             ->label_filter('ucfirst')
             ->add('submit', 'Vložit')
             ->remove($this->columns_ignored);
-        if (! is_null($values)) {
-            foreach ($values as $column => $value) {
+
+        if (! is_null($values))
+        {
+            foreach ($values as $column => $value)
+            {
                 $form->{$column}->value = $value;
             }
         }
@@ -127,7 +130,10 @@ abstract class Table_Controller extends Template_Controller
         if ($form->validate())
         {
             $form->save();
+            $this->record = $form->get_model($this->model);
+
             $this->session->set_flash('message', 'Záznam úspěšně přidán');
+            url::redirect('/tables/'.$this->table.'/view/'.$this->record->id);
         }
     }
 

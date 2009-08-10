@@ -7,7 +7,7 @@
 
     <table class="listing" cellpadding="0" cellspacing="0">
         <tr>
-            <th class="first">Zdroj</th>
+            <th class="first" width="50%">Zdroj</th>
             <th class="last">Kontakt</th>
         </tr>
 <?php foreach ($resources as $resource) {

@@ -1,6 +1,5 @@
 <?php
 /**
- * DONE proklik na editace zdroje
  * TODO zobrazovat zdroje, ktere vyhovuji podminkam - zjistit
  *
  */
