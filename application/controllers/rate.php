@@ -9,16 +9,28 @@ class Rate_Controller extends Template_Controller
         $view =	new View('rate');
 
         $id_array = $this->find_resources(RS_NEW);
-        $resources_new = ($id_array != FALSE) ? ORM::factory('resource')->in('id', $id_array)->find_all() : FALSE;
+        $resources_new = ($id_array != FALSE) ? ORM::factory('resource')
+                                                        ->in('id', $id_array)
+                                                        ->orderby('date', 'ASC')
+                                                        ->find_all() : FALSE;
 
         $id_array = $this->find_resources(RS_RE_EVALUATE);
-        $resources_reevaluate = ($id_array != FALSE) ? ORM::factory('resource')->in('id', $id_array)->find_all() : FALSE;
+        $resources_reevaluate = ($id_array != FALSE) ? ORM::factory('resource')
+                                                        ->in('id', $id_array)
+                                                        ->orderby('date', 'ASC')
+                                                        ->find_all() : FALSE;
 
-        $id_array = $this->find_resources(RS_NEW, true);
-        $resources_rated_new = ($id_array != FALSE) ? ORM::factory('resource')->in('id', $id_array)->find_all() : FALSE;
+        $id_array = $this->find_resources(RS_NEW, TRUE);
+        $resources_rated_new = ($id_array != FALSE) ? ORM::factory('resource')
+                                                        ->in('id', $id_array)
+                                                        ->orderby('date', 'ASC')
+                                                        ->find_all() : FALSE;
 
-        $id_array = $this->find_resources(RS_RE_EVALUATE, true);
-        $resources_rated_reevaluate = ($id_array != FALSE) ? ORM::factory('resource')->in('id', $id_array)->find_all() : FALSE;
+        $id_array = $this->find_resources(RS_RE_EVALUATE, TRUE);
+        $resources_rated_reevaluate = ($id_array != FALSE) ? ORM::factory('resource')
+                                                        ->in('id', $id_array)
+                                                        ->orderby('date', 'ASC')
+                                                        ->find_all() : FALSE;
 
         $view->resources_new = $resources_new;
         $view->resources_reevaluate = $resources_reevaluate;

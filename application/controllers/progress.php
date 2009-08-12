@@ -28,13 +28,20 @@ class Progress_Controller extends Template_Controller
     public function new_contract($resource_id) {
 
         $resource = ORM::factory('resource', $resource_id);
-        
+        $publisher = ORM::factory('publisher', $resource->publisher_id);
+        $publisher_contracts = $publisher->get_contracts();
+
         $contract = ORM::factory('contract');
         $new_contract_no = $contract->new_contract_no(date('Y'));
         
         $form = Formo::factory('add_contract');
         $form->add('resource_title')->label('Nazev zdroje')->value($resource->title)->disabled();
         $form->add('contract_no')->label('Číslo smlouvy')->value($new_contract_no)->required(TRUE);
+        if ($publisher_contracts->count() > 0) {
+            $form->add_html("<button id='contract-switch' type='button'>Pouzit jiz existujici smlouvu</button>");
+            $values = $publisher_contracts->as_array();
+            $form->add_select('contract_no_exist', $values)->id('contract-exist')->label('Číslo smlouvy')->disabled(TRUE);
+        }
         $form->add('year')->label('Rok')->value(date('Y'))->required(TRUE);
         $form->add('date_signed')->label('Datum podpisu')->value(date('Y-m-d'))->required(TRUE);
         $form->add('checkbox', 'cc')->label('Creative Commons');

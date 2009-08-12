@@ -82,18 +82,22 @@ if ($ratings->count() > 0)
 
                         if ($rating->id != 0)
                         {
-                            $rating = "<a href='".url::site('tables/ratings/view/'.$rating->id)."'>
-                                {$rating_values[$rating->rating]}</a>";
+                            $rating_output = "<span title='{$rating->date}'}>{$rating->rating}</span>";
+                            if ($rating->curator_id == $user_id)
+                            {
+                                $rating_output = "<a href='".url::site('tables/ratings/edit/'.$rating->id)."'>
+                                    {$rating_output}</a>";
+                            }
                         } elseif ($resource->resource_status_id == RS_NEW)
                         {
-                            $rating = icon::img('cross', 'Kurátor ještě neohodnotil zdroj');
+                            $rating_output = icon::img('cross', 'Kurátor ještě neohodnotil zdroj');
                         } else
                         {
-                            $rating = icon::img('bullet_black', 'Kurátor neohodnotil zdroj a hodnocení je již uzavřeno');
-                        }
+                            $rating_output = icon::img('bullet_black', 'Kurátor neohodnotil zdroj a hodnocení je již uzavřeno');
+        }
                         ?>
-                <td class="center"><?= $rating ?></td>
-                    <?php } ?>
+                <td class="center"><?= $rating_output ?></td>
+    <?php } ?>
             </tr>
         </table>
     </div>
@@ -109,22 +113,21 @@ if ($ratings->count() > 0)
         {
             $round = ($resource->resource_status_id == RS_NEW) ? 1 : 2;
             $resource_rating = $resource->compute_rating(1, 'int');
-            $rating_options = Rating_Model::get_final_array()
-                ?>
+        $rating_options = Rating_Model::get_final_array()
+            ?>
 
 
-            <?= form::open(url::site('tables/resources/save_final_rating/'.$resource->id)) ?>
+                <?= form::open(url::site('tables/resources/save_final_rating/'.$resource->id)) ?>
     <p><b>Finalni hodnoceni:</b>
-                <?= form::dropdown('final_rating', $rating_options, $resource_rating)?>
-                <?= form::submit('save_rating', 'Uložit hodnocení'); ?>
+        <?= form::dropdown('final_rating', $rating_options, $resource_rating)?>
+            <?= form::submit('save_rating', 'Uložit hodnocení'); ?>
     </p>
             <?= form::close() ?>
         <?}
-        echo '</div>';
-    } ?>
+    echo '</div>';
+} ?>
 
     <h2 id="section-seeds" onclick="$('#table-seeds').toggle()">Semínka</h2>
-    <!-- <div id="seeds" style="display:none;">XXX</div> -->
     <div id="table-seeds" class="table" style="display:none;">
         <?= html::image(array('src'=>'media/img/bg-th-left.gif', 'width'=>'8', 'height'=>'7', 'class'=>'left')) ?>
         <?= html::image(array('src'=>'media/img/bg-th-right.gif', 'width'=>'7', 'height'=>'7', 'class'=>'right')) ?>
@@ -148,7 +151,7 @@ if ($ratings->count() > 0)
             }
             $output .= '</table>';
         }
-        echo $output;
-        ?>
+echo $output;
+?>
         <p><a href="<?= url::site('tables/seeds/add/'.$resource->id) ?>"><button>Přidat semínko</button></a></p>
     </div>

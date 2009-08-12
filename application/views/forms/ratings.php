@@ -20,7 +20,10 @@
                     <?= html::anchor('tables/resources/view/'.$resource->id, $resource->title) ?>
             </td>
             <td class="center"><a href="<?=$resource->url ?>" target="_blank"><?= icon::img('link', $resource->url) ?></a></td>
-            <td class="center"><?=html::image(array('src' => 'media/img/icons/find.png' , 'width' => '16' , 'height' => '16'))?></td>
+            <td class="center">
+                <?= html::anchor('tables/resources/search/'.$resource->conspectus_id,
+                        html::image(array('src' => 'media/img/icons/find.png' , 'width' => '16' , 'height' => '16'))) ?>
+            </td>
             <td class="center">
                     <?= form::dropdown("rating[$resource->id]", $rating_values_array, $ratings[$resource->id]); ?>
             </td>

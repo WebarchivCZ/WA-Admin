@@ -104,7 +104,6 @@ abstract class Table_Controller extends Template_Controller
             $this->session->set_flash('message', 'Záznam byl úspěšně změněn');
             $url = 'tables/'.$this->uri->segment(2).'/view/'.$id;
             url::redirect($url);
-
         }
     }
 
@@ -142,7 +141,7 @@ abstract class Table_Controller extends Template_Controller
         $form = Formo::factory()->orm($this->model, $id)->add('submit', 'SMAZAT');
         // TODO vypisovani labelu
         $view = new View('edit_table');
-        $view->type = 'delete';
+        $view->type = 'edit';
         $view->form = $form->get();
         $this->template->content = $view;
         if ($form->validate())
@@ -154,7 +153,11 @@ abstract class Table_Controller extends Template_Controller
 
     }
 
-    public function search()
+    /**
+     *
+     * @param array $conditions podminky za WHERE
+     */
+    public function search($conditions = NULL)
     {
         $search_string = $this->input->post('search_string');
 
@@ -163,7 +166,12 @@ abstract class Table_Controller extends Template_Controller
         $offset   = ($page_num - 1) * $per_page;
 
         $model = ORM::factory($this->model);
-        $result = $model->like($model->__get('primary_val'), $search_string)->find_all($per_page,$offset);
+        if (! is_null($conditions)) {
+            $result = $model->where($conditions)->find_all();
+        } else {
+            $result = $model->like($model->__get('primary_val'), $search_string)
+                            ->find_all($per_page,$offset);
+        }
         $pages = Pagination::factory(array
             (
             'style' => 'dropdown',

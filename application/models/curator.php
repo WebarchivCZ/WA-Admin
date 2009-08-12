@@ -18,7 +18,7 @@ class Curator_Model extends Auth_User_Model
 		'role' , 
 		'comments');
 
-	protected $primary_val = 'username';
+	protected $primary_val = 'vocative';
         protected $primary_var = 'aa';
         protected $sorting = array('username' => 'asc');
 
@@ -39,5 +39,13 @@ class Curator_Model extends Auth_User_Model
 		}
 		parent::__set($key, $value);
 	}
+
+        public function __get ($column) {
+            $value = parent::__get($column);
+            if ($column == 'vocative') {
+                $value = $this->firstname . ' ' . $this->lastname;
+            }
+            return $value;
+        }
 }
 ?>

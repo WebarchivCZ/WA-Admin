@@ -18,6 +18,7 @@ class Resources_Controller extends Table_Controller
         $append_view->ratings = ORM::factory('rating')->where('resource_id', $resource->id)
             ->find_all();
         $append_view->show_final_rating = $resource->is_curated_by($this->user);
+        $append_view->user_id = $this->user->id;
         $append_view->seeds = ORM::factory('seed')->where('resource_id', $resource->id)->find_all();
 
         $view = $this->template->content;
@@ -101,6 +102,14 @@ class Resources_Controller extends Table_Controller
         $this->session->set_flash('message', 'Finální hodnocení bylo úspěšně uloženo');
 
         url::redirect(url::site('tables/resources/view/'.$resource->id));
+    }
+
+    public function search($konspekt_id = NULL) {
+        if ($konspekt_id == NULL) {
+            parent::search();
+        } else {
+            parent::search(array('conspectus_id' => $konspekt_id));
+        }
     }
 }
 ?>
