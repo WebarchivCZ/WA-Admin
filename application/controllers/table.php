@@ -91,6 +91,7 @@ abstract class Table_Controller extends Template_Controller
     {
         $form = Formo::factory()->orm($this->model, $id)
             ->add('submit', 'Upravit')
+            ->remove($this->columns_ignored)
             ->label_filter('display::translate_orm')
             ->label_filter('ucfirst');
         $view = new View('tables/record_edit');
@@ -166,11 +167,13 @@ abstract class Table_Controller extends Template_Controller
         $offset   = ($page_num - 1) * $per_page;
 
         $model = ORM::factory($this->model);
-        if (! is_null($conditions)) {
+        if (! is_null($conditions))
+        {
             $result = $model->where($conditions)->find_all();
-        } else {
+        } else
+        {
             $result = $model->like($model->__get('primary_val'), $search_string)
-                            ->find_all($per_page,$offset);
+                ->find_all($per_page,$offset);
         }
         $pages = Pagination::factory(array
             (
@@ -199,6 +202,20 @@ abstract class Table_Controller extends Template_Controller
         $view->pages = $pages . $pages_inline;
         $this->template->content = $view;
         $this->template->title = Kohana::lang('tables.'.$this->title) . " | " . Kohana::lang('tables.index');
+    }
+
+    //TODO dokumentace, overit funkcnost
+    protected function get_record ($id = NULL)
+    {
+        $record = ORM::factory($this->model);
+        if (! $record->__isset('id') OR ! is_null($id))
+        {
+            $this->session->set_flash('message', 'Záznam neexistuje');
+            url::redirect("tables/{$this->table}");
+        } else
+        {
+            return $record;
+        }
     }
 }
 ?>

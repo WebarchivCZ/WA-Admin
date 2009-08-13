@@ -12,7 +12,7 @@ class Addressing_Controller extends Template_Controller {
     public function index() {
 
         $resources = ORM::factory('resource')
-            ->in('resource_status_id', array(2, 8))
+            ->in('resource_status_id', array(RS_APPROVED_WA, RS_RE_EVALUATE, RS_CONTACTED))
             ->where('curator_id', $this->user->id)
             ->find_all();
 

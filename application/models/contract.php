@@ -92,5 +92,10 @@ class Contract_Model extends Table_Model
             parent::select_list($key, $val);
         }
     }
+
+    public function get_resources() {
+        $resources = ORM::factory('resource')->where('contract_id', $this->id)->find_all();
+        return $resources;
+    }
 }
 ?>

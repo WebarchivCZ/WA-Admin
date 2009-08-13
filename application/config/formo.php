@@ -34,6 +34,9 @@ $config['defaults']['tech_problems'] = array('type'=>'textarea');
 $config['defaults']['metadata'] = array('type'=>'bool');
 $config['defaults']['catalogued'] = array('type'=>'bool');
 $config['defaults']['contract_cc'] = array('type'=>'bool');
+$config['defaults']['cc'] = array('type'=>'bool');
+$config['defaults']['addendum'] = array('type'=>'bool');
+$config['defaults']['redirect'] = array('type'=>'bool');
 
 //$config['plugins'] = array('orm');
 
