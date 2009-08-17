@@ -16,7 +16,7 @@ class Contract_Model extends Table_Model
     'date_signed' ,
     'addendum' ,
     'cc' ,
-    'comments');
+    'type');
 
     public function _construct ($id = NULL)
     {
@@ -38,7 +38,10 @@ class Contract_Model extends Table_Model
             $year = $this->year;
             return $contract_no.'/'.$year;
         }
-        return parent::__get($column);
+
+        $value = parent::__get($column);
+        
+        return $value;
     }
     
     public function __set ($key, $value)
