@@ -46,7 +46,7 @@ class Resource_Model extends Table_Model
     // FIXME opravit nastavovani data
     public function __set ($key, $value)
     {
-        if (($key === 'metadata' OR $key === 'catalogued') AND $value == TRUE)
+        if ($key === 'catalogued' AND $value == TRUE)
         {
             $date_format = Kohana::config('wadmin.date_format');
             $value = date($date_format);
@@ -62,11 +62,11 @@ class Resource_Model extends Table_Model
     public function __get ($column)
     {
         $value = parent::__get($column);
-        if ($column === 'date' OR $column === 'metadata' OR $column === 'catalogued')
+        if ($column === 'date' OR $column === 'catalogued')
         {
             if ( ! is_null($value))
             {
-                return date('d.m.Y', strtotime($value));
+                return date_helper::short_date($value);
             }
         }
         // TODO prepracovat data v databazi a tahat je z DB
@@ -139,6 +139,22 @@ class Resource_Model extends Table_Model
     }
 
     /**
+     * Funkce vraci datum posledniho kontaktaktovani vydavatele zdroje
+     * return date datum posledniho kontaktu
+     */
+    public function get_last_contact() {
+        $correspondence = ORM::factory('correspondence')
+                            ->where('resource_id', $this->id)
+                            ->orderby('date', 'DESC')
+                            ->find();
+        if ($correspondence->date != '') {
+            return date_helper::short_date($correspondence->date);
+        } else {
+            return 'Nekontaktován';
+        }
+    }
+
+    /**
      * Pokud je jiz zaznam finalniho hodnoceni v databazi (rating_result sloupec), pak je vracena tato hodnota.
      * V opacnem pripade je hodnoceni spocitano z hodnoceni jednotlivych kuratoru.
      * @param int $round
@@ -154,7 +170,9 @@ class Resource_Model extends Table_Model
         if ($value == '')
         {
             $ratings = ORM::factory('rating')->where(array('resource_id'=> $this->id))->find_all();
-
+            if ($ratings->count() == 0) {
+                return FALSE;
+            }
             $result = 0;
             foreach ($ratings as $rating)
             {

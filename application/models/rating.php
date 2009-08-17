@@ -22,6 +22,13 @@ class Rating_Model extends Table_Model
     '2'  => 'ano' ,
     '4'  => 'technické ne');
 
+    protected static $ratings_result = array(
+    //'NULL' => '',
+    '1' => 'NE' ,
+    '2' => 'ANO' ,
+    '3' => 'MOŽNÁ' ,
+    '4' => 'TECHNICKÉ NE');
+
     protected $primary_val = 'rating';
     protected $sorting = array('date' => 'asc');
 
@@ -38,15 +45,19 @@ class Rating_Model extends Table_Model
     public function  __get($column)
     {
         $value = parent::__get($column);
-        
-        if ($column == 'rating') {
+
+        if ($column == 'rating')
+        {
             $value = self::$rating_values[$value];
         }
 
-        if ($column == 'tech_problems') {
-            if ($value == TRUE) {
+        if ($column == 'tech_problems')
+        {
+            if ($value == TRUE)
+            {
                 $value = 'ANO';
-            } else {
+            } else
+            {
                 $value = 'NE';
             }
         }
@@ -92,14 +103,27 @@ class Rating_Model extends Table_Model
         }
     }
 
-    public function get_rating () {
+    public function get_rating ()
+    {
         return parent::__get('rating');
     }
 
     public static function get_final_array()
     {
 
-        return Kohana::config('wadmin.ratings_result');
+        return self::$ratings_result;
+    }
+
+    public static function get_final_rating($value)
+    {
+        if (is_string($value))
+        {
+            $ratings = self::get_final_array();
+            return array_search($value, $ratings);
+        } else
+        {
+            return FALSE;
+        }
     }
 
     public static function get_rating_values()

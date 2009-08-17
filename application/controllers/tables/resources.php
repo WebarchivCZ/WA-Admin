@@ -34,7 +34,7 @@ class Resources_Controller extends Table_Controller
             $form = Formo::factory()->orm('resource', $id)
                 ->remove(array('id', 'publisher_id', 'contact_id'))
                 ->add('contract_cc')
-                ->add('contract_comments')
+                ->add('contract_type')
                 ->add('submit', 'Upravit')
                 ->label_filter('display::translate_orm')
                 ->label_filter('ucfirst');
@@ -43,17 +43,15 @@ class Resources_Controller extends Table_Controller
             $form->rating_result->values(Rating_Model::get_final_array());
             $form->rating_result->value($resource->compute_rating(1, 'int'));
             $form->contract_cc->checked((bool)$resource->contract->cc);
-            $form->contract_comments->value($resource->contract->comments)
+            $form->contract_type->value($resource->contract->type)
                 ->readonly(true);
-            $form->metadata->checked(! is_null($resource->metadata))
-                ->title($resource->metadata);
             $form->catalogued->checked(! is_null($resource->catalogued))
                 ->title($resource->catalogued);
 
             $form->_order = array('title', 'url', 'date', 'creator_id', 'curator_id',
-                'contract_id', 'contract_cc', 'contract_comments', 'conspectus_id', 'crawl_freq_id',
+                'contract_id', 'contract_cc', 'contract_type', 'conspectus_id', 'crawl_freq_id',
                 'resource_status_id', 'suggested_by_id', 'rating_result',
-                'aleph_id', 'issn', 'metadata', 'catalogued',
+                'aleph_id', 'issn', 'catalogued',
                 'tech_problems', 'comments', 'upravit');
 
             $view = View::factory('tables/record_edit');

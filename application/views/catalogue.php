@@ -11,8 +11,7 @@ if(isset($resources) AND $resources->count() != 0)
         <tr>
             <th class="first">Název</th>
             <th>URL</th>
-            <th>Zkatalogizováno</th>
-            <th class="last">Metadata</th>
+            <th class="last">Zkatalogizováno</th>
         </tr>
             <?php
             foreach ($resources as $resource)
@@ -21,7 +20,7 @@ if(isset($resources) AND $resources->count() != 0)
         <tr>
             <td class="first"><?= html::anchor('tables/resources/view/'.$resource->id, $resource->title) ?></td>
             <td><a href="<?=$resource->url ?>" target="_blank"><?=$resource->url ?></a></td>
-            <td class="center">
+            <td class="center last">
                         <?php
                         if($resource->catalogued == NULL)
                         {
@@ -32,18 +31,6 @@ if(isset($resources) AND $resources->count() != 0)
             echo icon::img('tick', $resource->catalogued);
         }
                         ?>
-            </td>
-            <td class="center">
-                        <?php
-                        if($resource->metadata == NULL)
-                        {
-                            $url = url::site(url::current()).'/save/metadata/'.$resource->id;
-                            echo html::anchor($url, icon::img('pencil', 'Zaznamenat tvorbu metadat'));
-        } else
-        {
-                    echo icon::img('tick', $resource->metadata);
-        }
-        ?>
             </td>
         </tr>
     <?php } ?>

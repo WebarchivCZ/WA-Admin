@@ -8,14 +8,14 @@ $config = array(
 		'progress' , 
 		'catalogue' , 
 		'quality_control') , 
-	
+	// TODO odstranit
 	'ratings_result' => array(
                 //'NULL' => '',
 		'1' => 'NE' , 
 		'2' => 'ANO' , 
 		'3' => 'MOŽNÁ' , 
 		'4' => 'TECHNICKÉ NE') , 
-	
+	// TODO odstranit - nahradit za metody z rating modelu
 	'rating_values' => array(
 		'NULL'   => '' , 
 		'-2' => 'ne' , 
@@ -35,7 +35,7 @@ $config = array(
  */
 $config['debug_mode'] = TRUE;
 
-$config['version'] = '2.021';
+$config['version'] = '2.022';
 
 $config['ticket_url'] = 'http://raptor.webarchiv.cz:8000/trac/newticket?component=wa_admin&amp;milestone=WA Admin v2.02&amp;owner=brokes';
 ?>

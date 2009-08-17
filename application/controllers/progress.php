@@ -1,4 +1,5 @@
 <?php
+//TODO - zdroje se zobrazují v záložce už po ohodnocení, měly by se zobrazovat až po 1. oslovení 
 class Progress_Controller extends Template_Controller
 {
 
@@ -7,8 +8,9 @@ class Progress_Controller extends Template_Controller
     public function index()
     {
         $resources = ORM::factory('resource')
-            ->in('resource_status_id', array(2, 8))
+            ->in('resource_status_id', RS_CONTACTED)
             ->where('curator_id', $this->user->id)
+            ->orderby('title', 'DESC')
             ->find_all();
 
         $view = View::factory('progress');
@@ -38,7 +40,8 @@ class Progress_Controller extends Template_Controller
         $form->add('date_signed')->label('Datum podpisu')->value(date('Y-m-d'))->required(TRUE);
         $form->add('checkbox', 'cc')->label('Creative Commons');
         $form->add('checkbox', 'addendum')->label('Doplněk');
-        $form->add('textarea', 'comments')->label('Typ smlouvy');
+        $form->add('type')->label('Typ smlouvy');
+        $form->add('textarea', 'comments')->label('Komentář');
         $form->add('submit', 'odeslat');
 
         if( ! $form->validate())
@@ -69,8 +72,7 @@ class Progress_Controller extends Template_Controller
             $resource->contract_id = $contract->id;
             $resource->save();
 
-            $contract_no = $contract->contract_no.'/'.$contract->year;
-            $message = "Zdroj <em>{$resource->title}</em> - smlouva {$contract_no} uložena.";
+            $message = "Zdroj <em>{$resource->title}</em> - smlouva {$contract} uložena.";
             $this->session->set_flash('message', $message);
 
             url::redirect('tables/resources/view/'.$resource_id);
@@ -118,6 +120,7 @@ class Progress_Controller extends Template_Controller
         } else
         {
             $resource->contract_id = $contract->id;
+            $resource->resource_status_id = RS_APPROVED_PUB;
             $resource->save();
             $this->session->set_flash('message', 'Smlouva byla úspěšně přiřazena.');
             url::redirect('tables/resources/view/'.$resource->id);
