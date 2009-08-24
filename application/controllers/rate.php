@@ -123,6 +123,7 @@ class Rate_Controller extends Template_Controller
         }
         $query = $db->query($sql_query);
 
+// TODO refaktorovat - stejna metoda v addressing
         $id_array = array();
         foreach($query->result_array(FALSE) as $row)
         {

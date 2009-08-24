@@ -13,7 +13,7 @@ class Conspectus_Model extends Table_Model
 	
 	protected $table_name = 'conspectus';
 
-	protected $primary_val = 'category';
+	protected $primary_val = 'title';
 
 	protected $has_many = array(
 		'resources');
@@ -27,5 +27,14 @@ class Conspectus_Model extends Table_Model
 	{
 		parent::__set($key, $value);
 	}
+
+        public function __get ($column) {
+            if ($column == 'title') {
+                $id = parent::__get('id');
+                $category = parent::__get('category');
+                return $id.' - '.$category;
+            }
+            return parent::__get($column);
+        }
 }
 ?>

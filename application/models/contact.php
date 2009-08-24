@@ -12,7 +12,7 @@ class Contact_Model extends Table_Model
 		'publisher'
 	);
 
-	protected $primary_val = 'name';
+	protected $primary_val = 'email';
         protected $sorting = array('email' => 'asc');
 
 	protected $belongs_to = array(

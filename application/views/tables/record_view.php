@@ -15,7 +15,6 @@
             <th class="first" width="30%">Sloupec</th>
             <th class="last">Hodnota</th>
         </tr>
-
             <?php foreach ($values as $key => $value):
                 if ($key == 'url')
                 {
@@ -23,6 +22,9 @@
                 }
                 if ($key == 'email') {
                     $value = "<a href='mailto:{$value}'>{$value}</a>";
+                }
+                if ($key == 'cc') {
+                    $value = ($value == TRUE) ? 'ANO' : 'NE';
                 }
                 ?>
 

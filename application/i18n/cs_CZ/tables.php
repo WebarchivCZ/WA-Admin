@@ -62,7 +62,7 @@ $lang = array
     'contract_cc' => 'creative commons',
     'contract_type' => 'typ smlouvy',
     'contract_title' => 'Číslo smlouvy',
-    '' => '',
+    'short_title' => 'název',
     '' => '',
     )
 ?>

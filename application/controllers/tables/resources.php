@@ -32,7 +32,7 @@ class Resources_Controller extends Table_Controller
         if ($resource->__isset('id'))
         {
             $form = Formo::factory()->orm('resource', $id)
-                ->remove(array('id', 'publisher_id', 'contact_id'))
+                ->remove(array('id', 'publisher_id', 'contact_id', 'contract_id'))
                 ->add('contract_cc')
                 ->add('contract_type')
                 ->add('submit', 'Upravit')
@@ -42,14 +42,11 @@ class Resources_Controller extends Table_Controller
             $form->rating_result->type('select');
             $form->rating_result->values(Rating_Model::get_final_array());
             $form->rating_result->value($resource->compute_rating(1, 'int'));
-            $form->contract_cc->checked((bool)$resource->contract->cc);
-            $form->contract_type->value($resource->contract->type)
-                ->readonly(true);
             $form->catalogued->checked(! is_null($resource->catalogued))
                 ->title($resource->catalogued);
 
             $form->_order = array('title', 'url', 'date', 'creator_id', 'curator_id',
-                'contract_id', 'contract_cc', 'contract_type', 'conspectus_id', 'crawl_freq_id',
+                'conspectus_id', 'crawl_freq_id',
                 'resource_status_id', 'suggested_by_id', 'rating_result',
                 'aleph_id', 'issn', 'catalogued',
                 'tech_problems', 'comments', 'upravit');

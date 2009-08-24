@@ -26,8 +26,18 @@ if(isset($resources) AND $resources->count() != 0)
             <td class="center">
                 <a href='<?= $resource->url ?>' target="_blank"><?= icon::img('link', $resource->url) ?></a>
             </td>
-            <td>
-                <?= $resource->get_last_contact() ?>
+            <td width="14%">
+                <?php
+                $correspondence = $resource->get_correspondence();
+                $last_contact = $resource->get_last_contact();
+
+                $i = 0;
+                foreach ($correspondence as $corr_object) {
+                    echo icon::img('email_open', $last_contact). ' ';
+                    $i++;
+                }
+                ?>
+                        
             </td>
             <td class='center'>
                         <?= html::anchor(url::current().'/new_contract/'.$resource->id, icon::img('pencil', 'Přiřadit novou smlouvu')) ?>

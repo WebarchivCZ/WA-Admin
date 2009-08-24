@@ -7,11 +7,11 @@ defined('SYSPATH') or die('No direct script access.');
 class Resource_Model extends Table_Model
 {
 
-    protected $primary_val = 'title';
+    protected $primary_val = 'short_title';
     protected $sorting = array('title' => 'asc');
 
     public $headers = array(
-    'title',
+    'short_title',
     'url',
     'publisher'
     );
@@ -43,7 +43,6 @@ class Resource_Model extends Table_Model
         }
     }
 
-    // FIXME opravit nastavovani data
     public function __set ($key, $value)
     {
         if ($key === 'catalogued' AND $value == TRUE)
@@ -61,6 +60,11 @@ class Resource_Model extends Table_Model
 
     public function __get ($column)
     {
+        if ($column == 'short_title') {
+            $value = parent::__get('title');
+            $length = Kohana::config('wadmin.title_length');
+            return text::limit_chars($value, $length, '');
+        }
         $value = parent::__get($column);
         if ($column === 'date' OR $column === 'catalogued')
         {
@@ -129,12 +133,20 @@ class Resource_Model extends Table_Model
 
     /**
      * Funkce vraci korespondenci daneho typu, ktera je vedena k danemu zdroji
+     * Bez parametru vraci vsechna osloveni
+     * @param int $type
      */
-    public function get_correspondence ($type)
+    public function get_correspondence ($type = NULL)
     {
-        $correspondence = ORM::factory('correspondence')
+        if (! is_null($type)) {
+            $correspondence = ORM::factory('correspondence')
             ->where(array('resource_id' => $this->id, 'correspondence_type_id' => $type))
             ->find();
+        } else {
+         $correspondence = ORM::factory('correspondence')
+            ->where('resource_id', $this->id)
+            ->find_all();
+        }
         return $correspondence;
     }
 
@@ -163,7 +175,6 @@ class Resource_Model extends Table_Model
      */
     public function compute_rating($round = 1, $return_type = 'string')
     {
-    // TODO rozhodnout jestli vracet INT nebo rovnou hodnoceni
     //$ratings_result = Kohana::config('wadmin.ratings_result');
     // FIXME zjistit hodnoceni daneho kola
         $value = parent::__get('rating_result');
@@ -176,7 +187,7 @@ class Resource_Model extends Table_Model
             $result = 0;
             foreach ($ratings as $rating)
             {
-                $rating = $rating->rating;
+                $rating = $rating->get_rating();
                 if ($rating == 4)
                 {
                     $final_rating = $rating;

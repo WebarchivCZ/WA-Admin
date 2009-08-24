@@ -26,6 +26,19 @@ class Correspondence_Model extends Table_Model
 		'correspondence_type' ,
 		'result');
 
+        public function  __get($column)
+        {
+            $value = parent::__get($column);
+            if ($column == 'date') {
+                if ($value == '') {
+                    $value = '';
+                } else {
+                    $value = date_helper::short_date($value);
+                }
+            }
+            return $value;
+        }
+
 }
 
 ?>

@@ -11,7 +11,7 @@ class Suggest_Controller extends Template_Controller
         $form = Formo::factory('add_form');
         $form->add('title')->label('Název');
         $form->add('publisher')->label('Vydavatel');
-        $form->add('url')->label('URL')->value('http://')->add_rule('url', 'url', 'Musí být ve tvaru url.');
+        $form->add('url')->label('URL')->add_rule('url', 'valid_custom::simple_domain', 'Zadejte co nejkratší doménu (domena.cz).');;
         $form->add_rules('required', 'title|publisher|url', 'Povinná položka');
         $form->add('submit', 'Ověřit');
 
@@ -70,9 +70,9 @@ class Suggest_Controller extends Template_Controller
         $curator_id = Auth::instance()->get_user()->id;
 
         $form = Formo::factory('insert_resource');
-        $form->add('title')->label('Název zdroje')->value($title)->disabled(TRUE);
-        $form->add('url')->label('URL')->value($url)->disabled(TRUE);
-        $form->add('publisher')->label('Vydavatel')->value($publisher_name)->disabled(TRUE);
+        $form->add('title')->label('Název zdroje')->value($title);
+        $form->add('url')->label('URL')->value($url)->add_rule('url', 'url', 'Musí být ve tvaru url.');
+        $form->add('publisher')->label('Vydavatel')->value($publisher_name);
         $form->add_select('curator', $curators)->label('Kurátor')->value($curator_id);
         $form->add_select('conspectus', $conspectus)->label('Konspekt');
         $form->add_select('suggested_by', $suggested_by)->label('Navrhl');

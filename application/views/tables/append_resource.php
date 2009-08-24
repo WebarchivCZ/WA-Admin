@@ -1,7 +1,7 @@
 <?php
 if ($resource->__isset('publisher_id'))
 {
-// TODO refaktorovat
+// TODO refaktorovat!
     if ($resource->publisher_id != '')
     {
         $publisher_url = url::site('tables/publishers/view/'.$resource->publisher_id);
@@ -35,10 +35,15 @@ if ($resource->__isset('publisher_id'))
 
 if ($ratings->count() > 0)
 {
-    $rating_values = Kohana::config('wadmin.rating_values') ?>
+    $rating_values = Kohana::config('wadmin.rating_values');
+    $rating_class = '';
+    if ($resource->__isset('rating_result')) {
+        $rating_class = ' class="hidden"';
+    }
+    ?>
 <hr />
 <h2 id="section-rating" onclick="$('#table-ratings').toggle()">Hodnocení</h2>
-<div id="table-ratings">
+<div id="table-ratings"<?= $rating_class; ?>>
     <div class="table">
 
             <?= html::image(array('src'=>'media/img/bg-th-left.gif', 'width'=>'8', 'height'=>'7', 'class'=>'left')) ?>
@@ -94,16 +99,17 @@ if ($ratings->count() > 0)
                         } else
                         {
                             $rating_output = icon::img('bullet_black', 'Kurátor neohodnotil zdroj a hodnocení je již uzavřeno');
-        }
+                        }
                         ?>
                 <td class="center"><?= $rating_output ?></td>
-    <?php } ?>
+                    <?php } ?>
             </tr>
         </table>
     </div>
         <?php
         $ratings = ORM::factory('rating')->where(array(
             'resource_id'=>$resource->id, 'comments !=' => ''))->find_all();
+    if ($ratings->count() > 0) {
         foreach($ratings as $rating)
         {
             echo "<p>{$rating->curator}: {$rating->comments}</p>";
@@ -113,26 +119,28 @@ if ($ratings->count() > 0)
         {
             $round = ($resource->resource_status_id == RS_NEW) ? 1 : 2;
             $resource_rating = $resource->compute_rating(1, 'int');
-        $rating_options = Rating_Model::get_final_array()
-            ?>
+            $rating_options = Rating_Model::get_final_array();
+                ?>
 
-
-                <?= form::open(url::site('tables/resources/save_final_rating/'.$resource->id)) ?>
+            <?= form::open(url::site('tables/resources/save_final_rating/'.$resource->id)) ?>
     <p><b>Finalni hodnoceni:</b>
-        <?= form::dropdown('final_rating', $rating_options, $resource_rating)?>
-            <?= form::submit('save_rating', 'Uložit hodnocení'); ?>
+                <?= form::dropdown('final_rating', $rating_options, $resource_rating)?>
+                <?= form::submit('save_rating', 'Uložit hodnocení'); ?>
     </p>
             <?= form::close() ?>
         <?}
-    echo '</div>';
-} ?>
+        echo '</div>';
+    }
+    }?>
 
     <h2 id="section-seeds" onclick="$('#table-seeds').toggle()">Semínka</h2>
+    
     <div id="table-seeds" class="table" style="display:none;">
+        <?php if (isset ($seeds) AND $seeds->count() > 0)
+        {?>
         <?= html::image(array('src'=>'media/img/bg-th-left.gif', 'width'=>'8', 'height'=>'7', 'class'=>'left')) ?>
         <?= html::image(array('src'=>'media/img/bg-th-right.gif', 'width'=>'7', 'height'=>'7', 'class'=>'right')) ?>
-        <?php if (isset ($seeds) AND $seeds->count() > 0)
-        {
+        <?
             $output = '<table class="listing" cellpadding="0" cellspacing="0">
         <tr><th class="first" width="6%">Edit</th><th>URL</th><th>Stav</th><th>Od</th><th>Do</th><th class="last">Komentář</th></tr>';
             foreach ($seeds as $seed)
@@ -150,8 +158,9 @@ if ($ratings->count() > 0)
                         </tr>";
             }
             $output .= '</table>';
-        }
-echo $output;
-?>
+        
+        echo $output;
+        }?>
         <p><a href="<?= url::site('tables/seeds/add/'.$resource->id) ?>"><button>Přidat semínko</button></a></p>
     </div>
+    

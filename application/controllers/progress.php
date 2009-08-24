@@ -10,7 +10,7 @@ class Progress_Controller extends Template_Controller
         $resources = ORM::factory('resource')
             ->in('resource_status_id', RS_CONTACTED)
             ->where('curator_id', $this->user->id)
-            ->orderby('title', 'DESC')
+            ->orderby('date', 'ASC')
             ->find_all();
 
         $view = View::factory('progress');

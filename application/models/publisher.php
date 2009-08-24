@@ -64,7 +64,6 @@ class Publisher_Model extends Table_Model
                           ->find_all();
         return $contracts;
     }
-
 }
 
 ?>

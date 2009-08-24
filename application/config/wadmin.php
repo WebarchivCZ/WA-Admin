@@ -27,7 +27,9 @@ $config = array(
 
         'date_format' => 'Y-m-d H:i:s' ,
 
-        'short_date_format' => 'd.m.Y');
+        'short_date_format' => 'd.m.Y',
+
+        'title_length' => 30);
 
 /**
  * Enable debug mode. Display errors and profiler info.
