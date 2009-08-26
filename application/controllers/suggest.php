@@ -81,7 +81,8 @@ class Suggest_Controller extends Template_Controller
 
         if ($form->validate())
         {
-
+            $publisher_name = $form->publisher->value;
+            
             $publisher = ORM::factory('publisher', $publisher_name);
             if (! $publisher->loaded)
             {
@@ -90,8 +91,8 @@ class Suggest_Controller extends Template_Controller
             }
 
             $resource = ORM::factory('resource');
-            $resource->title = $title;
-            $resource->url = $url;
+            $resource->title = $form->title->value;
+            $resource->url = $form->url->value;
             $resource->publisher_id = $publisher->id;
             $resource->conspectus_id = $form->conspectus->value;
             $resource->creator_id = $curator_id;

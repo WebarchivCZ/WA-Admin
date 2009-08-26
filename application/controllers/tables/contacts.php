@@ -78,7 +78,7 @@ class Contacts_Controller extends Table_Controller
             
             $contact->save();
             
-            $resource = ORM::factory('resource', $form->resource->value);
+            $resource = ORM::factory('resource', $resource_id);
             $resource->contact_id = $contact->id;
             $resource->save();
 
