@@ -32,9 +32,7 @@ class Resources_Controller extends Table_Controller
         if ($resource->__isset('id'))
         {
             $form = Formo::factory()->orm('resource', $id)
-                ->remove(array('id', 'publisher_id', 'contact_id', 'contract_id'))
-                ->add('contract_cc')
-                ->add('contract_type')
+                ->remove($this->columns_ignored)
                 ->add('submit', 'Upravit')
                 ->label_filter('display::translate_orm')
                 ->label_filter('ucfirst');
@@ -47,7 +45,7 @@ class Resources_Controller extends Table_Controller
 
             $form->_order = array('title', 'url', 'date', 'creator_id', 'curator_id',
                 'conspectus_id', 'crawl_freq_id',
-                'resource_status_id', 'suggested_by_id', 'rating_result',
+                'resource_status_id', 'suggested_by_id', 'rating_result', 'reevaluate_date',
                 'aleph_id', 'issn', 'catalogued',
                 'tech_problems', 'comments', 'upravit');
 

@@ -63,6 +63,6 @@ $lang = array
     'contract_type' => 'typ smlouvy',
     'contract_title' => 'Číslo smlouvy',
     'short_title' => 'název',
-    '' => '',
+    'reevaluate_date' => 'přehodnotit k',
     )
 ?>
