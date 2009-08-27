@@ -106,7 +106,6 @@ if ($ratings->count() > 0)
             </tr>
         </table>
     </div>
-</div>
         <?php
         $ratings = ORM::factory('rating')->where(array(
             'resource_id'=>$resource->id, 'comments !=' => ''))->find_all();
@@ -130,8 +129,8 @@ if ($ratings->count() > 0)
     </p>
             <?= form::close() ?>
         <?}
-        echo '</div>';
     }
+    echo '</div>';
     }?>
 
     <h2 id="section-seeds" onclick="$('#table-seeds').toggle()">Semínka</h2>
