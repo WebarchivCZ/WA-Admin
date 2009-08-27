@@ -23,7 +23,7 @@ class Rating_Model extends Table_Model
     '4'  => 'technické ne');
 
     protected static $ratings_result = array(
-    //'NULL' => '',
+    'NULL' => NULL,
     '1' => 'NE' ,
     '2' => 'ANO' ,
     '3' => 'MOŽNÁ' ,

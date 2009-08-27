@@ -50,10 +50,15 @@ class Resource_Model extends Table_Model
             $date_format = Kohana::config('wadmin.date_format');
             $value = date($date_format);
         }
-        if ($key == 'date')
+        if ($key == 'date' OR $key == 'reevaluate_date')
         {
             $date = new DateTime($value);
             $value = $date->format(DATE_ATOM);
+        }
+        if ($key == 'rating_result') {
+            if ($value == 'NULL') {
+                $value = NULL;
+            }
         }
         parent::__set($key, $value);
     }
@@ -66,17 +71,16 @@ class Resource_Model extends Table_Model
             return text::limit_chars($value, $length, '');
         }
         $value = parent::__get($column);
-        if ($column === 'date' OR $column === 'catalogued')
+        if ($column === 'date' OR $column === 'catalogued' OR $column === 'reevaluate_date')
         {
             if ( ! is_null($value))
             {
                 return date_helper::short_date($value);
             }
         }
-        // TODO prepracovat data v databazi a tahat je z DB
-        if ($column === 'rating_result')
-        {
-            $value = $this->compute_rating();
+        if ($column == 'rating_result' AND $value != NULL) {
+            $rating_array = Rating_Model::get_final_array();
+            $value = $rating_array[$value];
         }
         return $value;
     }
@@ -225,5 +229,12 @@ class Resource_Model extends Table_Model
         return $ratings->count();
     }
 
+    /**
+     * Vraci ciselnou hodnotu rating_result pro zdroj. Vhodne napr. pro dropdown menu.
+     * @return int rating_result
+     */
+    public function get_rating_result() {
+        return parent::__get('rating_result');
+    }
 }
 ?>

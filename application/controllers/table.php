@@ -169,7 +169,7 @@ abstract class Table_Controller extends Template_Controller
         $model = ORM::factory($this->model);
         if (! is_null($conditions))
         {
-            $result = $model->where($conditions)->find_all();
+            $result = $model->like($conditions)->find_all();
         } else
         {
             $result = $model->like($model->__get('primary_val'), $search_string)

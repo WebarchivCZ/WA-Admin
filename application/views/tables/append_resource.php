@@ -42,7 +42,7 @@ if ($ratings->count() > 0)
     }
     ?>
 <hr />
-<h2 id="section-rating" onclick="$('#table-ratings').toggle()">Hodnocení</h2>
+<h2 id="section-rating">Hodnocení</h2>
 <div id="table-ratings"<?= $rating_class; ?>>
     <div class="table">
 
@@ -114,8 +114,8 @@ if ($ratings->count() > 0)
         {
             echo "<p>{$rating->curator}: {$rating->comments}</p>";
         }
-
-        if ($show_final_rating === TRUE)
+    }
+    if ($show_final_rating == TRUE)
         {
             $round = ($resource->resource_status_id == RS_NEW) ? 1 : 2;
             $resource_rating = $resource->compute_rating(1, 'int');
@@ -129,7 +129,6 @@ if ($ratings->count() > 0)
     </p>
             <?= form::close() ?>
         <?}
-    }
     echo '</div>';
     }?>
 

@@ -89,10 +89,12 @@ class Suggest_Controller extends Template_Controller
                 $publisher->name = $publisher_name;
                 $publisher->save();
             }
+            
+            $url = $form->url->value;
 
             $resource = ORM::factory('resource');
             $resource->title = $form->title->value;
-            $resource->url = $form->url->value;
+            $resource->url = $url;
             $resource->publisher_id = $publisher->id;
             $resource->conspectus_id = $form->conspectus->value;
             $resource->creator_id = $curator_id;

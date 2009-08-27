@@ -11,3 +11,10 @@
 //    });
 //
 //});
+
+$(document).ready(function () {
+    $("#section-rating").click(function () {
+      $("#table-ratings").toggle();
+    });
+}
+);

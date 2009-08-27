@@ -39,7 +39,7 @@ class Resources_Controller extends Table_Controller
 
             $form->rating_result->type('select');
             $form->rating_result->values(Rating_Model::get_final_array());
-            $form->rating_result->value($resource->compute_rating(1, 'int'));
+            $form->rating_result->value($resource->get_rating_result());
             $form->catalogued->checked(! is_null($resource->catalogued))
                 ->title($resource->catalogued);
 
@@ -88,6 +88,7 @@ class Resources_Controller extends Table_Controller
                 break;
             default:
                 $this->session->set_flash('message', 'Nesprávné výsledné hodnocení');
+                $status = RS_NEW;
         }
         $resource->resource_status_id = $status;
         $resource->rating_result = $rating;
@@ -99,7 +100,8 @@ class Resources_Controller extends Table_Controller
 
     public function search($konspekt_id = NULL) {
         if ($konspekt_id == NULL) {
-            parent::search();
+            $search_string = $this->input->post('search_string');
+            parent::search(array('title' => $search_string));
         } else {
             parent::search(array('conspectus_id' => $konspekt_id));
         }
