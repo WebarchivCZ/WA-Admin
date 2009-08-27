@@ -87,7 +87,7 @@ if ($ratings->count() > 0)
 
                         if ($rating->id != 0)
                         {
-                            $rating_output = "<span title='{$rating->date}'}>{$rating->rating}</span>";
+                            $rating_output = "<span title='{$rating->date}'>{$rating->rating}</span>";
                             if ($rating->curator_id == $user_id)
                             {
                                 $rating_output = "<a href='".url::site('tables/ratings/edit/'.$rating->id)."'>
@@ -106,6 +106,7 @@ if ($ratings->count() > 0)
             </tr>
         </table>
     </div>
+</div>
         <?php
         $ratings = ORM::factory('rating')->where(array(
             'resource_id'=>$resource->id, 'comments !=' => ''))->find_all();
