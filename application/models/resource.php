@@ -52,11 +52,19 @@ class Resource_Model extends Table_Model
         }
         if ($key == 'date' OR $key == 'reevaluate_date')
         {
-            $date = new DateTime($value);
-            $value = $date->format(DATE_ATOM);
+            if ($value == '')
+            {
+                $value = NULL;
+            } else
+            {
+                $date = new DateTime($value);
+                $value = $date->format(DATE_ATOM);
+            }
         }
-        if ($key == 'rating_result') {
-            if ($value == 'NULL') {
+        if ($key == 'rating_result')
+        {
+            if ($value == 'NULL')
+            {
                 $value = NULL;
             }
         }
@@ -65,7 +73,8 @@ class Resource_Model extends Table_Model
 
     public function __get ($column)
     {
-        if ($column == 'short_title') {
+        if ($column == 'short_title')
+        {
             $value = parent::__get('title');
             $length = Kohana::config('wadmin.title_length');
             return text::limit_chars($value, $length, '');
@@ -78,7 +87,8 @@ class Resource_Model extends Table_Model
                 return date_helper::short_date($value);
             }
         }
-        if ($column == 'rating_result' AND $value != NULL) {
+        if ($column == 'rating_result' AND $value != NULL)
+        {
             $rating_array = Rating_Model::get_final_array();
             $value = $rating_array[$value];
         }
@@ -142,14 +152,16 @@ class Resource_Model extends Table_Model
      */
     public function get_correspondence ($type = NULL)
     {
-        if (! is_null($type)) {
+        if (! is_null($type))
+        {
             $correspondence = ORM::factory('correspondence')
-            ->where(array('resource_id' => $this->id, 'correspondence_type_id' => $type))
-            ->find();
-        } else {
-         $correspondence = ORM::factory('correspondence')
-            ->where('resource_id', $this->id)
-            ->find_all();
+                ->where(array('resource_id' => $this->id, 'correspondence_type_id' => $type))
+                ->find();
+        } else
+        {
+            $correspondence = ORM::factory('correspondence')
+                ->where('resource_id', $this->id)
+                ->find_all();
         }
         return $correspondence;
     }
@@ -158,14 +170,17 @@ class Resource_Model extends Table_Model
      * Funkce vraci datum posledniho kontaktaktovani vydavatele zdroje
      * return date datum posledniho kontaktu
      */
-    public function get_last_contact() {
+    public function get_last_contact()
+    {
         $correspondence = ORM::factory('correspondence')
-                            ->where('resource_id', $this->id)
-                            ->orderby('date', 'DESC')
-                            ->find();
-        if ($correspondence->date != '') {
+            ->where('resource_id', $this->id)
+            ->orderby('date', 'DESC')
+            ->find();
+        if ($correspondence->date != '')
+        {
             return date_helper::short_date($correspondence->date);
-        } else {
+        } else
+        {
             return 'Nekontaktován';
         }
     }
@@ -185,7 +200,8 @@ class Resource_Model extends Table_Model
         if ($value == '')
         {
             $ratings = ORM::factory('rating')->where(array('resource_id'=> $this->id))->find_all();
-            if ($ratings->count() == 0) {
+            if ($ratings->count() == 0)
+            {
                 return FALSE;
             }
             $result = 0;
@@ -213,10 +229,12 @@ class Resource_Model extends Table_Model
         {
             $final_rating = $value;
         }
-        if ($return_type == 'string') {
+        if ($return_type == 'string')
+        {
             $values = Rating_Model::get_final_array();
             return $values[$final_rating];
-        } else {
+        } else
+        {
             return $final_rating;
         }
     }
@@ -233,7 +251,8 @@ class Resource_Model extends Table_Model
      * Vraci ciselnou hodnotu rating_result pro zdroj. Vhodne napr. pro dropdown menu.
      * @return int rating_result
      */
-    public function get_rating_result() {
+    public function get_rating_result()
+    {
         return parent::__get('rating_result');
     }
 }
