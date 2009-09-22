@@ -107,6 +107,10 @@ class Rate_Controller extends Template_Controller
                 ";
         } else
         {
+            $reevaluate_constraint = '';
+            if ($resource_status == RS_RE_EVALUATE) {
+                $reevaluate_constraint = 'AND reevaluate_date <= CURDATE()';
+            }
             $sql_query = "SELECT r.id
                         FROM `resources` r
                         WHERE r.resource_status_id = {$resource_status}
@@ -119,6 +123,7 @@ class Rate_Controller extends Template_Controller
                             AND c.id = {$this->user->id}
                             AND g.round = {$round}
                         )
+                        {$reevaluate_constraint}
                         ORDER BY date ASC";
         }
         $query = $db->query($sql_query);
