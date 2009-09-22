@@ -92,6 +92,10 @@ class Rate_Controller extends Template_Controller
     {
         $db = Database::instance();
         $round = ($resource_status == RS_NEW) ? 1: 2;
+        $reevaluate_constraint = '';
+            if ($resource_status == RS_RE_EVALUATE) {
+                $reevaluate_constraint = 'AND reevaluate_date <= CURDATE()';
+            }
         if ($only_rated == TRUE)
         {
             $sql_query = "SELECT g.resource_id AS id
@@ -101,16 +105,13 @@ class Rate_Controller extends Template_Controller
                             AND g.curator_id = c.id
                             AND g.round = {$round}
                             AND r.resource_status_id = {$resource_status}
+                            {$reevaluate_constraint}
                             GROUP BY g.resource_id
                             HAVING count( * ) >= 1
                         ORDER BY count(g.resource_id) ASC
                 ";
         } else
         {
-            $reevaluate_constraint = '';
-            if ($resource_status == RS_RE_EVALUATE) {
-                $reevaluate_constraint = 'AND reevaluate_date <= CURDATE()';
-            }
             $sql_query = "SELECT r.id
                         FROM `resources` r
                         WHERE r.resource_status_id = {$resource_status}
