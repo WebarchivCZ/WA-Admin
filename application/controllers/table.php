@@ -20,6 +20,15 @@ abstract class Table_Controller extends Template_Controller
         $this->template->title = Kohana::lang('tables.'.$this->title);
     }
 
+    public function test_table() {
+        $table = new Table_Presenter();
+        $table->add_th_cell('xxx');
+        $table->set_header('<p>');
+        $table->set_footer('</p>');
+        echo Kohana::debug($table);
+        
+    }
+
     public function index()
     {
         $per_page = $this->input->get('limit', 20);

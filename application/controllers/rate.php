@@ -63,12 +63,6 @@ class Rate_Controller extends Template_Controller
                 } else
                 {
                     $round = 2;
-                // TODO zmenit kolo hodnoceni pro zdroje k prehodnoceni
-                //                    $last_round = ORM::factory('rating')
-                //                        ->select('MAX(round) as last_round')
-                //                        ->where(array('curator_id'=>$this->user->id, 'resource_id'=>$resource_id))
-                //                        ->find();
-                //                    $round = $last_round->last_round + 1;
                 }
                 $o_rating->round = $round;
                 $o_rating->date = date('Y-m-d H:i:s');
@@ -125,7 +119,7 @@ class Rate_Controller extends Template_Controller
                             AND g.round = {$round}
                         )
                         {$reevaluate_constraint}
-                        ORDER BY date ASC";
+                        ORDER BY field(suggested_by_id, 2, 1, 3, 4)";
         }
         $query = $db->query($sql_query);
 

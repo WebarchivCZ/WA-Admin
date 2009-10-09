@@ -42,10 +42,10 @@ class Table_Presenter {
     public function add_cell($tag, $value, $attributes)
     {
         if (! is_null($attributes)) {
-            $cell_attributes = html::attributes($attributes);
+            $tag = $tag . html::attributes($attributes);
 
         }
-        $cell_header = "<{$tag}{$cell_attributes}>";
+        $cell_header = "<{$tag}>";
         $cell_footer = "</{$tag}>";
         $cell = $cell_header . $value . $cell_footer;
 
@@ -73,5 +73,20 @@ class Table_Presenter {
         $this->footer = $footer;
     }
 
+    /**
+     * Vrati nebo vypise celou tabulku
+     * @param bool $render
+     * @return string
+     */
+    public function __toString($render = FALSE) {
+        $output = $this->header;
+        $output .= $this->th_row;
+        $output .= $this->footer;
+        if ($render) {
+            echo $output;
+        } else {
+            return $output;
+        }
+    }
 }
 ?>

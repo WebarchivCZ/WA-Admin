@@ -26,15 +26,6 @@ class Publisher_Model extends Table_Model
         parent::__construct($id);
     }
 
-    public function unique_key($id = NULL)
-    {
-        if ( ! empty($id) AND is_string($id) AND ! ctype_digit($id) )
-        {
-            return 'name';
-        }
-        return parent::unique_key($id);
-    }
-
     /**
      * Zjisti, jestli ma vydavatel jiz podepsanou smlouvu
      * @return bool TRUE, pokud vydavatel ma jiz sepsanou nejakou smlouvu

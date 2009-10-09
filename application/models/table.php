@@ -20,7 +20,8 @@ abstract class Table_Model extends ORM
             } else
             {
                 $column = new Column_Item($header);
-                if ($header == $this->primary_val or $header == $this->primary_key) {
+                if ($header == $this->primary_val or $header == $this->primary_key)
+                {
                     $column->link = TRUE;
                 }
             }
@@ -29,12 +30,15 @@ abstract class Table_Model extends ORM
         return $columns;
     }
 
-    public function __set($key, $value) {
-        // TODO elegantnejsi prace s cizim klicem
-        if ($this->is_related(str_replace('_id', '', $key)) AND $value == 0) {
+    public function __set($key, $value)
+    {
+    // TODO elegantnejsi prace s cizim klicem
+        if ($this->is_related(str_replace('_id', '', $key)) AND $value == 0)
+        {
             $value = '';
         }
-        if ($value == '') {
+        if ($value == '')
+        {
             $value = NULL;
         }
         parent::__set($key, $value);
@@ -81,7 +85,6 @@ abstract class Table_Model extends ORM
         {
             return $this->primary_val;
         }
-
         return parent::unique_key($id);
     }
 }

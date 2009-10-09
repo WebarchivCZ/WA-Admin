@@ -25,6 +25,7 @@ input {vertical-align:middle}
 .center {text-align: center !important}
 .alert_text {color: red; }
 .hidden {display: none; }
+.suggested_by_pub {color: #d50101; font-weight: bold; }
 table.form tr {
     height: 2.3em;
 }

@@ -65,6 +65,11 @@ class Suggest_Controller extends Template_Controller
 
         $curators = ORM::factory('curator')->where('active', 1)->select_list('id', 'vocative');
         $conspectus = ORM::factory('conspectus')->select_list('id', 'category');
+        // TODO mozno presunout do select_list() v ConspectusModel
+        foreach ($conspectus as $id => $category) {
+            $conspectus[$id] = $id . ' - ' . $category;
+        }
+
         $suggested_by = ORM::factory('suggested_by')->select_list('id', 'proposer');
 
         $curator_id = Auth::instance()->get_user()->id;
