@@ -12,10 +12,19 @@
         {
             $round = ($status == RS_NEW) ? 1 : 2;
             $rating_count = $resource->rating_count(1);
+            
+            $class = '';
+            $icon = '';
+            if ($resource->suggested_by_id == 2)
+            {
+                $icon = icon::img('exclamation', 'Zdroj navrhl vydavatel');
+                $class = 'suggested_by_pub';
+            }
         ?>
         <tr>
             <td class="first">
-                    <?= html::anchor('tables/resources/view/'.$resource->id, $resource->title) ?>
+                    <?= html::anchor('tables/resources/view/'.$resource->id, $resource, array('class'=>$class)) ?>
+                    <?= $icon; ?>
             </td>
             <td class="center">
                     <?= $rating_count ?>

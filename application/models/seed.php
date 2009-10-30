@@ -6,13 +6,11 @@ defined('SYSPATH') or die('No direct script access.');
 class Seed_Model extends Table_Model
 {
     public $headers = array(
-    'id',
     'resource' ,
     'url' ,
-    'seed_status' ,
-    'valid_from' ,
-    'valid_to');
+    'seed_status');
 
+    protected $sorting = array('url' => 'asc');
     protected $primary_val = 'url';
 
     protected $belongs_to = array(
@@ -37,6 +35,22 @@ class Seed_Model extends Table_Model
             $value = $date->format(DATE_ATOM);
         }
         parent::__set($key, $value);
+    }
+
+    public function table_view($per_page, $offset) {
+        return $this->join('resources', 'seeds.resource_id = resources.id')
+            ->orderby('resources.title')
+            ->find_all($per_page, $offset);
+    }
+
+    public function search($pattern, & $count, $limit = 20, $offset = 0)
+    {
+        $count = $this->orlike(array('url'=>$pattern, 'resource'))
+            ->count_all();
+        $records = $this->join('resources', 'resources.id = seeds.resource_id')
+            ->orlike(array('resources.title' => $pattern , 'seeds.url' => $pattern))
+            ->find_all($limit, $offset);
+        return $records;
     }
 
     public function add_resource ($resource)

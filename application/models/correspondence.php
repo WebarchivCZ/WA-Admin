@@ -8,37 +8,68 @@ defined('SYSPATH') or die('No direct script access.');
 class Correspondence_Model extends Table_Model
 {
 
-	protected $primary_val = 'result';
-        protected $sorting = array('date' => 'asc');
-	
-	protected $table_name = 'correspondence';
+    protected $primary_val = 'result';
+    protected $sorting = array('date' => 'asc');
 
-        protected $belongs_to = array('correspondence_type', 'resource');
+    protected $table_name = 'correspondence';
 
-	public function __construct ($id = NULL)
-	{
-		parent::__construct($id);
-	}
+    protected $belongs_to = array('correspondence_type', 'resource');
 
-	public $headers = array(
-		'resource' , 
-		'date' , 
-		'correspondence_type' ,
-		'result');
+    public function __construct ($id = NULL)
+    {
+        parent::__construct($id);
+    }
 
-        public function  __get($column)
+    public $headers = array(
+    'resource' ,
+    'date' ,
+    'correspondence_type' ,
+    'result');
+
+    public function  __get($column)
+    {
+        $value = parent::__get($column);
+        if ($column == 'date')
         {
-            $value = parent::__get($column);
-            if ($column == 'date') {
-                if ($value == '') {
-                    $value = '';
-                } else {
-                    $value = date_helper::short_date($value);
-                }
+            if ($value == '')
+            {
+                $value = '';
+            } else
+            {
+                $value = date_helper::short_date($value);
             }
-            return $value;
         }
+        return $value;
+    }
 
+    public function table_view($limit, $offset)
+    {
+        $count = ORM::factory('resource')->join('correspondence', 'correspondence.resource_id = resources.id')
+            ->groupby('resources.id')
+            ->find_all()->count();
+
+        $records = ORM::factory('resource')->join('correspondence', 'correspondence.resource_id = resources.id')
+            ->groupby('resources.id')
+            ->find_all($limit, $offset);
+
+        return $records;
+    }
+
+    public function search($pattern, & $count, $limit = 20, $offset = 0)
+    {
+    // TODO - prazvlastni vec. nefunguje count_all
+        $count = ORM::factory('resource')->like('title', $pattern)
+            ->join('correspondence', 'correspondence.resource_id = resources.id')
+            ->groupby('resources.id')
+            ->find_all()->count();
+
+        $records = ORM::factory('resource')->like('title', $pattern)
+            ->join('correspondence', 'correspondence.resource_id = resources.id')
+            ->groupby('resources.id')
+            ->find_all($limit, $offset);
+        //$count = $records->count_all();
+        return $records;
+    }
 }
 
 ?>

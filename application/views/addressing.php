@@ -12,18 +12,27 @@ if(isset($resources) AND $resources->count() != 0)
             <th>URL</th>
             <th>1. oslovení</th>
             <th>2. oslovení</th>
-            <th>3. oslovení</th>
-            <th class="last">Stav</th>
+            <th class="last">3. oslovení</th>
         </tr>
             <?php
 
             foreach($resources as $resource)
             {
-        ?>
+                $class = '';
+                $icon = '';
+                if ($resource->suggested_by_id == 2)
+                {
+                    $icon = icon::img('exclamation', 'Zdroj navrhl vydavatel');
+                    $class = 'suggested_by_pub';
+                }
+                ?>
 
         <tr>
-            <td class="first"><?=html::anchor('tables/resources/view/'.$resource->id, $resource->title) ?></td>
-            <td><a href="<?=$resource->url ?>" target="_blank"><?=$resource->url ?></a></td>
+            <td class="first">
+                        <?= html::anchor('tables/resources/view/'.$resource->id, $resource, array('class'=>$class)) ?>
+                        <?= $icon; ?>
+            </td>
+            <td class="center"><a href="<?=$resource->url ?>" target="_blank"><?= icon::img('link', $resource->url) ?></a></td>
 
                     <?php
                     $new_email = true;
@@ -45,12 +54,9 @@ if(isset($resources) AND $resources->count() != 0)
                         }
                         echo '</td>';
                     }
-        ?>
-            <td class="center">
-        <?= $resource->resource_status ?>
-            </td>
+                    ?>
         </tr>
-    <? } ?>
+            <? } ?>
     </table>
     <p class="center">
         <button>Zobrazit všechny neoslovené zdroje</button>

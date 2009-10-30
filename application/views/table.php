@@ -4,7 +4,7 @@
 </div>
 <br />
 <div class="select-bar">
-    <form action="<?= url::base().url::current() ?>/search/" method="POST">
+    <form action="<?= $search_url ?>" method="GET">
         <label> <input type="text" name="search_string" /> </label>
         <label> <input type="submit" name="Submit" value="<?= Kohana::lang('tables.search');?>" /> </label>
     </form>
@@ -52,7 +52,8 @@
                 echo "<td>$value</td>\n";
             }
             $delete_url = url::site(url::current().'/delete/'.$item->id);
-            echo "<td><a href='{$delete_url}'>Smazat</a></td>";
+            $delete_icon = icon::img('delete', 'Smazat');
+            echo "<td class='center'><a href='{$delete_url}'>{$delete_icon}</a></td>";
             echo '</tr>';
 }
 ?>

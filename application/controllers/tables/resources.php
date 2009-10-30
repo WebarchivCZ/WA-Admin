@@ -4,6 +4,10 @@ class Resources_Controller extends Table_Controller
     protected $table = 'resources';
     protected $title = 'Resources';
     protected $columns_ignored = array('id', 'publisher_id', 'contact_id', 'contract_id');
+    protected $columns_order = array('title', 'url', 'creator_id', 'date', 'curator_id',
+    'conspectus_id', 'crawl_freq_id', 'resource_status_id',
+    'suggested_by_id', 'rating_result', 'aleph_id', 'ISSN',
+    'catalogued', 'tech_problems', 'comments');
     protected $header = 'Zdroj';
 
     public function view($id = FALSE)
@@ -98,13 +102,32 @@ class Resources_Controller extends Table_Controller
         url::redirect(url::site('tables/resources/view/'.$resource->id));
     }
 
-    public function search($konspekt_id = NULL) {
-        if ($konspekt_id == NULL) {
+
+    public function search_by_conspectus ($conspectus_id = NULL)
+    {
+        if ( ! is_null( $conspectus_id ))
+        {
             $search_string = $this->input->post('search_string');
-            parent::search(array('title' => $search_string));
-        } else {
-            parent::search(array('conspectus_id' => $konspekt_id));
+
+            $model = ORM::factory($this->model);
+
+            $per_page = $this->input->get('limit', 20);
+            $page_num = $this->input->get('page', 1);
+            $offset   = ($page_num - 1) * $per_page;
+
+            $result = ORM::factory('resource')->where('conspectus_id', $conspectus_id)->find_all();
+
+            $count = $result->count();
+            $pages = Pagination::dropdown($count, $per_page);
+            $pages_inline = Pagination::inline($count, $per_page);
+
+            $view = new View('tables/table_conspectus');
+            $view->items = $result;
+            $view->pages = $pages . $pages_inline;
+            $this->template = $view;
+            $this->template->title = Kohana::lang('tables.'.$this->title) . " | " . Kohana::lang('tables.index');
         }
     }
+            
 }
 ?>

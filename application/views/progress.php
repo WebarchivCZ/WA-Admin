@@ -21,7 +21,7 @@ if(isset($resources) AND $resources->count() != 0)
                 ?>
         <tr>
             <td class="first">
-                        <?= html::anchor('tables/resources/view/'.$resource->id, $resource->title) ?>
+                        <?= html::anchor('tables/resources/view/'.$resource->id, $resource) ?>
             </td>
             <td class="center">
                 <a href='<?= $resource->url ?>' target="_blank"><?= icon::img('link', $resource->url) ?></a>

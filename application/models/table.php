@@ -30,6 +30,20 @@ abstract class Table_Model extends ORM
         return $columns;
     }
 
+    public function table_view($per_page, $offset)
+    {
+        return $this->find_all($per_page,$offset);
+    }
+
+    public function search($pattern, & $count, $limit = 20, $offset = 0)
+    {
+        $count = $this->like($this->primary_val, $pattern)
+            ->count_all();
+        $result = $this->like($this->primary_val, $pattern)
+            ->find_all($limit,$offset);
+        return $result;
+    }
+
     public function __set($key, $value)
     {
     // TODO elegantnejsi prace s cizim klicem

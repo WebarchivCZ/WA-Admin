@@ -9,15 +9,17 @@ abstract class Table_Controller extends Template_Controller
     protected $model;
     protected $view = 'table';
     protected $columns_ignored = array();
-    protected $columns_order = array();
+
     protected $record = NULL;
     protected $header = 'Záznam';
 
     public function __construct()
     {
-        $this->model = inflector::singular($this->table);
         parent::__construct();
+        $this->model = inflector::singular($this->table);
         $this->template->title = Kohana::lang('tables.'.$this->title);
+        $search_url = url::site('tables/'.$this->table.'/search/');
+        $this->template->set_global('search_url', $search_url);
     }
 
     public function test_table() {
@@ -36,29 +38,16 @@ abstract class Table_Controller extends Template_Controller
         $offset   = ($page_num - 1) * $per_page;
 
         $model = ORM::factory($this->model);
-        $pages = Pagination::factory(array
-            (
-            'style' => 'dropdown',
-            'items_per_page' => $per_page,
-            'query_string' => 'page',
-            'total_items' => $model->count_all(),
+        $count = $model->count_all();
+        $pages = Pagination::dropdown($count, $per_page);
 
-        ));
-
-        $pages_inline = Pagination::factory(array
-            (
-            'style' => 'digg',
-            'items_per_page' => $per_page,
-            'query_string' => 'page',
-            'total_items' => $model->count_all(),
-
-        ));
+        $pages_inline = Pagination::inline($count, $per_page);
 
         $view = View::factory($this->view);
         $view->title = $this->title;
         $view->headers = $model->headers;
         $view->columns = $model->table_columns();
-        $view->items = $model->find_all($per_page,$offset);
+        $view->items = $model->table_view($per_page,$offset);
         $view->pages = $pages . $pages_inline;
         $this->template->content = $view;
         $this->template->title = Kohana::lang('tables.'.$this->title) . " | " . Kohana::lang('tables.index');
@@ -70,7 +59,13 @@ abstract class Table_Controller extends Template_Controller
         $this->view = 'tables/record_view';
         if (is_null($this->record))
         {
-            $record = ORM::factory($this->model, $id);
+            if (isset($this->columns_order)) {
+                $record = ORM::factory($this->model)->where('id', $id)
+                                                    ->select($this->columns_order)
+                                                    ->find();
+            } else {
+                $record = ORM::factory($this->model, $id);
+            }
         }
         $record_values = $record->as_array();
         $values = array();
@@ -105,7 +100,6 @@ abstract class Table_Controller extends Template_Controller
             ->label_filter('ucfirst');
         $view = new View('tables/record_edit');
         $view->bind('header', $this->header);
-        $view->type = 'edit';
         $view->form = $form->get();
         $this->template->content = $view;
         if ($form->validate())
@@ -148,11 +142,13 @@ abstract class Table_Controller extends Template_Controller
 
     public function delete($id = FALSE)
     {
-        $form = Formo::factory()->orm($this->model, $id)->add('submit', 'SMAZAT');
+        $form = Formo::factory()->orm($this->model, $id)->add('submit', 'SMAZAT')
+            ->label_filter('display::translate_orm')
+            ->label_filter('ucfirst');
         // TODO vypisovani labelu
-        $view = new View('edit_table');
-        $view->type = 'edit';
+        $view = new View('tables/record_edit');
         $view->form = $form->get();
+        $view->bind('header', $this->header);
         $this->template->content = $view;
         if ($form->validate())
         {
@@ -169,62 +165,30 @@ abstract class Table_Controller extends Template_Controller
      */
     public function search($conditions = NULL)
     {
-        $search_string = $this->input->post('search_string');
+        $search_string = $this->input->get('search_string');
+        if ( ! is_null( $conditions )) {
+            $search_string = $conditions;
+        }
+
+        $model = ORM::factory($this->model);
 
         $per_page = $this->input->get('limit', 20);
         $page_num = $this->input->get('page', 1);
         $offset   = ($page_num - 1) * $per_page;
 
-        $model = ORM::factory($this->model);
-        if (! is_null($conditions))
-        {
-            $result = $model->like($conditions)->find_all();
-        } else
-        {
-            $result = $model->like($model->__get('primary_val'), $search_string)
-                ->find_all($per_page,$offset);
-        }
-        $pages = Pagination::factory(array
-            (
-            'style' => 'dropdown',
-            'items_per_page' => $per_page,
-            'query_string' => 'page',
-            'total_items' => $result->count(),
+        $count = 0;
+        $result = $model->search($search_string, $count, $per_page, $offset);
 
-        ));
+        $pages_inline = Pagination::inline($count, $per_page);
 
-        $pages_inline = Pagination::factory(array
-            (
-            'style' => 'digg',
-            'items_per_page' => $per_page,
-            'query_string' => 'page',
-            'total_items' => $result->count(),
-
-        ));
-
-        $view = new View('table');
+        $view = new View($this->view);
         $view->title = $this->title;
         $view->headers = $model->headers;
         $view->columns = $model->table_columns();
-        // TODO predefinovat hledani - prohledavane sloupce definovat v modelu
         $view->items = $result;
-        $view->pages = $pages . $pages_inline;
+        $view->pages = $pages_inline;
         $this->template->content = $view;
         $this->template->title = Kohana::lang('tables.'.$this->title) . " | " . Kohana::lang('tables.index');
-    }
-
-    //TODO dokumentace, overit funkcnost
-    protected function get_record ($id = NULL)
-    {
-        $record = ORM::factory($this->model);
-        if (! $record->__isset('id') OR ! is_null($id))
-        {
-            $this->session->set_flash('message', 'Záznam neexistuje');
-            url::redirect("tables/{$this->table}");
-        } else
-        {
-            return $record;
-        }
     }
 }
 ?>

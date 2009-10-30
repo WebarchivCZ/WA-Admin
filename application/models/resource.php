@@ -95,6 +95,17 @@ class Resource_Model extends Table_Model
         return $value;
     }
 
+    public function search($pattern, & $count, $limit = 20, $offset = 0)
+    {
+        $count = $this->join('publishers', 'resources.publisher_id = publishers.id')
+            ->orlike(array('url' => $pattern , 'title' => $pattern, 'publishers.name'=>$pattern))
+            ->count_all();
+        $records = $this->join('publishers', 'resources.publisher_id = publishers.id')
+            ->orlike(array('url' => $pattern , 'title' => $pattern, 'publishers.name'=>$pattern))
+            ->find_all($limit, $offset);
+        return $records;
+    }
+
     public function is_related ($column)
     {
     // TODO prepsat natvrdo napsaneho kuratora, ktery zdroj vlozil

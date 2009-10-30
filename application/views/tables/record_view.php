@@ -16,6 +16,11 @@
             <th class="last">Hodnota</th>
         </tr>
             <?php foreach ($values as $key => $value):
+            switch ($key) {
+                case 'date':
+                    $key = 'inserted';
+                    break;
+            }
                 if ($key == 'url')
                 {
                     $value = "<a href='{$value}' target='_blank'>{$value}</a>";

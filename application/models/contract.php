@@ -9,14 +9,13 @@ class Contract_Model extends Table_Model
 {
 
     protected $primary_val = 'contract_title';
-    protected $sorting = array('date_signed' => 'asc');
+    protected $sorting = array('year' => 'asc', 'contract_no' => 'asc');
 
     public $headers = array(
     'contract_title' ,
-    'date_signed' ,
-    'addendum' ,
-    'cc' ,
-    'type');
+    'resource' ,
+    'publisher' ,
+    );
 
     public function _construct ($id = NULL)
     {
@@ -38,6 +37,12 @@ class Contract_Model extends Table_Model
             $year = $this->year;
             return $contract_no.'/'.$year;
         }
+        if ($column == 'resource') {
+            return ORM::factory('resource')->where('contract_id', $this->id)->find()->title;
+        }
+        if ($column == 'publisher') {
+            return ORM::factory('resource')->where('contract_id', $this->id)->find()->publisher ;
+        }
 
         $value = parent::__get($column);
         
@@ -53,6 +58,23 @@ class Contract_Model extends Table_Model
         parent::__set($key, $value);
     }
 
+    public function search($pattern, & $count, $limit = 20, $offset = 0)
+    {
+        $count = $this->orwhere(array('year'=>$pattern, 'contract_no'=>$pattern))
+            ->orlike(array('resources.title'=>$pattern, 'publishers.name'=>$pattern))
+            ->join('resources', 'resources.contract_id = contracts.id')
+            ->join('publishers', 'resources.publisher_id = publishers.id')
+            ->find_all()->count();
+
+        $records = $this->orwhere(array('year'=>$pattern, 'contract_no'=>$pattern))
+            ->orlike(array('resources.title'=>$pattern, 'publishers.name'=>$pattern))
+            ->join('resources', 'resources.contract_id = contracts.id')
+            ->join('publishers', 'resources.publisher_id = publishers.id')
+            ->find_all($limit, $offset);
+            
+        return $records;
+    }
+    
     /**
      * Create new contract_no in format count_this_year+1/year
      * @param year

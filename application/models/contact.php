@@ -7,13 +7,13 @@ class Contact_Model extends Table_Model
 {
 
     public $headers = array(
-    'name',
+    'publisher',
     'email',
-    'publisher'
+    'name'
     );
 
     protected $primary_val = 'email';
-    protected $sorting = array('email' => 'asc');
+    protected $sorting = array('name' => 'asc');
 
     protected $belongs_to = array(
     'publisher');
@@ -29,6 +29,23 @@ class Contact_Model extends Table_Model
             $value = ucwords(strtolower($value));
         }
         parent::__set($key, $value);
+    }
+
+    public function table_view($per_page, $offset) {
+        return $this->join('publishers', 'contacts.publisher_id = publishers.id')
+            ->orderby('publishers.name')
+            ->find_all($per_page, $offset);
+    }
+
+    public function search($pattern, & $count, $limit = 20, $offset = 0)
+    {
+        $count = $this->join('publishers', 'contacts.publisher_id = publishers.id')
+            ->orlike(array('contacts.name' => $pattern , 'email' => $pattern, 'publishers.name'=>$pattern))
+            ->count_all();
+        $records = $this->join('publishers', 'contacts.publisher_id = publishers.id')
+            ->orlike(array('contacts.name' => $pattern , 'email' => $pattern, 'publishers.name'=>$pattern))
+            ->find_all($limit, $offset);
+        return $records;
     }
 
     /**
