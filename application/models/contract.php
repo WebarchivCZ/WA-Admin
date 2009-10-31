@@ -60,13 +60,20 @@ class Contract_Model extends Table_Model
 
     public function search($pattern, & $count, $limit = 20, $offset = 0)
     {
-        $count = $this->orwhere(array('year'=>$pattern, 'contract_no'=>$pattern))
+        $conditions = array();
+        if (strpos($pattern, '/')) {
+            $contract_array = explode('/', $pattern);
+            $year = $contract_array[1];
+            $contract_no = $contract_array[0];
+            $conditions = array('year'=>$year, 'contract_no'=>$contract_no);
+        }
+        $count = $this->where($conditions)
             ->orlike(array('resources.title'=>$pattern, 'publishers.name'=>$pattern))
             ->join('resources', 'resources.contract_id = contracts.id')
             ->join('publishers', 'resources.publisher_id = publishers.id')
             ->find_all()->count();
 
-        $records = $this->orwhere(array('year'=>$pattern, 'contract_no'=>$pattern))
+        $records = $this->where($conditions)
             ->orlike(array('resources.title'=>$pattern, 'publishers.name'=>$pattern))
             ->join('resources', 'resources.contract_id = contracts.id')
             ->join('publishers', 'resources.publisher_id = publishers.id')
