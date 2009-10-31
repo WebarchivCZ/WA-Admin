@@ -13,11 +13,11 @@
     <body>
         <div id="main" style="padding: 25px;">
             <?php if ($items->count() > 0)
-{ ?>
+            { ?>
             <div class="table">
 
                     <?= html::image(array('src'=>'media/img/bg-th-left.gif', 'width'=>'8', 'height'=>'7', 'class'=>'left')) ?>
-    <?= html::image(array('src'=>'media/img/bg-th-right.gif', 'width'=>'7', 'height'=>'7', 'class'=>'right')) ?>
+                    <?= html::image(array('src'=>'media/img/bg-th-right.gif', 'width'=>'7', 'height'=>'7', 'class'=>'right')) ?>
 
 
                 <table class="listing" cellpadding="0" cellspacing="0">
@@ -28,7 +28,8 @@
                         <th class="last">Výsledek hodnocení</th>
                     </tr>
                         <?php
-                        foreach ($items as $resource) {
+                        foreach ($items as $resource)
+                        {
         ?>
                     <tr>
                         <td class="first"><?= html::anchor('tables/resources/view/'.$resource->id, $resource, array('target'=>'_parent')) ?></td>
@@ -46,8 +47,8 @@
             }
             else
             {
-    echo '<h2>Nebyly nalezeny žádné záznamy</h2>';
-}
+                echo '<h2>Nebyly nalezeny žádné záznamy</h2>';
+            }
 ?>
             <h3 style="clear: both; text-align: center;">
                 <a href="#" onclick="window.close()">Zavřít okno</a>
