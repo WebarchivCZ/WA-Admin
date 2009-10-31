@@ -38,7 +38,8 @@ abstract class Table_Controller extends Template_Controller
         $offset   = ($page_num - 1) * $per_page;
 
         $model = ORM::factory($this->model);
-        $count = $model->count_all();
+        $items = $model->table_view($per_page,$offset);
+        $count = $model->count_table_view();
         $pages = Pagination::dropdown($count, $per_page);
 
         $pages_inline = Pagination::inline($count, $per_page);
@@ -47,7 +48,7 @@ abstract class Table_Controller extends Template_Controller
         $view->title = $this->title;
         $view->headers = $model->headers;
         $view->columns = $model->table_columns();
-        $view->items = $model->table_view($per_page,$offset);
+        $view->items = $items;
         $view->pages = $pages . $pages_inline;
         $this->template->content = $view;
         $this->template->title = Kohana::lang('tables.'.$this->title) . " | " . Kohana::lang('tables.index');

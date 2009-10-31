@@ -76,23 +76,7 @@ if ($ratings->count() > 0)
                     <?
                     foreach ($active_curators as $curator)
                     {
-                        $rating = $resource->get_curator_rating($curator->id, 1);
-
-                        if ( ! is_null($rating))
-                        {
-                            $rating_output = "<span title='{$rating->date}'>{$rating->rating}</span>";
-                            if ($rating->curator_id == $user_id)
-                            {
-                                $rating_output = "<a href='".url::site('tables/ratings/edit/'.$rating->id)."'>
-                                    {$rating_output}</a>";
-                            }
-                        } elseif ($resource->resource_status_id == RS_NEW)
-                        {
-                            $rating_output = icon::img('cross', 'Kurátor ještě neohodnotil zdroj');
-                        } else
-                        {
-                            $rating_output = icon::img('bullet_black', 'Kurátor neohodnotil zdroj a hodnocení je již uzavřeno');
-                        }
+                        $rating_output = display::display_rating($resource, $curator->id, 1);
                         ?>
                 <td class="center"><?= $rating_output ?></td>
                     <?php } ?>

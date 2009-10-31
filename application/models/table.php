@@ -30,9 +30,16 @@ abstract class Table_Model extends ORM
         return $columns;
     }
 
-    public function table_view($per_page, $offset)
+    public function table_view($per_page = NULL, $offset = NULL)
     {
+        if (is_null($per_page) AND is_null($offset)) {
+            $this->find_all();
+        }
         return $this->find_all($per_page,$offset);
+    }
+
+    public function count_table_view() {
+        return $this->count_all();
     }
 
     public function search($pattern, & $count, $limit = 20, $offset = 0)

@@ -42,17 +42,20 @@ class Correspondence_Model extends Table_Model
         return $value;
     }
 
-    public function table_view($limit, $offset)
+    public function table_view($limit = NULL, $offset = NULL)
     {
-        $count = ORM::factory('resource')->join('correspondence', 'correspondence.resource_id = resources.id')
-            ->groupby('resources.id')
-            ->find_all()->count();
-
         $records = ORM::factory('resource')->join('correspondence', 'correspondence.resource_id = resources.id')
             ->groupby('resources.id')
             ->find_all($limit, $offset);
 
         return $records;
+    }
+
+    public function count_table_view() {
+        $count = ORM::factory('resource')->join('correspondence', 'correspondence.resource_id = resources.id')
+            ->groupby('resources.id')
+            ->find_all()->count();
+        return $count;
     }
 
     public function search($pattern, & $count, $limit = 20, $offset = 0)

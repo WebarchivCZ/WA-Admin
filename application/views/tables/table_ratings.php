@@ -33,11 +33,11 @@
             <td class="first">
                     <?= html::anchor('tables/resources/view/'.$resource->id, $resource) ?>
             </td>
-            <td><?= $resource->get_curator_rating('hrdlickova', 1) ?></td>
-            <td><?= $resource->get_curator_rating('coufal', 1) ?></td>
-            <td><?= $resource->get_curator_rating('gruber', 1) ?></td>
-            <td><?= $resource->get_curator_rating('kupcova', 1) ?></td>
-            <td><?= $resource->get_curator_rating('sibek', 1) ?></td>
+            <td><?= display::display_rating($resource, 'hrdlickova', 1) ?></td>
+            <td><?= display::display_rating($resource, 'coufal', 1) ?></td>
+            <td><?= display::display_rating($resource, 'gruber', 1) ?></td>
+            <td><?= display::display_rating($resource, 'kupcova', 1) ?></td>
+            <td><?= display::display_rating($resource, 'sibek', 1) ?></td>
             <td class="last"><?= $resource->get_ratings_date(1) ?></td>
         </tr>
         <?php } ?>

@@ -103,10 +103,15 @@ class Rating_Model extends Table_Model
         }
     }
 
-    public function table_view ($limit, $offset)
+    public function table_view ($limit = 0, $offset = 0)
     {
         $result = Resource_Model::get_rated_resources(1, $limit, $offset);
         return $result;
+    }
+
+    public function count_table_view() {
+        $count = Resource_Model::get_rated_resources(1)->count();
+        return $count;
     }
 
     public function get_rating ()
