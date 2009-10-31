@@ -103,6 +103,12 @@ class Rating_Model extends Table_Model
         }
     }
 
+    public function table_view ($limit, $offset)
+    {
+        $result = Resource_Model::get_rated_resources(1, $limit, $offset);
+        return $result;
+    }
+
     public function get_rating ()
     {
         return parent::__get('rating');

@@ -9,7 +9,7 @@
 	<li><a href="<?= $base_url ?>contacts">Kontakty</a></li>
 	<li><a href="<?= $base_url ?>correspondence">Oslovení</a></li>
 	<li><a href="<?= $base_url ?>contracts">Smlouvy</a></li>
-	<li><a href="<?= $base_url ?>ratings"><b>Hodnocení</b></a></li>
+	<li><a href="<?= $base_url ?>ratings">Hodnocení</a></li>
 	<li class="last"><a href="<?= $base_url ?>seeds">Semínka</a></li>
 </ul>
 <h3>Veřejné</h3>

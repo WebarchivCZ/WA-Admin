@@ -41,7 +41,9 @@ if ($ratings->count() > 0)
         $rating_class = ' class="hidden"';
     }
     ?>
+
 <hr />
+
 <h2 id="section-rating">Hodnocení</h2>
 <div id="table-ratings"<?= $rating_class; ?>>
     <div class="table">
@@ -53,11 +55,6 @@ if ($ratings->count() > 0)
             <tr>
                 <th width="15%" class="first">Datum</th>
                     <?php
-                    // TODO zmenit round
-                    $sql = "SELECT MAX(date) as datum FROM ratings WHERE resource_id = $resource->id AND round = 1";
-                    $result = Database::instance()->query($sql);
-                    $datum_result = $result->current()->datum;
-                    $datum = date("d.m.Y", strtotime($datum_result));
 
                     $curators_count = $active_curators->count();
                     $cell_width = (85 / $curators_count);
@@ -75,17 +72,13 @@ if ($ratings->count() > 0)
                     }?>
             </tr>
             <tr>
-                <td class="first"><?= $datum ?></td>
+                <td class="first"><?= $resource->get_ratings_date(1); ?></td>
                     <?
                     foreach ($active_curators as $curator)
                     {
-                        $rating = ORM::factory('rating')->where(array(
-                            'round' => 1,
-                            'curator_id'=>$curator->id,
-                            'resource_id'=>$resource->id))
-                            ->find();
+                        $rating = $resource->get_curator_rating($curator->id, 1);
 
-                        if ($rating->id != 0)
+                        if ( ! is_null($rating))
                         {
                             $rating_output = "<span title='{$rating->date}'>{$rating->rating}</span>";
                             if ($rating->curator_id == $user_id)

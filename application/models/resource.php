@@ -95,6 +95,14 @@ class Resource_Model extends Table_Model
         return $value;
     }
 
+    public static function get_rated_resources ($round = 1, $limit = 0, $offset = 0) {
+        $result = ORM::factory('resource')->join('ratings', 'resources.id = ratings.resource_id')
+                    ->where('ratings.round', 1)
+                    ->groupby('resources.id')
+                    ->find_all($limit, $offset);
+        return $result;
+    }
+
     public function search($pattern, & $count, $limit = 20, $offset = 0)
     {
         $count = $this->join('publishers', 'resources.publisher_id = publishers.id')
@@ -258,6 +266,14 @@ class Resource_Model extends Table_Model
         return $ratings->count();
     }
 
+    public function has_rating($round) {
+        if ($this->rating_count($round) > 0) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
     /**
      * Vraci ciselnou hodnotu rating_result pro zdroj. Vhodne napr. pro dropdown menu.
      * @return int rating_result
@@ -265,6 +281,41 @@ class Resource_Model extends Table_Model
     public function get_rating_result()
     {
         return parent::__get('rating_result');
+    }
+
+    /**
+     * Vrati datum posledniho hodnoce zdroje v danem kole
+     * @param int $round kolo hodnoceni
+     * @return String datum
+     */
+    public function get_ratings_date($round = 1)
+    {
+        $sql = "SELECT MAX(date) as datum FROM ratings WHERE resource_id = $this->id AND round = 1";
+        $result = Database::instance()->query($sql);
+        $datum_result = $result->current()->datum;
+        $datum = date("d.m.Y", strtotime($datum_result));
+        return $datum;
+    }
+
+    /**
+     * Vraci hodnoceni od daneho kuratora pro dany zdroj a dane kolo
+     * @param <int/string> $curator_id
+     * @param <int> $round
+     * @return <Rating_Model>
+     */
+    public function get_curator_rating($curator, $round = 1) {
+        if (is_string($curator)) {
+            $curator = ORM::factory('curator')->where('username', $curator)->find();
+            $curator_id = $curator->id;
+        } else {
+            $curator_id = $curator;
+        }
+        $conditons = array('round'=>$round, 'curator_id'=>$curator_id, 'resource_id'=>$this->id);
+        $rating = ORM::factory('rating')->where($conditons)->find();
+        if ($rating->id == 0) {
+            $rating = NULL;
+        }
+        return $rating;
     }
 }
 ?>

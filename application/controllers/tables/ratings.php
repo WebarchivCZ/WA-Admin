@@ -3,6 +3,7 @@ class Ratings_Controller extends Table_Controller {
 	protected $table = 'ratings';
 	protected $title = 'Ratings';
         protected $header = 'Hodnocení';
+        protected $view = 'tables/table_ratings';
 
         public function edit ($id = NULL) {
             $rating = ORM::factory('rating')->find($id);
