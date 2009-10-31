@@ -61,12 +61,12 @@ abstract class Table_Controller extends Template_Controller
         {
             if (isset($this->columns_order)) {
                 $record = ORM::factory($this->model)->where('id', $id)
-                                                    ->select($this->columns_order)
                                                     ->find();
             } else {
                 $record = ORM::factory($this->model, $id);
             }
         }
+        
         $record_values = $record->as_array();
         $values = array();
         foreach ($record_values as $key => $value)
@@ -82,6 +82,7 @@ abstract class Table_Controller extends Template_Controller
 
             }
         }
+        
         $this->record = $record;
         $url = url::site("/tables/{$this->table}/edit/{$id}");
         $view = View::factory($this->view);
