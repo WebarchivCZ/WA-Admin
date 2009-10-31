@@ -114,6 +114,13 @@ class Rating_Model extends Table_Model
         return $count;
     }
 
+    public function search($pattern, & $count, $limit = 20, $offset = 0)
+    {
+        $count = Resource_Model::get_rated_resources (1, NULL, NULL, $pattern)->count();
+        $records = Resource_Model::get_rated_resources (1, $limit, $offset, $pattern);
+        return $records;
+    }
+
     public function get_rating ()
     {
         return parent::__get('rating');

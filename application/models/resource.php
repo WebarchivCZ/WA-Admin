@@ -95,18 +95,22 @@ class Resource_Model extends Table_Model
         return $value;
     }
 
-    public static function get_rated_resources ($round = 1, $limit = NULL, $offset = NULL)
+    public static function get_rated_resources ($round = 1, $limit = NULL, $offset = NULL, $pattern = NULL)
     {
+        $conditions = array('ratings.round'=>$round);
+        if ( ! is_null ($pattern)) {
+            $conditions['resources.title'] = $pattern;
+        }
         if ( ! is_null ($limit) AND ! is_null($offset))
         {
             $result = ORM::factory('resource')->join('ratings', 'resources.id = ratings.resource_id')
-                ->where('ratings.round', 1)
+                ->like($conditions)
                 ->groupby('resources.id')
                 ->find_all($limit, $offset);
         } else
         {
             $result = ORM::factory('resource')->join('ratings', 'resources.id = ratings.resource_id')
-                ->where('ratings.round', 1)
+                ->like($conditions)
                 ->groupby('resources.id')
                 ->find_all();
         }
