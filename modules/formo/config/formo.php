@@ -30,8 +30,8 @@ $config['defaults']['state']	= array('type'=>'select', 'values'=>$states);
 
 $config['label_filters'][] = 'ucwords';
 
-$config['auto_rules']['email'] = array('email', 'Invalid email');
-$config['auto_rules']['phone'] = array('phone', 'Invalid phone');
+//$config['auto_rules']['email'] = array('email', 'Invalid email');
+//$config['auto_rules']['phone'] = array('phone', 'Invalid phone');
 
 $config['pre_filters']['username'][] = 'trim';
 $config['pre_filters']['email'][] = 'strtolower';
