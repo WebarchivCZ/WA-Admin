@@ -10,7 +10,7 @@ class Home_Controller extends Template_Controller
     {
         $content = View::factory('home');
         $view = View::factory('dashboard');
-        $dashboard = ORM::factory('dashboard');
+        $dashboard = new Dashboard_Model();
         $dashboard->fill_dashboard($this->user);
         $view->dashboard = $dashboard;
         $content->dashboard = $view;

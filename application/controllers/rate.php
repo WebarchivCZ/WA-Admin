@@ -82,7 +82,21 @@ class Rate_Controller extends Template_Controller
         url::redirect('rate');
     }
 
-    private function find_resources($resource_status = RS_NEW, $only_rated = FALSE)
+    public function count_to_rate($resource_status = RS_NEW) {
+        $resources = $this->find_resources($resource_status, FALSE);
+        if (is_array($resources)) {
+            return count($resources);
+        } else {
+            return 0;
+        }
+    }
+
+    public function count_rated($resource_status = RS_NEW) {
+        return count($this->find_resources($resource_status, TRUE));
+    }
+
+
+    protected function find_resources($resource_status = RS_NEW, $only_rated = FALSE)
     {
         $db = Database::instance();
         $round = ($resource_status == RS_NEW) ? 1: 2;

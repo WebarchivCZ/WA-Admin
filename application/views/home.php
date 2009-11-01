@@ -1,6 +1,6 @@
 <h2>Důležité informace</h2>
 
-<?// $dashboard ?>
+<?= $dashboard ?>
 
 <h2>Statistiky</h2>
 

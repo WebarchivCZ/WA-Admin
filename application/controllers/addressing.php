@@ -13,6 +13,22 @@ class Addressing_Controller extends Template_Controller
     public function index()
     {
 
+        $id_array = $this->get_to_addressing();
+        
+        if (count ($id_array) > 0)
+        {
+            $resources = ORM::factory('resource')->in('id', $id_array)->orderby('date', 'ASC')->find_all();
+        } else {
+            $resources = NULL;
+        }
+
+        $view = new View('addressing');
+        $view->resources = $resources;
+
+        $this->template->content = $view;
+    }
+
+    protected function get_to_addressing () {
         $curator_id = $this->user->id;
 
         $rs_approved_status = RS_APPROVED_WA;
@@ -45,17 +61,12 @@ class Addressing_Controller extends Template_Controller
         {
             array_push($id_array, $row['id']);
         }
-        if (count ($id_array) > 0)
-        {
-            $resources = ORM::factory('resource')->in('id', $id_array)->orderby('date', 'ASC')->find_all();
-        } else {
-            $resources = NULL;
-        }
+        return $id_array;
+    }
 
-        $view = new View('addressing');
-        $view->resources = $resources;
-
-        $this->template->content = $view;
+    public function count_to_addressing () {
+        $count = count ($this->get_to_addressing());
+        return $count;
     }
 
     public function send($resource_id, $correspondence_type_id)

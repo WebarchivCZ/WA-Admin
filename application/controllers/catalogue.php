@@ -14,13 +14,18 @@ class Catalogue_Controller extends Template_Controller
         $view = new View('catalogue');
         $this->template->content = $view;
 
+        $resources = $this->get_to_catalogue();
+        $view->resources = $resources;
+    }
+
+    protected function get_to_catalogue()
+    {
         $resources = ORM::factory('resource')
             ->where(array('curator_id'=>$this->user->id,
-                          'catalogued'=> NULL,
-                          'rating_result'=>Rating_Model::get_final_rating('ANO')))
+            'catalogued'=> NULL,
+            'rating_result'=>Rating_Model::get_final_rating('ANO')))
             ->find_all();
-
-        $view->resources = $resources;
+        return $resources;
     }
 
     /**
