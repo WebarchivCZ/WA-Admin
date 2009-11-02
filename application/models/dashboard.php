@@ -43,7 +43,7 @@ class Dashboard_Model extends Model
         return ORM::factory('resource')
         ->where(array('curator_id'=>$this->user->id,
         'catalogued'=> NULL,
-        'rating_result'=>Rating_Model::get_final_rating('ANO')))
+        'resource_status_id'=>RS_APPROVED_PUB))
         ->count_all();
     }
 
@@ -132,6 +132,10 @@ class Dashboard_Model extends Model
             array_push($id_array, $row['id']);
         }
         return count($id_array);
+    }
+
+    public function count_no_response () {
+        
     }
 }
 ?>

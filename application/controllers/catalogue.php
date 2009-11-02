@@ -23,7 +23,7 @@ class Catalogue_Controller extends Template_Controller
         $resources = ORM::factory('resource')
             ->where(array('curator_id'=>$this->user->id,
             'catalogued'=> NULL,
-            'rating_result'=>Rating_Model::get_final_rating('ANO')))
+            'resource_status_id'=>RS_APPROVED_PUB))
             ->find_all();
         return $resources;
     }
