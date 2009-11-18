@@ -26,23 +26,25 @@
             <th class="last">Datum</th>
         </tr>
         <?php
-        foreach ($items as $resource)
-        {
-            ?>
+        foreach ($items as $resource) {
+            for ($round=1; $round<=2; $round++) {
+                if($resource->has_rating($round)) { ?>
         <tr>
             <td class="first">
-                    <?= html::anchor('tables/resources/view/'.$resource->id, $resource) ?>
+            <?= html::anchor('tables/resources/view/'.$resource->id, $resource) ?>
             </td>
-            <td class="center"><?= display::display_rating($resource, 'hrdlickova', 1) ?></td>
-            <td class="center"><?= display::display_rating($resource, 'coufal', 1) ?></td>
-            <td class="center"><?= display::display_rating($resource, 'gruber', 1) ?></td>
-            <td class="center"><?= display::display_rating($resource, 'kupcova', 1) ?></td>
-            <td class="center"><?= display::display_rating($resource, 'sibek', 1) ?></td>
-            <td class="last center"><?= $resource->get_ratings_date(1) ?></td>
+            <td class="center"><?= $resource->get_ratings_date($round) ?></td>
+            <td class="center"><?= display::display_rating($resource, 'hrdlickova', $round) ?></td>
+            <td class="center"><?= display::display_rating($resource, 'coufal', $round) ?></td>
+            <td class="center"><?= display::display_rating($resource, 'gruber', $round) ?></td>
+            <td class="center"><?= display::display_rating($resource, 'kupcova', $round) ?></td>
+            <td class="last center"><?= display::display_rating($resource, 'sibek', $round) ?></td>
         </tr>
-        <?php } ?>
+        <?}
+            }
+        } ?>
     </table>
 
-    <?= $pages ?>
+<?= $pages ?>
 
 </div>
