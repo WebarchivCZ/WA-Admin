@@ -307,7 +307,7 @@ class Resource_Model extends Table_Model
      */
     public function get_ratings_date($round = 1)
     {
-        $sql = "SELECT MAX(date) as datum FROM ratings WHERE resource_id = $this->id AND round = 1";
+        $sql = "SELECT MAX(date) as datum FROM ratings WHERE resource_id = {$this->id} AND round = {$round}";
         $result = Database::instance()->query($sql);
         $datum_result = $result->current()->datum;
         $datum = date("d.m.Y", strtotime($datum_result));

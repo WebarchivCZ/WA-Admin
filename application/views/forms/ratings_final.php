@@ -11,7 +11,7 @@
         <?php foreach ($resources as $resource)
         {
             $round = ($status == RS_NEW) ? 1 : 2;
-            $rating_count = $resource->rating_count(1);
+            $rating_count = $resource->rating_count($round);
             
             $class = '';
             $icon = '';
