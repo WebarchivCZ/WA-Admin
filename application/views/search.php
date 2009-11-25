@@ -19,7 +19,7 @@
 		<?= html::anchor('tables/resources/view/'.$resource->id, $resource->title) ?>
             </td>
             <td>
-		<?= html::anchor($resource->url) ?>
+		<?= html::anchor($resource->url, $resource->url, array('target'=>'_blank')) ?>
             </td>
             <td>
 		<?= html::anchor('tables/publishers/view/'.$resource->publisher->id, $resource->publisher) ?>
