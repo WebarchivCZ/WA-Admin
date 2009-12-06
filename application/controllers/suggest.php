@@ -49,7 +49,7 @@ class Suggest_Controller extends Template_Controller
         $this->template->content = $view;
     }
 
-    public function insert ($publisher = NULL)
+    public function insert ($publisher_id = NULL)
     {
     // nacteni hodnot z predchoziho formulare
         $resource_val = $this->session->get('resource_val');
@@ -57,8 +57,9 @@ class Suggest_Controller extends Template_Controller
         $title = $resource_val['title'];
         $url = $resource_val['url'];
 
-        if ($publisher != NULL) {
-            $publisher_name = $publisher;
+        if ($publisher_id != NULL AND is_numeric($publisher_id)) {
+            $publisher = ORM::factory('publisher', $publisher_id);
+            $publisher_name = $publisher->name;
         } else {
             $publisher_name = $resource_val['publisher'];
         }
@@ -83,6 +84,9 @@ class Suggest_Controller extends Template_Controller
         $form->add_select('suggested_by', $suggested_by)->label('Navrhl');
         $form->add('submit', 'Vložit zdroj');
 
+        if(isset($publisher) AND $publisher->id != '') {
+            $form->publisher->disabled(TRUE);
+        }
 
         if ($form->validate())
         {

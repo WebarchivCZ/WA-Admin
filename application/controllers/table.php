@@ -10,6 +10,8 @@ abstract class Table_Controller extends Template_Controller
     protected $view = 'table';
     protected $columns_ignored = array();
 
+    protected $view_record_url;
+    
     protected $record = NULL;
     protected $header = 'Záznam';
 
@@ -17,6 +19,7 @@ abstract class Table_Controller extends Template_Controller
     {
         parent::__construct();
         $this->model = inflector::singular($this->table);
+        $this->view_record_url = "tables/{$this->table}/view";
         $this->template->title = Kohana::lang('tables.'.$this->title);
         $search_url = url::site('tables/'.$this->table.'/search/');
         $this->template->set_global('search_url', $search_url);

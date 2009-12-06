@@ -60,7 +60,7 @@ class Resources_Controller extends Table_Controller
             if ($form->validate())
             {
                 $form->save();
-                url::redirect('tables/resources/view/'.$resource->id);
+                url::redirect("{$this->view_record_url}/{$resource_id}");
             }
         } else
         {
@@ -99,7 +99,7 @@ class Resources_Controller extends Table_Controller
         $resource->save();
         $this->session->set_flash('message', 'Finální hodnocení bylo úspěšně uloženo');
 
-        url::redirect(url::site('tables/resources/view/'.$resource->id));
+        url::redirect("{$this->view_record_url}/{$resource_id}");
     }
 
 
@@ -128,6 +128,123 @@ class Resources_Controller extends Table_Controller
             $this->template->title = Kohana::lang('tables.'.$this->title) . " | " . Kohana::lang('tables.index');
         }
     }
-            
+
+    public function remove_publisher ($resource_id = NULL)
+    {
+        if (is_null($resource_id))
+        {
+            message::set_flash('Není vyplněno ID zdroje.');
+            url::redirect('tables/resources/');
+        } else
+        {
+            $resource = ORM::factory('resource', $resource_id);
+            $resource->publisher_id = NULL;
+            $resource->save();
+            message::set_flash('U zdroje byl úspěšně vymazán vydavatel.');
+            url::redirect("{$this->view_record_url}/{$resource_id}");
+        }
+    }
+
+    public function add_publisher ($resource_id = NULL, $publisher_id = NULL)
+    {
+        $resource_url = "{$this->view_record_url}/{$resource_id}";
+        if (! is_null($publisher_id))
+        {
+            $this->set_publisher($resource_id, $publisher_id);
+        }
+
+        $view = View::factory('form');
+
+        $form = Formo::factory('add_form');
+        $form->add('publisher')->label('Vydavatel');
+        $form->add_rules('required', 'publisher', 'Povinná položka');
+        $form->add('submit', 'odeslat')->value('Ověřit');
+
+        $view->form = $form;
+        $view->header = 'Ověřit vkládaného vydavatele';
+
+        $publisher_checked = (bool) $this->session->get('publisher_checked');
+
+        if ($publisher_checked == TRUE)
+        {
+            $form->set('odeslat','value','Vložit');
+            $view->header = "Vložit vydavatele.";
+            $form->set('action', url::site("tables/resources/insert_publisher/{$resource_id}"));
+        }
+        elseif ($form->validate())
+        {
+
+            $publisher_name = $form->publisher->value;
+
+            $resources = $this->check_publishers($publisher_name);
+            if ($resources->count() == 0)
+            {
+                $form->set('odeslat','value','Vložit');
+                $view->header = "Nebyly nalezeny shody - vložit vydavatele.";
+                $form->set('action', url::site("tables/resources/insert_publisher/{$resource_id}"));
+            } else
+            {
+                $view = View::factory('match_resources');
+
+                $redirect_urls = array();
+                $redirect_urls['insert'] = "tables/resources/add_publisher/{$resource_id}/";
+                $redirect_urls['back'] = 'tables/resources/add_publisher';
+                $redirect_urls['continue'] = $redirect_urls['insert'];
+
+                $this->session->set_flash('publisher_checked', TRUE);
+
+                $view->redirect_urls = $redirect_urls;
+
+                $view->match_resources = $resources;
+                $this->help_box = 'Kliknutím na konkrétního vydavatele
+                přiřadíte již existujícího vydavatele';
+            }
+        } else
+        {
+            $view->form = $form->get();
+        }
+
+        $this->template->content = $view;
+    }
+
+    public function insert_publisher ($resource_id)
+    {
+        $publisher_name = $_POST['publisher'];
+        $publisher = ORM::factory('publisher');
+        $publisher->name = $publisher_name;
+        $publisher->save();
+        $resource = ORM::factory('resource', $resource_id);
+        $resource->publisher_id = $publisher->id;
+        $resource->save();
+        message::set_flash('Ke zdroji byl přiřazen vydavatel: '.$publisher->name);
+        url::redirect("{$this->view_record_url}/{$resource_id}");
+    }
+
+    private function set_publisher ($resource_id, $publisher_id)
+    {
+        $publisher = ORM::factory('publisher', $publisher_id);
+        if($publisher->id == '')
+        {
+            message::set_flash('Vydavatel neexistuje');
+        } else
+        {
+            $resource = ORM::factory('resource', $resource_id);
+            $resource->publisher_id = $publisher->id;
+            $resource->save();
+            message::set_flash("Ke zdroji byl úspěšně uložen vydavatel: {$publisher->name}");
+        }
+        url::redirect("{$this->view_record_url}/{$resource_id}");
+    }
+
+    private function check_publishers ($publisher_name)
+    {
+        $resources = ORM::factory('resource')
+            ->join('publishers', 'resources.publisher_id = publishers.id')
+            ->orlike(array('publishers.name'=>$publisher_name))
+            ->find_all();
+
+        return $resources;
+    }
+
 }
 ?>
