@@ -60,7 +60,7 @@ class Resources_Controller extends Table_Controller
             if ($form->validate())
             {
                 $form->save();
-                url::redirect("{$this->view_record_url}/{$resource_id}");
+                url::redirect("{$this->view_record_url}/{$resource->id}");
             }
         } else
         {
