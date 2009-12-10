@@ -99,7 +99,7 @@ class Resources_Controller extends Table_Controller
         $resource->save();
         $this->session->set_flash('message', 'Finální hodnocení bylo úspěšně uloženo');
 
-        url::redirect("{$this->view_record_url}/{$resource_id}");
+        url::redirect("{$this->view_record_url}/{$resource->id}");
     }
 
 

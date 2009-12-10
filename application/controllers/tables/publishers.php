@@ -16,5 +16,10 @@ class Publishers_Controller extends Table_Controller
         $view = $this->template->content;
         $view->set('append_view', $append_view);
     }
+
+    public function delete($id = FALSE)
+    {
+        parent::delete($id);
+    }
 }
 ?>
