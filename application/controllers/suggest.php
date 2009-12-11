@@ -99,13 +99,13 @@ class Suggest_Controller extends Template_Controller
         {
             $publisher_name = $form->publisher->value;
 
+            $publisher = ORM::factory('publisher');
             if (isset($publisher_id))
             {
-                $publisher = ORM::factory('publisher', $publisher_id);
-                if ($publisher->loaded) {
-                    
-                }
-            } else
+                $publisher->find($publisher_id);
+                
+            }
+            if (! $publisher->loaded)
             {
                 $publisher->name = $publisher_name;
                 $publisher->save();
