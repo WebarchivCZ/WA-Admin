@@ -25,12 +25,14 @@ class Publisher_Model extends Table_Model
     {
         parent::__construct($id);
     }
+    
+    //TODO opravit prazdny nazev vydavatele
 
     /**
      * Zjisti, jestli ma vydavatel jiz podepsanou smlouvu
      * @return bool TRUE, pokud vydavatel ma jiz sepsanou nejakou smlouvu
      */
-    public function has_contract() {
+	public function has_contract() {
         $sql = "SELECT COUNT(c.id) as 'count' FROM contracts c, resources r WHERE
                                    r.publisher_id = {$this->id} AND
                                    r.contract_id = c.id";
@@ -54,6 +56,17 @@ class Publisher_Model extends Table_Model
                           ->where('resources.publisher_id', $this->id)
                           ->find_all();
         return $contracts;
+    }
+    
+    /**
+     * Vraci vsechny zdroje, ktere patri k danemu vydavateli
+     * @return Resource_Model zdroje nalezici danemu vydavateli 
+     */
+    public function get_resources() {
+    	$resources = ORM::factory('resource')
+    						->where('publisher_id', $this->id)
+    						->find_all();
+    	return $resources;
     }
 }
 

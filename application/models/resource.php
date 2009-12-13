@@ -118,12 +118,13 @@ class Resource_Model extends Table_Model
     }
 
     public function search($pattern, & $count, $limit = 20, $offset = 0)
-    {
-        $count = $this->join('publishers', 'resources.publisher_id = publishers.id')
+    {    	
+        $count = $this->join('publishers', 'resources.publisher_id', 'publishers.id', 'LEFT')
             ->orlike(array('url' => $pattern , 'title' => $pattern, 'publishers.name'=>$pattern))
             ->count_all();
-        $records = $this->join('publishers', 'resources.publisher_id = publishers.id')
+        $records = $this->join('publishers', 'resources.publisher_id', 'publishers.id', 'LEFT')
             ->orlike(array('url' => $pattern , 'title' => $pattern, 'publishers.name'=>$pattern))
+            ->orwhere('publisher_id', NULL)
             ->find_all($limit, $offset);
         return $records;
     }

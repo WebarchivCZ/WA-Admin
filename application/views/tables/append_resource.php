@@ -3,11 +3,7 @@
 if ($resource->publisher_id != '')
 {
     $publisher_url = url::site('tables/publishers/view/'.$resource->publisher_id);
-    $publisher_delete_url = "tables/resources/remove_publisher/{$resource->id}";
-    $publisher_delete = html::anchor($publisher_delete_url,
-        icon::img('delete', 'smazat vydavatele od zdroje'),
-        array('class'=>'confirm'));
-    $publisher = "<a href='{$publisher_url}'>{$resource->publisher}</a> {$publisher_delete}";
+    $publisher = "<a href='{$publisher_url}'>{$resource->publisher}</a>";
 } else
 {
     $publisher_add = url::site("tables/resources/add_publisher/{$resource->id}");
