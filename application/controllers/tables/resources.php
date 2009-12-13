@@ -129,22 +129,6 @@ class Resources_Controller extends Table_Controller
         }
     }
 
-    public function remove_publisher ($resource_id = NULL)
-    {
-        if (is_null($resource_id))
-        {
-            message::set_flash('Není vyplněno ID zdroje.');
-            url::redirect('tables/resources/');
-        } else
-        {
-            $resource = ORM::factory('resource', $resource_id);
-            $resource->publisher_id = NULL;
-            $resource->save();
-            message::set_flash('U zdroje byl úspěšně vymazán vydavatel.');
-            url::redirect("{$this->view_record_url}/{$resource_id}");
-        }
-    }
-
     public function add_publisher ($resource_id = NULL, $publisher_id = NULL)
     {
         $resource_url = "{$this->view_record_url}/{$resource_id}";
