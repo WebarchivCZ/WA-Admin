@@ -23,6 +23,7 @@ abstract class Table_Controller extends Template_Controller
         $this->template->title = Kohana::lang('tables.'.$this->title);
         $search_url = url::site('tables/'.$this->table.'/search/');
         $this->template->set_global('search_url', $search_url);
+        $this->template->set_global('table', $this->table);
     }
 
     public function test_table() {
@@ -186,6 +187,7 @@ abstract class Table_Controller extends Template_Controller
 
         $pages_inline = Pagination::inline($count, $per_page);
 
+        // create and display the view
         $view = new View($this->view);
         $view->title = $this->title;
         $view->headers = $model->headers;

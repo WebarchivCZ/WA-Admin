@@ -51,7 +51,7 @@
                 }
                 echo "<td>$value</td>\n";
             }
-            $delete_url = url::site(url::current().'/delete/'.$item->id);
+            $delete_url = url::site('/tables/'.$table.'/delete/'.$item->id);
             $delete_icon = icon::img('delete', 'Smazat');
             echo "<td class='center'><a href='{$delete_url}'>{$delete_icon}</a></td>";
             echo '</tr>';

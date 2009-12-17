@@ -1,6 +1,6 @@
-#Mon Aug 03 22:24:16 CEST 2009
+#Fri Dec 11 16:42:24 CET 2009
 eclipse.preferences.version=1
-include_path=0;/wadmin
+include_path=0;/wadmin\u00055;com.zend.php.phpunit.CONTAINER
 org.eclipse.php.core.phpForamtterIndentationSize=1
 org.eclipse.php.core.phpForamtterUseTabs=true
 phpVersion=php5
