@@ -52,6 +52,7 @@ class Publisher_Model extends Table_Model
      */
     public function get_contracts() {
         $contracts = ORM::factory('contract')
+                          ->select('DISTINCT contracts.id')
                           ->join('resources', 'contract_id', 'contracts.id')
                           ->where('resources.publisher_id', $this->id)
                           ->find_all();
