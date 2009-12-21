@@ -68,12 +68,14 @@ class Contract_Model extends Table_Model
             $conditions = array('year'=>$year, 'contract_no'=>$contract_no);
         }
         $count = $this->where($conditions)
+            ->select('DISTINCT contracts.*')
             ->orlike(array('resources.title'=>$pattern, 'publishers.name'=>$pattern))
             ->join('resources', 'resources.contract_id = contracts.id')
             ->join('publishers', 'resources.publisher_id = publishers.id')
             ->find_all()->count();
 
         $records = $this->where($conditions)
+            ->select('DISTINCT contracts.*')
             ->orlike(array('resources.title'=>$pattern, 'publishers.name'=>$pattern))
             ->join('resources', 'resources.contract_id = contracts.id')
             ->join('publishers', 'resources.publisher_id = publishers.id')

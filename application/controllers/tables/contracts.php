@@ -5,6 +5,7 @@ class Contracts_Controller extends Table_Controller
     protected $title = 'Contracts';
     protected $header = 'Smlouva';
     protected $columns_ignored = array('id');
+    protected $view = 'tables/table_contracts';
 
     public function view ($id = NULL)
     {
