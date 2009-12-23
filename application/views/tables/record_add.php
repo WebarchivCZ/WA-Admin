@@ -5,3 +5,5 @@
 <?php if (isset($form))
     echo $form;
 ?>
+
+<button onclick="history.back();">Zpět</button>

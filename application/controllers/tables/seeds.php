@@ -13,5 +13,11 @@ class Seeds_Controller extends Table_Controller {
                 parent::add();
             }
         }
+
+        protected function redirect ($action = '') {
+            if ($action == 'add') {
+                url::redirect('/tables/resources/view/'.$this->record->resource_id);
+            }
+        }
 }
 ?>

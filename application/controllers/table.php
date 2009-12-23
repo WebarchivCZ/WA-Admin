@@ -142,7 +142,7 @@ abstract class Table_Controller extends Template_Controller
             $this->record = $form->get_model($this->model);
 
             $this->session->set_flash('message', 'Záznam úspěšně přidán');
-            url::redirect('/tables/'.$this->table.'/view/'.$this->record->id);
+            $this->redirect('add');
         }
     }
 
@@ -196,6 +196,12 @@ abstract class Table_Controller extends Template_Controller
         $view->pages = $pages_inline;
         $this->template->content = $view;
         $this->template->title = Kohana::lang('tables.'.$this->title) . " | " . Kohana::lang('tables.index');
+    }
+
+    protected function redirect($action = '') {
+        if ($action == add) {
+            url::redirect('/tables/'.$this->table.'/view/'.$this->record->id);
+        }
     }
 }
 ?>
