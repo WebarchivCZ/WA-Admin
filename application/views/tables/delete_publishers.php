@@ -2,10 +2,15 @@
     <h1>Smazat - <?= $publisher->name ?></h1>
 </div>
 <?php
+if (isset($resources)) {
 echo table::header();
-echo '<tr><th class="first" width="75%">Zdroj</th><th class="last">Odstranit propojení</th></tr>';
-if (isset($resources) AND $resources->count() > 0)
+if ($resources->count() == 1) { ?>
+	<tr><th class="first last" width="75%">Zdroj</th></tr>
+	<td><?= $resources->current()->title ?></td>
+<?php }
+if ($resources->count() > 1)
 {
+	echo '<tr><th class="first" width="75%">Zdroj</th><th class="last">Odstranit propojení</th></tr>';
 	$delete_icon = icon::img('delete', 'Odstranit propojení vydavatele a zdroje.');
 	foreach ($resources as $resource) {
 		$delete_url = url::site('/tables/publishers/remove_from_resource/'.$resource->id);
@@ -24,3 +29,5 @@ $delete_url = url::site('/tables/publishers/erase/'.$publisher->id);
 <div class="center">
 	<a href="<?= $delete_url ?>" class="delete_publisher_conf"><button>Smazat vydavatele</button></a>
 </div>
+
+<?php } ?>
