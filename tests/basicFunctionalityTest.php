@@ -10,7 +10,7 @@ class basicFunctionalityTest extends PHPUnit_Extensions_SeleniumTestCase
     $this->setBrowserUrl("http://localhost/");
   }
 
-  public static function login()
+  public function login()
     {
         $this->open("http://localhost/wadmin/index.php/login");
         $this->type("username", "sibek");
