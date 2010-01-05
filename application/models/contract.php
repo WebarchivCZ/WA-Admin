@@ -51,11 +51,23 @@ class Contract_Model extends Table_Model
     
     public function __set ($key, $value)
     {
+        $is_duplicate = FALSE;
         if ($key === 'cc' OR $key === 'addendum')
         {
             $value = (boolean) $value;
         }
-        parent::__set($key, $value);
+        elseif ($key == 'year' AND $this->__isset('contract_no')) {
+            $is_duplicate = self::is_already_inserted($value, $this->contract_no);
+        }
+        elseif ($key == 'contract_no' AND $this->__isset('year')) {
+            $is_duplicate = self::is_already_inserted($this->year, $value);
+        }
+
+        if ($is_duplicate) {
+            throw new WaAdmin_Exception('Duplicitní smlouva', 'Smlouva je již obsažena v databázi');
+        } else {
+            parent::__set($key, $value);
+        }
     }
 
     public function search($pattern, & $count, $limit = 20, $offset = 0)
@@ -130,6 +142,13 @@ class Contract_Model extends Table_Model
     public function get_resources() {
         $resources = ORM::factory('resource')->where('contract_id', $this->id)->find_all();
         return $resources;
+    }
+
+    public static function is_already_inserted($year, $contract_no) {
+        $condition = array('year'=>$year, 'contract_no'=>$contract_no);
+        $contract = new Contract_Model();
+        $contract = $contract->where($condition)->find_all();
+        return (bool) $contract->count();
     }
 }
 ?>

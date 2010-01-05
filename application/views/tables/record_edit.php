@@ -1,4 +1,5 @@
-<div class="top-bar" id ="solo">
+<?= $top_content = View::factory('layout/top_content')->set('header', $header) ?>
+<div class="top-bar">
     <h1><?= $header ?></h1>
 </div>
 

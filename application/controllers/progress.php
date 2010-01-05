@@ -8,10 +8,10 @@ class Progress_Controller extends Template_Controller
     public function index()
     {
         $resources = ORM::factory('resource')
-            ->in('resource_status_id', RS_CONTACTED)
-            ->where('curator_id', $this->user->id)
-            ->orderby('title', 'ASC')
-            ->find_all();
+                ->in('resource_status_id', RS_CONTACTED)
+                ->where('curator_id', $this->user->id)
+                ->orderby('title', 'ASC')
+                ->find_all();
 
         $view = View::factory('progress');
         $view->resources = $resources;
@@ -62,18 +62,26 @@ class Progress_Controller extends Template_Controller
             $values = $form->get_values();
             foreach ($values as $name => $value)
             {
-                if ($value != '') {
+                if ($value != '')
+                {
                     $contract->__set($name, $value);
                 }
             }
-            $contract->save();
+            $contract_is_inserted = Contract_Model::is_already_inserted
+                                            ($contract->year, $contract->contract_no);
+            if ($contract_is_inserted)
+            {
+                throw new WaAdmin_Exception('Duplicitní smlouva', 'Smlouva je již obsažena v databázi');
+            } else
+            {
+                $contract->save();
 
-            $resource->resource_status_id = RS_APPROVED_PUB;
-            $resource->contract_id = $contract->id;
-            $resource->save();
-
-            $message = "Zdroj <em>{$resource->title}</em> - smlouva {$contract} uložena.";
-            $this->session->set_flash('message', $message);
+                $resource->resource_status_id = RS_APPROVED_PUB;
+                $resource->contract_id = $contract->id;
+                $resource->save();
+                $message = "Zdroj <em>{$resource->title}</em> - smlouva {$contract} uložena.";
+                $this->session->set_flash('message', $message);
+            }
 
             url::redirect('tables/resources/view/'.$resource_id);
         }

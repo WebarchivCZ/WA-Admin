@@ -1,3 +1,4 @@
+<?php $title = isset($header) ? $header : $title; ?>
 <div class="top-bar">
     <h1><?= $title ?></h1>
 </div>

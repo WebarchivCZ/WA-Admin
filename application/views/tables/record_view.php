@@ -1,6 +1,4 @@
-<div class="top-bar" id ="solo">
-    <h1><?= $header ?></h1>
-</div>
+<?= $top_content = View::factory('layout/top_content')->set('header', $header) ?>
 
 <?php if (isset($values)): ?>
 
