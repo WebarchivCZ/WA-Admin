@@ -1,7 +1,4 @@
 <?php
-/**
- * DONE prokliky z jednotlivych radku na prohlizeni konkretnich zaznamu
- */
 abstract class Table_Controller extends Template_Controller
 {
     protected $table;
@@ -11,7 +8,7 @@ abstract class Table_Controller extends Template_Controller
     protected $columns_ignored = array();
 
     protected $view_record_url;
-    
+
     protected $record = NULL;
     protected $header = 'Záznam';
 
@@ -26,13 +23,14 @@ abstract class Table_Controller extends Template_Controller
         $this->template->set_global('table', $this->table);
     }
 
-    public function test_table() {
+    public function test_table()
+    {
         $table = new Table_Presenter();
         $table->add_th_cell('xxx');
         $table->set_header('<p>');
         $table->set_footer('</p>');
         echo Kohana::debug($table);
-        
+
     }
 
     public function index()
@@ -64,21 +62,23 @@ abstract class Table_Controller extends Template_Controller
         $this->view = 'tables/record_view';
         if (is_null($this->record))
         {
-            if (isset($this->columns_order)) {
+            if (isset($this->columns_order))
+            {
                 $record = ORM::factory($this->model)->where('id', $id)
-                                                    ->find();
-            } else {
+                        ->find();
+            } else
+            {
                 $record = ORM::factory($this->model, $id);
             }
         }
-        
+
         $record_values = $record->as_array();
         $values = array();
         foreach ($record_values as $key => $value)
         {
             if ($record->__isset($key) AND ! in_array($key, $this->columns_ignored))
             {
-            // TODO elegantnejsi vypisovani cizich klicu
+                // TODO elegantnejsi vypisovani cizich klicu
                 if ($record->is_related(str_replace('_id', '', $key)))
                 {
                     $key = str_replace('_id', '',$key);
@@ -87,7 +87,7 @@ abstract class Table_Controller extends Template_Controller
 
             }
         }
-        
+
         $this->record = $record;
         $url = url::site("/tables/{$this->table}/edit/{$id}");
         $view = View::factory($this->view);
@@ -99,11 +99,14 @@ abstract class Table_Controller extends Template_Controller
 
     public function edit($id = FALSE)
     {
+        if ($id) {
+            $this->record = ORM::factory($this->model, $id);
+        }
         $form = Formo::factory()->orm($this->model, $id)
-            ->add('submit', 'Upravit')
-            ->remove($this->columns_ignored)
-            ->label_filter('display::translate_orm')
-            ->label_filter('ucfirst');
+                ->add('submit', 'Upravit')
+                ->remove($this->columns_ignored)
+                ->label_filter('display::translate_orm')
+                ->label_filter('ucfirst');
         $view = new View('tables/record_edit');
         $view->bind('header', $this->header);
         $view->form = $form->get();
@@ -112,18 +115,17 @@ abstract class Table_Controller extends Template_Controller
         {
             $form->save();
             $this->session->set_flash('message', 'Záznam byl úspěšně změněn');
-            $url = 'tables/'.$this->uri->segment(2).'/view/'.$id;
-            url::redirect($url);
+            $this->redirect('view');
         }
     }
 
     public function add($values = NULL)
     {
         $form = Formo::factory()->orm($this->model)
-            ->label_filter('display::translate_orm')
-            ->label_filter('ucfirst')
-            ->add('submit', 'Vložit')
-            ->remove($this->columns_ignored);
+                ->label_filter('display::translate_orm')
+                ->label_filter('ucfirst')
+                ->add('submit', 'Vložit')
+                ->remove($this->columns_ignored);
 
         if (! is_null($values))
         {
@@ -142,27 +144,30 @@ abstract class Table_Controller extends Template_Controller
             $this->record = $form->get_model($this->model);
 
             $this->session->set_flash('message', 'Záznam úspěšně přidán');
-            $this->redirect('add');
+            $this->redirect('view');
         }
     }
 
     public function delete($id = FALSE)
     {
-        $form = Formo::factory()->orm($this->model, $id)->add('submit', 'SMAZAT')
-            ->label_filter('display::translate_orm')
-            ->label_filter('ucfirst');
-        // TODO vypisovani labelu
-        $view = new View('tables/record_edit');
-        $view->form = $form->get();
-        $view->bind('header', $this->header);
-        $this->template->content = $view;
-        if ($form->validate())
+        if ($id)
         {
-            ORM::factory($this->model)->delete($id);
-            $this->session->set_flash('message', 'Záznam úspěšně smazán');
-            url::redirect(url::site('/tables/'.$this->table));
+            $this->record = ORM::factory($this->model, $id);
         }
+        if (isset($_POST['sent']))
+        {
+            if (isset($_POST['confirm']))
+            {
+                $this->delete_record($id);
+            } else
+            {
+                $this->redirect();
+            }
+        }
+        $view = new View('tables/record_delete');
+        $view->bind('header', $this->header);
 
+        $this->template->content = $view;
     }
 
     /**
@@ -172,7 +177,8 @@ abstract class Table_Controller extends Template_Controller
     public function search($conditions = NULL)
     {
         $search_string = $this->input->get('search_string');
-        if ( ! is_null( $conditions )) {
+        if ( ! is_null( $conditions ))
+        {
             $search_string = $conditions;
         }
 
@@ -198,10 +204,20 @@ abstract class Table_Controller extends Template_Controller
         $this->template->title = Kohana::lang('tables.'.$this->title) . " | " . Kohana::lang('tables.index');
     }
 
-    protected function redirect($action = '') {
-        if ($action == add) {
-            url::redirect('/tables/'.$this->table.'/view/'.$this->record->id);
-        }
+    protected function redirect($action = 'view', $url = '')
+    {
+        url::redirect("/tables/{$this->table}/{$action}/{$this->record->id}");
+    }
+
+    /**
+     * Metoda smaze dany zaznam a k nemu prislusne objektu (pokud nejake jsou).
+     * Metoda musi byt implementovana potomky
+     * @param ORM $id
+     * @return array seznam smazanych objektu
+     */
+    protected function delete_record($id = FALSE)
+    {
+        // FIXME doplnit kod mazani!
     }
 }
 ?>
