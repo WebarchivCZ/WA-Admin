@@ -18,12 +18,12 @@
     <table class="listing" cellpadding="0" cellspacing="0">
         <tr>
             <th class="first">Zdroj</th>
+            <th>Datum</th>
             <th>Markéta Hrdličková</th>
             <th>Libor Coufal</th>
             <th>Lukáš Gruber</th>
             <th>Pavla Kupcová</th>
-            <th>Tomáš Šíbek</th>
-            <th class="last">Datum</th>
+            <th class="last">Tomáš Šíbek</th>
         </tr>
         <?php
         foreach ($items as $resource) {
