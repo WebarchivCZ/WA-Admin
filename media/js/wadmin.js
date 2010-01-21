@@ -46,7 +46,7 @@ $(document).ready(function () {
         timeout:5000,
         dialogShow:'fadeIn',
         dialogSpeed:'slow',
-        msg: '<br />Opravdu chcete smazat vydavatele a odstranit propojení od všech jeho zdrojů?<br />',
+        msg: '<br /><b>POZOR!</b> Touto akci vymazete vydavatele od vsech zdroju! Chcete opravdu pokracovat? <br />',
         buttons: {
             ok: 'Ano',
             cancel: 'Ne',
