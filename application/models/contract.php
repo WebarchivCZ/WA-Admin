@@ -21,7 +21,7 @@ class Contract_Model extends Table_Model
     {
         parent::__construct($id);
     }
-
+    
     /**
      * Vraci hodnotu daneho sloupce.
      * Pokud je sloupec contract_title, pak je vracen formatovany retezec ve
@@ -37,37 +37,27 @@ class Contract_Model extends Table_Model
             $year = $this->year;
             return $contract_no.'/'.$year;
         }
-        if ($column == 'resource') {
+        if ($column == 'resource')
+        {
             return ORM::factory('resource')->where('contract_id', $this->id)->find()->title;
         }
-        if ($column == 'publisher') {
+        if ($column == 'publisher')
+        {
             return ORM::factory('resource')->where('contract_id', $this->id)->find()->publisher ;
         }
 
         $value = parent::__get($column);
-        
+
         return $value;
     }
-    
+
     public function __set ($key, $value)
     {
-        $is_duplicate = FALSE;
         if ($key === 'cc' OR $key === 'addendum')
         {
             $value = (boolean) $value;
         }
-        elseif ($key == 'year' AND $this->__isset('contract_no')) {
-            $is_duplicate = self::is_already_inserted($value, $this->contract_no);
-        }
-        elseif ($key == 'contract_no' AND $this->__isset('year')) {
-            $is_duplicate = self::is_already_inserted($this->year, $value);
-        }
-
-        if ($is_duplicate) {
-            throw new WaAdmin_Exception('Duplicitní smlouva', 'Smlouva je již obsažena v databázi');
-        } else {
-            parent::__set($key, $value);
-        }
+        parent::__set($key, $value);
     }
 
     public function search($pattern, & $count, $limit = 20, $offset = 0)
@@ -136,6 +126,19 @@ class Contract_Model extends Table_Model
         } else
         {
             parent::select_list($key, $val);
+        }
+    }
+
+    public static function get_contract($year, $contract_no) {
+        if (is_numeric($year) AND is_numeric($contract_no)) {
+            $contract = ORM::factory('contract')
+                            ->where(array('contract_no'=>$contract_no, 'year'=>$year))
+                            ->find();
+            if ($contract->loaded) {
+                return $contract;
+            } else {
+                return FALSE;
+            }
         }
     }
 

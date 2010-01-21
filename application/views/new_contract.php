@@ -1,7 +1,6 @@
-<h3>Přiřazení existující smlouvy ke zdroji</h3>
-
 <?php if (isset ($contracts))
 { ?>
+<h3>Přiřazení existující smlouvy ke zdroji</h3>
 <div class="table">
 
         <?= html::image(array('src'=>'media/img/bg-th-left.gif', 'width'=>'8', 'height'=>'7', 'class'=>'left')) ?>

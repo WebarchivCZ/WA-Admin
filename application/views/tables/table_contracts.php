@@ -13,7 +13,7 @@
 <?= table::header() ?>
 <tr>
     <th class="first">Smlouva</th>
-    <th>>Zdroj</th>
+    <th>Zdroj</th>
     <th class="last">Vydavatel</th>
 </tr>
 <?php

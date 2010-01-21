@@ -400,3 +400,8 @@ h3.record-information {
     background-color: #ff8300;
     cursor: pointer;
 }
+
+.delete button {
+    width: 200px;
+    border-color: red;
+}

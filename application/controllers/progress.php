@@ -71,17 +71,16 @@ class Progress_Controller extends Template_Controller
                                             ($contract->year, $contract->contract_no);
             if ($contract_is_inserted)
             {
-                throw new WaAdmin_Exception('Duplicitní smlouva', 'Smlouva je již obsažena v databázi');
+                $contract = Contract_Model::get_contract($contract->year, $contract->contract_no);
             } else
             {
                 $contract->save();
-
+            }
                 $resource->resource_status_id = RS_APPROVED_PUB;
                 $resource->contract_id = $contract->id;
                 $resource->save();
                 $message = "Zdroj <em>{$resource->title}</em> - smlouva {$contract} uložena.";
                 $this->session->set_flash('message', $message);
-            }
 
             url::redirect('tables/resources/view/'.$resource_id);
         }
