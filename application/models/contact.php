@@ -48,6 +48,10 @@ class Contact_Model extends Table_Model
         return $records;
     }
 
+    public function delete_record() {
+        $this->delete();
+    }
+
     /**
      * Priradi kontakt vydavateli.
      * @param Publisher_Model $publisher

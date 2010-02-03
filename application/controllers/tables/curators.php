@@ -46,5 +46,9 @@ class Curators_Controller extends Table_Controller
             }
         }
     }
+
+    public function edit($id = FALSE) {
+        throw new WaAdmin_Exception('Neimplementovana funkcionalita', 'Bohuzel toto neni implementovano');
+    }
 }
 ?>

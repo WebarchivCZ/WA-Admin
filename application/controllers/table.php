@@ -99,7 +99,8 @@ abstract class Table_Controller extends Template_Controller
 
     public function edit($id = FALSE)
     {
-        if ($id) {
+        if ($id)
+        {
             $this->record = ORM::factory($this->model, $id);
         }
         $form = Formo::factory()->orm($this->model, $id)
@@ -158,7 +159,9 @@ abstract class Table_Controller extends Template_Controller
         {
             if (isset($_POST['confirm']))
             {
-                $this->delete_record($id);
+                $this->record->delete_record();
+                $this->session->set_flash('message', 'Záznam byl úspěšně smazán.');
+                url::redirect(url::site('tables/'.$this->table));
             } else
             {
                 $this->redirect();
@@ -207,17 +210,6 @@ abstract class Table_Controller extends Template_Controller
     protected function redirect($action = 'view', $url = '')
     {
         url::redirect("/tables/{$this->table}/{$action}/{$this->record->id}");
-    }
-
-    /**
-     * Metoda smaze dany zaznam a k nemu prislusne objektu (pokud nejake jsou).
-     * Metoda musi byt implementovana potomky
-     * @param ORM $id
-     * @return array seznam smazanych objektu
-     */
-    protected function delete_record($id = FALSE)
-    {
-        // FIXME doplnit kod mazani!
     }
 }
 ?>

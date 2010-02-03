@@ -63,5 +63,9 @@ class Seed_Model extends Table_Model
             throw new InvalidArgumentException();
         }
     }
+
+    public function delete_record() {
+        return $this->delete();
+    }
 }
 ?>

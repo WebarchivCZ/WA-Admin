@@ -344,5 +344,43 @@ class Resource_Model extends Table_Model
         }
         return $rating;
     }
+
+    /**
+     * Maze zdroj a prislusne zaznamy
+     *zdroj
+    * vydavatel (pokud ma jen tento zdroj) LiCo?: OK
+    * smlouva (pokud ma jen tento zdroj) LiCo?: OK
+    * kontakt (viz vyse - pozn. o funkcionalite) - LiCo?: v soucasne verzi ano, pokud by se v pristi verzi upravovala funcionalita, bylo by treba upravit stejne jako u vydavatele a smlouvy
+    * hodnoceni (vsechna) LiCo?: OK
+    * seminka (vsechna) LiCo?: OK
+    * osloveni (vsechna) LiCo?: OK 
+     */
+    public function delete_record() {
+        // contact
+        ORM::factory('contact', $this->contact_id)->delete();
+
+        // ratings
+        ORM::factory('rating')->where('resource_id', $this->id)->delete_all();
+
+        // seeds
+        ORM::factory('seed')->where('resource_id', $this->id)->delete_all();
+
+        // correspondence
+        ORM::factory('correspondence')->where('resource_id', $this->id)->delete_all();
+
+        // publisher (if has only one resource)
+        $publisher = new Publisher_Model($this->publisher_id);
+        if (count($publisher->get_resources()) == 1) {
+            $publisher->delete();
+        }
+
+        // contract (if has only one resource)
+        $contract = new Contract_Model($this->contract_id);
+        if (count($contract->get_resources()) == 1) {
+            $contract->delete();
+        }
+        // resource
+        $this->delete();
+    }
 }
 ?>

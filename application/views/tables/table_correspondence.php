@@ -26,15 +26,21 @@
         <?php
         foreach ($items as $resource)
         {
+            
             ?>
         <tr>
             <td class="first">
                     <?= html::anchor('tables/resources/view/'.$resource->id, $resource,
                         array('target'=>'_parent')) ?>
             </td>
-            <td><?= $resource->get_correspondence(1)->date ?></td>
-            <td><?= $resource->get_correspondence(2)->date ?></td>
-            <td><?= $resource->get_correspondence(3)->date ?></td>
+            <?php
+                for ($i = 1; $i<=3; $i++) {
+                    $correspondence = $resource->get_correspondence($i);
+                    $href = url::site('/tables/correspondence/edit/'.$correspondence->id);
+                    $content = html::anchor($href, $correspondence->date);
+                    echo "<td>{$content}</td>";
+                }
+            ?>
             <td class="last"><?= $resource->resource_status ?></td>
         </tr>
         <?php } ?>

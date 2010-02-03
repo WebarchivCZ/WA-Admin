@@ -229,6 +229,5 @@ class Resources_Controller extends Table_Controller
 
         return $resources;
     }
-
 }
 ?>

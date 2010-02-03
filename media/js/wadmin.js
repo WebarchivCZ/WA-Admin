@@ -46,7 +46,7 @@ $(document).ready(function () {
         timeout:5000,
         dialogShow:'fadeIn',
         dialogSpeed:'slow',
-        msg: '<br /><b>POZOR!</b> Touto akci vymazete vydavatele od vsech zdroju! Chcete opravdu pokracovat? <br />',
+        msg: '<br /><b>POZOR!</b> Touto akcí vymažete vydavatele od všech zdrojů! Chcete opravdu pokračovat? <br />',
         buttons: {
             ok: 'Ano',
             cancel: 'Ne',
@@ -55,5 +55,23 @@ $(document).ready(function () {
         }
     });
 
+    $('a.delete_contract_conf').click(function() {
+        window.location = $(this).attr('href');
+        return false;
+    });
+
+    // smazani vydavatele
+    $('a.delete_contract_conf').confirm({
+        timeout:5000,
+        dialogShow:'fadeIn',
+        dialogSpeed:'slow',
+        msg: '<br /><b>POZOR!</b> Touto akcí vymažete smlouvu od všech zdrojů! Chcete opravdu pokračovat? <br />',
+        buttons: {
+            ok: 'Ano',
+            cancel: 'Ne',
+            wrapper:'<button></button>',
+            separator:'&nbsp;&nbsp;  '
+        }
+    });
 }
 );

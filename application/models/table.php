@@ -51,6 +51,16 @@ abstract class Table_Model extends ORM
         return $result;
     }
 
+    /**
+     * Metoda smaze dany zaznam a k nemu prislusne objektu (pokud nejake jsou).
+     * Metoda musi byt implementovana potomky
+     * @return array seznam smazanych objektu
+     */
+    protected function delete_record()
+    {
+        throw new WaAdmin_Exception('Neimplementovaná funcionalita', 'Pro tento model není implementována metoda mazání.');
+    }
+
     public function __set($key, $value)
     {
     // TODO elegantnejsi prace s cizim klicem
