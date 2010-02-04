@@ -14,12 +14,10 @@ class Curator_Model extends Auth_User_Model
 		'lastname' , 
 		'email' , 
 		'icq' , 
-		'skype' , 
-		'role' , 
+		'skype' ,  
 		'comments');
 
 	protected $primary_val = 'vocative';
-        protected $primary_var = 'aa';
         protected $sorting = array('username' => 'asc');
 
 	protected $has_many = array('curator_tokens', 'ratings');
