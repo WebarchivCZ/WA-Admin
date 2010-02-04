@@ -64,7 +64,7 @@ class Resources_Controller extends Table_Controller
             }
         } else
         {
-            $this->session->set_flash('message', 'Zdroj s daným ID neexistuje');
+            message::set_flash('Zdroj s daným ID neexistuje');
             url::redirect('tables/resources');
         }
     }
@@ -91,13 +91,13 @@ class Resources_Controller extends Table_Controller
                 $status = RS_REJECTED_WA;
                 break;
             default:
-                $this->session->set_flash('message', 'Nesprávné výsledné hodnocení');
+                message::set_flash('Nesprávné výsledné hodnocení');
                 $status = RS_NEW;
         }
         $resource->resource_status_id = $status;
         $resource->rating_result = $rating;
         $resource->save();
-        $this->session->set_flash('message', 'Finální hodnocení bylo úspěšně uloženo');
+        message::set_flash('Finální hodnocení bylo úspěšně uloženo');
 
         url::redirect("{$this->view_record_url}/{$resource->id}");
     }

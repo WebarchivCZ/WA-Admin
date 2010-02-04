@@ -8,7 +8,7 @@ class Correspondence_Controller extends Table_Controller {
         public function edit($id) {
             if (isset($_POST['date']) AND $_POST['date']=='') {
                 ORM::factory('correspondence', $id)->delete();
-                $this->session->set_flash('message', 'Korespondence byla úspěšně smazána.');
+                message::set_flash('Korespondence byla úspěšně smazána.');
                 url::redirect(url::site('tables/correspondence'));
             }
             parent::edit($id);

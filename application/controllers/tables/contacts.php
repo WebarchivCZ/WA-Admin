@@ -82,7 +82,7 @@ class Contacts_Controller extends Table_Controller
             $resource->contact_id = $contact->id;
             $resource->save();
 
-            $this->session->set_flash('message', 'Kontakt byl úspěšně přidán');
+            message::set_flash('Kontakt byl úspěšně přidán');
             url::redirect('tables/contacts/view/'.$contact->id);
         }
     }

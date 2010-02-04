@@ -115,7 +115,7 @@ abstract class Table_Controller extends Template_Controller
         if ($form->validate())
         {
             $form->save();
-            $this->session->set_flash('message', 'Záznam byl úspěšně změněn');
+            message::set_flash('Záznam byl úspěšně změněn');
             $this->redirect('view');
         }
     }
@@ -144,33 +144,39 @@ abstract class Table_Controller extends Template_Controller
             $form->save();
             $this->record = $form->get_model($this->model);
 
-            $this->session->set_flash('message', 'Záznam úspěšně přidán');
+            message::set_flash('Záznam úspěšně přidán');
             $this->redirect('view');
         }
     }
 
     public function delete($id = FALSE)
     {
-        if ($id)
+        if ($this->user->has(ORM::factory('role', 'admin')))
         {
-            $this->record = ORM::factory($this->model, $id);
-        }
-        if (isset($_POST['sent']))
-        {
-            if (isset($_POST['confirm']))
+            if ($id)
             {
-                $this->record->delete_record();
-                $this->session->set_flash('message', 'Záznam byl úspěšně smazán.');
-                url::redirect(url::site('tables/'.$this->table));
-            } else
-            {
-                $this->redirect();
+                $this->record = ORM::factory($this->model, $id);
             }
-        }
-        $view = new View('tables/record_delete');
-        $view->bind('header', $this->header);
+            if (isset($_POST['sent']))
+            {
+                if (isset($_POST['confirm']))
+                {
+                    $this->record->delete_record();
+                    message::set_flash('Záznam byl úspěšně smazán.');
+                    url::redirect(url::site('tables/'.$this->table));
+                } else
+                {
+                    $this->redirect();
+                }
+            }
+            $view = new View('tables/record_delete');
+            $view->bind('header', $this->header);
 
-        $this->template->content = $view;
+            $this->template->content = $view;
+        } else {
+            message::set_flash('Nemáte právo mazání.');
+            url::redirect(url::site("tables/{$this->table}"));
+        }
     }
 
     /**

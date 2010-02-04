@@ -23,17 +23,24 @@ class Contracts_Controller extends Table_Controller
 
     public function delete($id = FALSE)
     {
-        if ($id)
+        if ($this->user->has(ORM::factory('role', 'admin')))
         {
-            $view = View::factory ( 'tables/delete_contracts' );
-            $contract = ORM::factory ( 'contract', $id );
-            $resources = $contract->get_resources();
-            $view->contract = $contract;
-            $view->resources = $resources;
-            $this->template->content = $view;
+            if ($id)
+            {
+                $view = View::factory ( 'tables/delete_contracts' );
+                $contract = ORM::factory ( 'contract', $id );
+                $resources = $contract->get_resources();
+                $view->contract = $contract;
+                $view->resources = $resources;
+                $this->template->content = $view;
+            } else
+            {
+                message::set_flash ( 'Není vyplněno ID smlouvy.' );
+                url::redirect(url::site("tables/{$this->table}"));
+            }
         } else
         {
-            message::set_flash ( 'Není vyplněno ID smlouvy.' );
+            message::set_flash('Nemáte právo mazání.');
         }
     }
 

@@ -14,6 +14,7 @@ class Publishers_Controller extends Table_Controller {
 	}
 	
 	public function delete($id = FALSE) {
+            if ($this->user->has(ORM::factory('role', 'admin'))) {
 		if ($id) {
 			$view = View::factory ( 'tables/delete_publishers' );
 			$publisher = ORM::factory ( 'publisher', $id );
@@ -24,6 +25,10 @@ class Publishers_Controller extends Table_Controller {
 		} else {
 			message::set_flash ( 'Není vyplněno ID vydavatele.' );
 		}
+            } else {
+                message::set_flash('Nemáte právo mazání.');
+                url::redirect(url::site("tables/{$this->table}"));
+            }
 	}
 	
 	/**
@@ -61,13 +66,7 @@ class Publishers_Controller extends Table_Controller {
 	public function erase($publisher_id = FALSE) {
 		if ($publisher_id) {
 			$publisher = new Publisher_Model($publisher_id);
-			$resources = $publisher->get_resources();
-			
-			$result = $publisher->delete($publisher_id);
-			foreach ($resources as $resource) {
-				$resource->publisher_id = NULL;
-				$resource->save();
-			}
+			$publisher->delete_record();
 			message::set_flash('Vydavatel byl úspěšně smazán.');
 		} else {
 			message::set_flash('Není nastavené ID vydavatele.');

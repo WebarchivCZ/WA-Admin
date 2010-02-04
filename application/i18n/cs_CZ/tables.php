@@ -64,5 +64,6 @@ $lang = array
     'contract_title' => 'Číslo smlouvy',
     'short_title' => 'název',
     'reevaluate_date' => 'přehodnotit k',
+    'aleph_id' => 'Aleph Sysno'
     )
 ?>
