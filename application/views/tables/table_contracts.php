@@ -14,7 +14,8 @@
 <tr>
     <th class="first">Smlouva</th>
     <th>Zdroj</th>
-    <th class="last">Vydavatel</th>
+    <th>Vydavatel</th>
+    <th class="last">Smazat</th>
 </tr>
 <?php
 foreach ($items as $contract)
@@ -27,7 +28,8 @@ foreach ($items as $contract)
         <?= html::anchor('tables/contracts/view/'.$contract->id, $contract) ?>
     </td>
     <td><?= html::anchor('tables/resources/view/'.$resource->id, $resource) ?></td>
-    <td class="last"><?= html::anchor('tables/publishers/view/'.$resource->publisher_id, $resource->publisher) ?></td>
+    <td><?= html::anchor('tables/publishers/view/'.$resource->publisher_id, $resource->publisher) ?></td>
+    <td class="last center"><?= html::anchor('tables/contracts/delete/'.$contract->id, icon::img('delete', 'Smazat smlouvu')) ?></td>
 </tr>
         <?}
 }

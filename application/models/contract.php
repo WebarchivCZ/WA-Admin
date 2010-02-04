@@ -85,6 +85,15 @@ class Contract_Model extends Table_Model
             
         return $records;
     }
+
+    public function delete_record() {
+        $resources = $this->get_resources();
+        foreach($resources as $resource) {
+            $resource->contract_id = NULL;
+            $resource->save();
+        }
+        $this->delete();
+    }
     
     /**
      * Create new contract_no in format count_this_year+1/year

@@ -55,7 +55,7 @@ class Publishers_Controller extends Table_Controller {
 	}
 	
 	/**
-	 * Vymaze vydavatele i zdroje, ktere ma prirazeny.
+	 * Vymaze vydavatele, ktere ma prirazeny.
 	 * @param int $publisher_id
 	 */
 	public function erase($publisher_id = FALSE) {
