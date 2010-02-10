@@ -33,6 +33,9 @@ class Resource_Model extends Table_Model
     'correspondence' ,
     'quality_control');
 
+    // to speed up loading of forms
+    public $formo_ignores = array('contact_id', 'publisher_id', 'contract_id');
+
     public function __construct ($id = NULL)
     {
         parent::__construct($id);

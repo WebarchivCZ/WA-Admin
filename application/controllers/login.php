@@ -28,7 +28,7 @@ class Login_Controller extends Template_Controller
         $form->add('username')->label('Uživatel')->required(TRUE);
         $form->add('password', 'password')->label('Heslo')->required(TRUE);
         $form->add('checkbox', 'remember')->label('Zapamatovat přihlášení');
-        $form->add('submit', 'Přihlásit');
+        $form->add('submit', 'login')->value('Přihlásit');
         if ($form->validate())
         {
             $username = $form->username->value;

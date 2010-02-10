@@ -1,22 +1,12 @@
 <?php
-/**
- * TODO oslovene zdroje se objevi az po mesici, kdy byly naposledy osloveny
- * TODO seradit zdroje podle poctu osloveni a pak podle data (nejdrive neoslovene)
- */
-
-class Addressing_Controller extends Template_Controller
-{
-
+class Addressing_Controller extends Template_Controller {
     protected $title = 'Oslovování';
     protected $page_header = 'Oslovování vydavatelů';
 
-    public function index()
-    {
-
+    public function index() {
         $id_array = $this->get_to_addressing();
-        
-        if (count ($id_array) > 0)
-        {
+
+        if (count ($id_array) > 0) {
             $resources = ORM::factory('resource')->in('id', $id_array)->orderby('date', 'ASC')->find_all();
         } else {
             $resources = NULL;
@@ -28,6 +18,29 @@ class Addressing_Controller extends Template_Controller
         $this->template->content = $view;
     }
 
+    public function send($resource_id, $correspondence_type_id) {
+        $date_format = Kohana::config('wadmin.date_format');
+     
+        $correspondence = ORM::factory('correspondence');
+        $correspondence->resource_id = $resource_id;
+        $correspondence->correspondence_type_id = $correspondence_type_id;
+        $correspondence->date = date($date_format);
+        $correspondence->save();
+
+        $resource = ORM::factory('resource', $resource_id);
+        $resource->resource_status_id = RS_CONTACTED;
+        $resource->save();
+
+        url::redirect('addressing');
+    }
+
+    /**
+     * Method select resources, which has to be addressed by actual curator.
+     * The condition to selectin is:
+     * it isn't contacted yet or
+     * it the last correspondence was sent more than month ago and the status is contacted
+     * @return array ids of the resources to addressing
+     */
     protected function get_to_addressing () {
         $curator_id = $this->user->id;
 
@@ -57,8 +70,7 @@ class Addressing_Controller extends Template_Controller
         $result = Database::instance()->query($sql);
         $id_array = array();
 
-        foreach($result->result_array(FALSE) as $row)
-        {
+        foreach($result->result_array(FALSE) as $row) {
             array_push($id_array, $row['id']);
         }
         return $id_array;
@@ -67,20 +79,6 @@ class Addressing_Controller extends Template_Controller
     public function count_to_addressing () {
         $count = count ($this->get_to_addressing());
         return $count;
-    }
-
-    public function send($resource_id, $correspondence_type_id)
-    {
-        $correspondence = ORM::factory('correspondence');
-        $correspondence->resource_id = $resource_id;
-        $correspondence->correspondence_type_id = $correspondence_type_id;
-        $date_format = Kohana::config('wadmin.date_format');
-        $correspondence->date = date($date_format);
-        $correspondence->save();
-        $resource = ORM::factory('resource', $resource_id);
-        $resource->resource_status_id = RS_CONTACTED;
-        $resource->save();
-        url::redirect('addressing');
     }
 }
 ?>

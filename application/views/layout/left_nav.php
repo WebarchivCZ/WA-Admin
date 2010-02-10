@@ -1,16 +1,28 @@
-<?php $base_url = url::base().'tables/'; ?>
+<?php
+    $base_url = url::base().'tables/';
+    $pages = array('resources'=>'Zdroje',
+                   'publishers' =>  'Vydavatelé',
+                   'contacts' => 'Kontakty',
+                   'correspondence' => 'Oslovení',
+                   'contracts' => 'Smlouvy',
+                   'ratings' => 'Hodnocení',
+                   'seeds' => 'Semínka');
+?>
 
 <h3>Prohlížet</h3>
 
 <ul class="nav">
 
-	<li><a href="<?= $base_url ?>resources">Zdroje</a></li>
-	<li><a href="<?= $base_url ?>publishers">Vydavatelé</a></li>
-	<li><a href="<?= $base_url ?>contacts">Kontakty</a></li>
-	<li><a href="<?= $base_url ?>correspondence">Oslovení</a></li>
-	<li><a href="<?= $base_url ?>contracts">Smlouvy</a></li>
-	<li><a href="<?= $base_url ?>ratings">Hodnocení</a></li>
-	<li class="last"><a href="<?= $base_url ?>seeds">Semínka</a></li>
+    <?php
+        foreach ($pages as $link => $page) {
+            $class = '';
+            if (isset($this->table) AND $this->table == $link) {
+                $class = " class='active'";
+            }
+            // TODO pokud je to posledni link v tabulce, pak pridat do class i 'last'
+            echo "<li{$class}><a href='{$base_url}{$link}'>{$page}</a></li>";
+        }
+    ?>
 </ul>
 <h3>Veřejné</h3>
 <a href="http://www.webarchiv.cz" class="link" target="_blank">webarchiv.cz</a>

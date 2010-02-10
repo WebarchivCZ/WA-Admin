@@ -34,7 +34,7 @@ class Suggest_Controller extends Template_Controller
             $resources = $this->check_records($publisher_name, $title, $url);
             if ($resources->count() == 0)
             {
-                $this->session->set_flash('message', 'Nebyly nalezeny shody.');
+                message::set_flash('Nebyly nalezeny shody.');
                 url::redirect('suggest/insert/');
             } else
             {

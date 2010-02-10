@@ -10,6 +10,9 @@ class Seed_Model extends Table_Model
     'url' ,
     'seed_status');
 
+    // to speed up loading
+    //public $formo_ignores = array('resource_id');
+
     protected $sorting = array('url' => 'asc');
     protected $primary_val = 'url';
 

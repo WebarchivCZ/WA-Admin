@@ -12,6 +12,8 @@ class Contact_Model extends Table_Model
     'name'
     );
 
+    public $formo_ignores = array('publisher_id');
+
     protected $primary_val = 'email';
     protected $sorting = array('name' => 'asc');
 

@@ -187,7 +187,7 @@ ul.nav a:hover {
     font-weight:bold;
 }
 ul.nav li.last {background:none;}
-
+ul.nav li.active {font-weight: bold;}
 #left-column .link {
     display:block;
     width:142px;
