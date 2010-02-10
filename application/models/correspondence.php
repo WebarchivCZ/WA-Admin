@@ -14,7 +14,7 @@ class Correspondence_Model extends Table_Model {
 
     protected $belongs_to = array('correspondence_type', 'resource');
 
-    public $formo_ignores = array('resource_id');
+    public $formo_ignores = array('resource_id', 'id');
 
     public function __construct ($id = NULL) {
         parent::__construct($id);

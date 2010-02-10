@@ -4,14 +4,24 @@ class Correspondence_Controller extends Table_Controller {
     protected $title = 'Correspondence';
     protected $header = 'Oslovení';
     protected $view = 'tables/table_correspondence';
+    protected $view_record_url = '/tables/correspondence/';
 
     public function edit($id) {
+        // TODO po uzavreni editace se vratit na vypis osloveni (tables/correspondence/view)
+        // primo na stranku se zdrojem
+
         if (isset($_POST['date']) AND $_POST['date']=='') {
             ORM::factory('correspondence', $id)->delete();
             message::set_flash('Korespondence byla úspěšně smazána.');
-            url::redirect(url::site('tables/correspondence'));
+            
+            $this->redirect();
         }
         parent::edit($id);
+    }
+
+    protected function redirect($action = 'view', $url = '') {
+        $url = $this->view_record_url.'index?page='.$this->session->get('ref_page');
+        url::redirect($url);
     }
 }
 ?>
