@@ -191,11 +191,12 @@ abstract class Table_Controller extends Template_Controller {
         $this->template->title = Kohana::lang('tables.'.$this->title) . " | " . Kohana::lang('tables.index');
     }
 
-    protected function redirect($action = 'view', $url = '') {
-        if (isset($url)) {
-            url::redirect($url);
+    protected function redirect($action = 'view') {
+        if ($action == 'view' OR $action = 'edit') {
+            url::redirect("/tables/{$this->table}/{$action}/{$this->record->id}");
+        }elseif ($action == 'list') {
+            url::redirect("/tables/{$this->table}/");
         }
-        url::redirect("/tables/{$this->table}/{$action}/{$this->record->id}");
     }
 }
 ?>

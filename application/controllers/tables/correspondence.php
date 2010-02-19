@@ -7,9 +7,7 @@ class Correspondence_Controller extends Table_Controller {
     protected $view_record_url = '/tables/correspondence/';
 
     public function edit($id) {
-        // TODO po uzavreni editace se vratit na vypis osloveni (tables/correspondence/view)
-        // primo na stranku se zdrojem
-
+        
         if (isset($_POST['date']) AND $_POST['date']=='') {
             ORM::factory('correspondence', $id)->delete();
             message::set_flash('Korespondence byla úspěšně smazána.');
