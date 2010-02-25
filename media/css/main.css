@@ -26,6 +26,7 @@ input {vertical-align:middle}
 .alert_text {color: red; }
 .hidden {display: none; }
 .suggested_by_pub {color: #d50101; font-weight: bold; }
+.suggested_by_issn {color: #999900; font-weight: bold; }
 table.form tr {
     height: 2.3em;
 }
