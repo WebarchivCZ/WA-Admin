@@ -37,18 +37,24 @@ class Catalogue_Controller extends Template_Controller
     {
         $allowed_actions = array('catalogued');
         $resource = ORM::factory('resource', $resource_id);
+        if (isset($_POST['aleph_id']) and $_POST['aleph_id'] != '') {
+                $resource->aleph_id = $_POST['aleph_id'];
+            
         if (in_array($action, $allowed_actions))
-        {
+        {   
             $date_format = Kohana::config('wadmin.date_format');
             $resource->{$action} = date($date_format);
             $message = 'Informace o zdroji: <i>'.$resource->title.'</i> byla uložena';
-            $this->session->set_flash('message', $message);
+            message::set_flash($message);
             $resource->save();
-            url::redirect('catalogue');
         } else
         {
-            $this->session->set_flash('message', 'Nesprávný parametr');
+            message::set_flash('Nesprávný parametr');
         }
+        } else {
+            message::set_flash('Není vyplněno Aleph ID.');
+        }
+        url::redirect('catalogue');
     }
 }
 ?>

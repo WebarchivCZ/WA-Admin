@@ -14,7 +14,7 @@ class Suggest_Controller extends Template_Controller
         $form->add('url')->label('URL')->add_rule('url', 'valid_custom::simple_domain', 'Zadejte co nejkratší doménu (domena.cz).');
         ;
         $form->add_rules('required', 'title|publisher|url', 'Povinná položka');
-        $form->add('submit', 'Ověřit');
+        $form->add('submit', 'check')->value('Ověřit');
 
         $view->form = $form;
         $view->header = 'Ověřit vkládaný zdroj';
@@ -88,7 +88,7 @@ class Suggest_Controller extends Template_Controller
         $form->add_select('curator', $curators)->label('Kurátor')->value($curator_id);
         $form->add_select('conspectus', $conspectus)->label('Konspekt');
         $form->add_select('suggested_by', $suggested_by)->label('Navrhl');
-        $form->add('submit', 'Vložit zdroj');
+        $form->add('submit', 'insert_record')->value('Vložit zdroj');
 
         if(isset($publisher) AND $publisher->id != '')
         {

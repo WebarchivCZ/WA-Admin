@@ -24,6 +24,10 @@ if(isset($resources) AND $resources->count() != 0)
                 {
                     $icon = icon::img('exclamation', 'Zdroj navrhl vydavatel');
                     $class = 'suggested_by_pub';
+                } elseif ($resource->suggested_by_id == 4)
+                {
+                    $icon = icon::img('exclamation', 'Zdroj byl navržen ISSN');
+                    $class = 'suggested_by_issn';
                 }
                 ?>
 

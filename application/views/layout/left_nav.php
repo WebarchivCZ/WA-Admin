@@ -30,5 +30,4 @@
 <a href="http://wayback.webarchiv.cz" class="link" target="_blank">wayback</a>
 <h3>Interní</h3>
 <a href="http://trac.webarchiv.cz" class="link" target="_blank">trac</a>
-<a href="https://intranet.webarchiv.cz/blog" class="link" target="_blank">blog</a>
-<a href="https://intranet.webarchiv.cz/wiki" class="link" target="_blank">wiki</a>
+<a href="http://raptor.webarchiv.cz:8000/trac/wiki" class="link" target="_blank">wiki</a>
