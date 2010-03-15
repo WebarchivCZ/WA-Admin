@@ -119,3 +119,12 @@ a.autocomplete_item:active {
 	background-color: #bbb;
 	border-color: #666;
 }
+#login_form {
+    width: 400px;
+    position: relative;
+    background-color: white;
+    left: 200px;
+    margin-top: 50px;
+    padding: 15px;
+    border: 1px solid #ccc;
+}
