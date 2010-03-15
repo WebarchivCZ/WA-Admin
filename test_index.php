@@ -22,7 +22,7 @@ define('IN_PRODUCTION', FALSE);
  *
  * This path can be absolute or relative to this file.
  */
-$kohana_application = '/var/www/wadmin/application';
+$kohana_application = 'D:/xampplite/htdocs/wadmin/application';
 
 /**
  * Kohana modules directory. This directory should contain all the modules used
@@ -31,7 +31,7 @@ $kohana_application = '/var/www/wadmin/application';
  *
  * This path can be absolute or relative to this file.
  */
-$kohana_modules = '/var/www/wadmin/modules';
+$kohana_modules = 'D:/xampplite/htdocs/wadmin/modules';
 
 /**
  * Kohana system directory. This directory should contain the core/ directory,
@@ -39,7 +39,7 @@ $kohana_modules = '/var/www/wadmin/modules';
  *
  * This path can be absolute or relative to this file.
  */
-$kohana_system = '/var/www/wadmin/system';
+$kohana_system = 'D:/xampplite/htdocs/wadmin/system';
 
 /**
  * Test to make sure that Kohana is running on PHP 5.2 or newer. Once you are

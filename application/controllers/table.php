@@ -23,6 +23,7 @@ abstract class Table_Controller extends Template_Controller {
         $this->template->set_global('table', $this->table);
     }
 
+    // TODO remove
     public function test_table() {
         $table = new Table_Presenter();
         $table->add_th_cell('xxx');

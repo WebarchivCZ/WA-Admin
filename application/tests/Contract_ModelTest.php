@@ -28,17 +28,6 @@ class Contract_ModelTest extends PHPUnit_Framework_TestCase
         parent::tearDown ();
     }
 
-    /**
-     * @expectedException WaAdmin_Exception
-     */
-    public function testDuplicatedContract () {
-        $contract1 = new Contract_Model(1);
-        $contract2 = new Contract_Model();
-        
-        $contract2->year = $contract1->year;
-        $contract2->contract_no = $contract1->contract_no;
-    }
-
     public function testIsInserted() {
         $contract = new Contract_Model(1);
         $result = Contract_Model::is_already_inserted($contract->year, $contract->contract_no);
