@@ -13,6 +13,12 @@
 //});
 
 $(document).ready(function () {
+
+    $("table.listing tr").hover(
+         function() {$(this).find("td").css('background-color', '#CCC')},
+         function() {$(this).find("td").css('background-color', '')}
+      );
+
     $("#section-rating").click(function () {
         $("#table-ratings").toggle();
     });
