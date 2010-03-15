@@ -43,7 +43,8 @@ class Login_Controller extends Template_Controller
                 $this->template->message = 'Špatně zadaná kombinace uživatelského jména a hesla';
             }
         }
-        $this->template->content = $form;
+        $this->template = View::factory('login_page');
+        $this->template->form = $form;
     }
 
 }
