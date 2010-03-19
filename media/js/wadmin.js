@@ -15,7 +15,10 @@
 $(document).ready(function () {
 	
 	  $("select#category_select").change(function(){
-	    $.getJSON("/wadmin/suggest/get_subcategories/"+$(this).val(), '' , function(j){
+		  pathArray = window.location.pathname.split( '/' );
+		  var url = window.location.protocol + "//" + window.location.host + "/" + pathArray[1];
+
+	    $.getJSON(url+"/suggest/get_subcategories/"+$(this).val(), '' , function(j){
 	      var options = '';
 	      for (var i = 0; i < j.length; i++) {
 	        options += '<option value="' + j[i].optionValue + '">' + j[i].optionDisplay + '</option>\n';
