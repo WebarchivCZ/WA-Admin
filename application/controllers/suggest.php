@@ -171,7 +171,9 @@ class Suggest_Controller extends Template_Controller
      */
     public function get_subcategories ($conspectus_id = null) {
     	$this->auto_render = FALSE;
-    	$this->profiler->disable();
+    	if (isset($this->profiler)) {
+    		$this->profiler->disable();
+    	}
     	$subcategories = ORM::factory('conspectus_subcategory')
                                 ->where('conspectus_id', $conspectus_id)
                                 ->find_all();
