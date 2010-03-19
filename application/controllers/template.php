@@ -23,6 +23,8 @@ abstract class Template_Controller extends Controller {
     // Default to do auto-rendering
     public $auto_render = TRUE;
 
+    protected $profiler;
+    
     protected $need_auth = TRUE;
 
     protected $session;
@@ -74,7 +76,7 @@ abstract class Template_Controller extends Controller {
          */
 
         if (Kohana::config('wadmin.debug_mode')) {
-            $profiler = new Profiler();
+            $this->profiler = new Profiler();
         }
     }
 

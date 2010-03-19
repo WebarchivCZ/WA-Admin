@@ -22,6 +22,7 @@ class Resource_Model extends Table_Model {
             'publisher' ,
             'contract' ,
             'conspectus' ,
+    		'conspectus_subcategory' ,
             'crawl_freq' ,
             'resource_status' ,
             'suggested_by');

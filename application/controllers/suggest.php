@@ -70,23 +70,25 @@ class Suggest_Controller extends Template_Controller
         }
 
         $curators = ORM::factory('curator')->where('active', 1)->select_list('id', 'vocative');
-        $conspectus = ORM::factory('conspectus')->select_list('id', 'category');
-        // TODO mozno presunout do select_list() v ConspectusModel
-        foreach ($conspectus as $id => $category)
-        {
-            $conspectus[$id] = $id . ' - ' . $category;
-        }
+        $conspectus = ORM::factory('conspectus')->select_list('id', 'title');
 
         $suggested_by = ORM::factory('suggested_by')->select_list('id', 'proposer');
-
+        
+        $subcategories = ORM::factory('conspectus_subcategory')
+        							->where('conspectus_id', 1)
+        							->select_list('id', 'title');
+        
         $curator_id = Auth::instance()->get_user()->id;
-
+        
         $form = Formo::factory('insert_resource');
         $form->add('title')->label('Název zdroje')->value($title);
         $form->add('url')->label('URL')->value($url)->add_rule('url', 'url', 'Musí být ve tvaru url.');
         $form->add('publisher')->label('Vydavatel')->value($publisher_name);
         $form->add_select('curator', $curators)->label('Kurátor')->value($curator_id);
-        $form->add_select('conspectus', $conspectus)->label('Konspekt');
+        $form->add_select('conspectus', $conspectus)->label('Konspekt')
+                ->id('category_select');
+        $form->add_select('conspectus_subcategory', $subcategories)->label('Podkategorie')
+                ->id('subcategory_select');
         $form->add_select('suggested_by', $suggested_by)->label('Navrhl');
         $form->add('submit', 'insert_record')->value('Vložit zdroj');
 
@@ -119,6 +121,7 @@ class Suggest_Controller extends Template_Controller
             $resource->url = $url;
             $resource->publisher_id = $publisher->id;
             $resource->conspectus_id = $form->conspectus->value;
+            $resource->conspectus_subcategory_id = $form->conspectus_subcategory->value;
             $resource->creator_id = $curator_id;
             $resource->curator_id = $form->curator->value;
             $resource->suggested_by_id = $form->suggested_by->value;
@@ -160,6 +163,30 @@ class Suggest_Controller extends Template_Controller
                 ->find_all();
 
         return $resources;
+    }
+    
+    /**
+     * Vraci JSON odezvu, ktera obsahuje podkategorie dane kategorie konspektu
+     * @param $conspectus_id
+     */
+    public function get_subcategories ($conspectus_id = null) {
+    	$this->auto_render = FALSE;
+    	$this->profiler->disable();
+    	$subcategories = ORM::factory('conspectus_subcategory')
+                                ->where('conspectus_id', $conspectus_id)
+                                ->find_all();
+		
+        $output = "[";
+        foreach ($subcategories as $subcategory) {
+                $output .= "{optionValue: '".$subcategory->id."'";
+                $output .= ', ';
+                $output .= 'optionDisplay: ';
+                $output .= "'".$subcategory->title."'";
+                $output .= '},';
+        }
+        $output = trim($output, ",");
+    	$output .= "]";
+    	echo $output;
     }
 
 }

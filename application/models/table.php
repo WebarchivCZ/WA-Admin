@@ -118,5 +118,26 @@ abstract class Table_Model extends ORM
         }
         return parent::unique_key($id);
     }
+    
+    /**
+     * Prekryva metodu select_list() aby bylo mozne jako hodnotu vzit i generovany sloupec
+     * @param $key
+     * @param $val
+     */
+    public function select_list($key, $val) {
+    	$fields = $this->list_fields($this->table_name);
+    	
+    	if (! in_array($val, $fields)) 
+		{
+    		$object = array();
+    		foreach ($this->find_all() as $record)
+    		{
+    			$object[$record->{$key}] = $record->{$val};
+			}
+			return $object;
+		
+    	} 
+    	return parent::select_list($key, $val);
+    }
 }
 ?>

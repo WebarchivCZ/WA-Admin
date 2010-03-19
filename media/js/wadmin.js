@@ -13,6 +13,17 @@
 //});
 
 $(document).ready(function () {
+	
+	  $("select#category_select").change(function(){
+	    $.getJSON("/wadmin/suggest/get_subcategories/"+$(this).val(), '' , function(j){
+	      var options = '';
+	      for (var i = 0; i < j.length; i++) {
+	        options += '<option value="' + j[i].optionValue + '">' + j[i].optionDisplay + '</option>\n';
+	      }
+	      $("select#subcategory_select").html(options);
+	    })
+	  });
+
 
     $("table.listing tr").hover(
          function() {$(this).find("td").css('background-color', '#CCC')},

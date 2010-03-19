@@ -1,29 +1,26 @@
 <?php
 defined('SYSPATH') or die('No direct script access.');
-/**
- * Model kategorie konspektu
- * Obsahuje sloupce id, category, comments
- * Primarne se reprezentuje pomoci nazvu kategorie
- */
-class Conspectus_Model extends Table_Model
+class Conspectus_Subcategory_Model extends Table_Model
 {
 
     public $headers = array(
     'id' ,
-    'category' ,
+    'subcategory' ,
     'comments');
 
-    protected $table_name = 'conspectus';
+    protected $table_name = 'conspectus_subcategories';
 
     // generovany sloupec title '1 - Kategorie'
     protected $primary_val = 'title';
 
     protected $has_many = array(
-    'resources', 'conspectus_subcategories');
+    'resources');
+    
+    protected $belogs_to = array('conspectus');
 
     /**
      * Vraci hodnotu z databaze
-     * Pro sloupec 'title' vraci '1 - Kategorie'
+     * Pro sloupec 'title' vraci '1 - Podkategorie'
      * @param string $column
      * @return mixed hodnota sloupce
      */
@@ -32,7 +29,7 @@ class Conspectus_Model extends Table_Model
         if ($column == 'title')
         {
             $id = parent::__get('id');
-            $category = parent::__get('category');
+            $category = parent::__get('subcategory');
             $title = $id.' - '.$category;
             return $title;
         }

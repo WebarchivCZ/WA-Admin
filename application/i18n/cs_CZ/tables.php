@@ -67,6 +67,7 @@ $lang = array
     'aleph_id' => 'Aleph Sysno',
     'date_checked' => 'datum kontroly',
     'date_crawled' => 'sklizeno dne',
-    'ticket_no' => 'Číslo ticketu'
+    'ticket_no' => 'Číslo ticketu',
+    'conspectus_subcategory' => 'podkategorie'
     )
 ?>
