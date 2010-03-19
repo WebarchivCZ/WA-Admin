@@ -48,11 +48,20 @@ class Resources_Controller extends Table_Controller
                 ->title($resource->catalogued);
 
             $form->_order = array('title', 'url', 'date', 'creator_id', 'curator_id',
-                'conspectus_id', 'crawl_freq_id',
+                'conspectus_id', 'conspectus_subcategory_id', 'crawl_freq_id',
                 'resource_status_id', 'suggested_by_id', 'rating_result', 'reevaluate_date',
                 'aleph_id', 'issn', 'catalogued',
                 'tech_problems', 'comments', 'upravit');
-
+            
+			//vyber podkategorii prislusici dane kategorii
+          	$form->conspectus_subcategory_id->values = ORM::factory('conspectus_subcategory')
+          												->where('conspectus_id', $resource->conspectus_id)
+          												->select_list('id', 'title');
+          												
+          	// oznaceni selectu pro javascript menici podkategorie											
+			$form->conspectus_id->id = 'category_select';
+            $form->conspectus_subcategory_id->id = 'subcategory_select';
+            
             $view = View::factory('tables/record_edit');
             $view->header = 'Editace zdroje';
             $view->form = $form;
