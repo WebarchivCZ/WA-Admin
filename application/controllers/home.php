@@ -1,6 +1,4 @@
 <?php
-// TODO dodelat dashboard
-
 class Home_Controller extends Template_Controller
 {
     protected $title = 'Úvodní stránka';

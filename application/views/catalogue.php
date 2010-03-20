@@ -11,7 +11,8 @@ if(isset($resources) AND $resources->count() != 0) {
             <th class="first">Název</th>
             <th>URL</th>
             <th>Zkatalogizováno</th>
-            <th class="last">Aleph ID</th>
+            <th>Aleph ID</th>
+            <th class="last" width="30%">Podkategorie</th>
         </tr>
     <?php
             foreach ($resources as $resource) {
@@ -30,18 +31,27 @@ if(isset($resources) AND $resources->count() != 0) {
                         }
                         ?>
             </td>
-            <td class="center last">
+            <td class="center">
                 <?php
                 echo form::input('aleph_id');
+                ?>
+            </td>
+            <td class="last">
+                <?php
+                $subcategories = ORM::factory('conspectus_subcategory')
+                					->where('conspectus_id', $resource->conspectus_id)
+                					->select_list('id', 'title');
+                echo form::dropdown('conspectus_subcategory_id',
+                                    $subcategories,
+                                    $resource->conspectus_subcategory_id,
+                                    'style="width: 170px;"');
                 echo form::close();
                 ?>
             </td>
         </tr>
                         <?php } ?>
     </table>
-    <p class="center">
-        <button>Zobrazit všechny zdroje ke katalogizaci</button>
-    </p>
+
 </div>
     <?php } else {
     echo '<p>Nebyly nalezeny žádné zdroje ke katalogizaci.</p>';

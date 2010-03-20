@@ -53,7 +53,7 @@ class Resources_Controller extends Table_Controller
                 'aleph_id', 'issn', 'catalogued',
                 'tech_problems', 'comments', 'upravit');
             
-			//vyber podkategorii prislusici dane kategorii
+			// vyber podkategorii prislusici dane kategorii
           	$form->conspectus_subcategory_id->values = ORM::factory('conspectus_subcategory')
           												->where('conspectus_id', $resource->conspectus_id)
           												->select_list('id', 'title');
@@ -61,6 +61,7 @@ class Resources_Controller extends Table_Controller
           	// oznaceni selectu pro javascript menici podkategorie											
 			$form->conspectus_id->id = 'category_select';
             $form->conspectus_subcategory_id->id = 'subcategory_select';
+            $form->conspectus_subcategory_id->blank = TRUE;
             
             $view = View::factory('tables/record_edit');
             $view->header = 'Editace zdroje';

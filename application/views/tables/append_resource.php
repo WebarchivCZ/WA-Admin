@@ -111,11 +111,13 @@ if ($ratings->count() > 0)
         $round = ($resource->resource_status_id == RS_NEW) ? 1 : 2;
                 $resource_rating = $resource->compute_rating($round, 'int');
                 $rating_options = Rating_Model::get_final_array();
+                $subcategory = ($resource->conspectus_subcategory_id != '')? $resource->conspectus_subcategory : 'není vyplněno' ;
                 ?>
 
                 <?= form::open(url::site('tables/resources/save_final_rating/'.$resource->id)) ?>
     <p><b>Finalni hodnoceni:</b>
                 <?= form::dropdown('final_rating', $rating_options, $resource_rating)?>
+                <p>Souhlasí podkategorie? - <?= $subcategory ?></p>
                 <?= form::submit('save_rating', 'Uložit hodnocení'); ?>
     </p>
                 <?= form::close() ?>

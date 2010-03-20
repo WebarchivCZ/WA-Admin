@@ -19,7 +19,7 @@ $(document).ready(function () {
 		  var url = window.location.protocol + "//" + window.location.host + "/" + pathArray[1];
 
 	    $.getJSON(url+"/suggest/get_subcategories/"+$(this).val(), '' , function(j){
-	      var options = '';
+	      var options = '<option value=""></option>\n';
 	      for (var i = 0; i < j.length; i++) {
 	        options += '<option value="' + j[i].optionValue + '">' + j[i].optionDisplay + '</option>\n';
 	      }

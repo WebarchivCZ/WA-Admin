@@ -1,5 +1,4 @@
 <?php
-//TODO - zdroje se zobrazují v záložce už po ohodnocení, měly by se zobrazovat až po 1. oslovení 
 class Progress_Controller extends Template_Controller
 {
 

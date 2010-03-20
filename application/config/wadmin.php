@@ -8,22 +8,6 @@ $config = array(
 		'progress' , 
 		'catalogue' , 
 		'quality_control') , 
-	// TODO odstranit
-	'ratings_result' => array(
-                //'NULL' => '',
-		'1' => 'NE' , 
-		'2' => 'ANO' , 
-		'3' => 'MOŽNÁ' , 
-		'4' => 'TECHNICKÉ NE') , 
-	// TODO odstranit - nahradit za metody z rating modelu
-	'rating_values' => array(
-		'NULL'   => '' , 
-		'-2' => 'ne' , 
-		'-1' => 'spíše ne' , 
-		'0'  => 'možná' , 
-		'1'  => 'spíše ano' , 
-		'2'  => 'ano' , 
-		'4'  => 'technické ne') ,
 
         'date_format' => 'Y-m-d H:i:s' ,
 

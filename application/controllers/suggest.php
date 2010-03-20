@@ -87,8 +87,10 @@ class Suggest_Controller extends Template_Controller
         $form->add_select('curator', $curators)->label('Kurátor')->value($curator_id);
         $form->add_select('conspectus', $conspectus)->label('Konspekt')
                 ->id('category_select');
-        $form->add_select('conspectus_subcategory', $subcategories)->label('Podkategorie')
-                ->id('subcategory_select');
+        $form->add_select('conspectus_subcategory', $subcategories)
+        		->label('Podkategorie')
+                ->id('subcategory_select')
+                ->blank(TRUE);
         $form->add_select('suggested_by', $suggested_by)->label('Navrhl');
         $form->add('submit', 'insert_record')->value('Vložit zdroj');
 

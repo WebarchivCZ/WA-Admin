@@ -1,6 +1,6 @@
 <?php
-$rating_result_array = Kohana::config('wadmin.ratings_result');
-$rating_values_array = Kohana::config('wadmin.rating_values');
+$rating_result_array = Rating_Model::get_final_array();
+$rating_values_array = Rating_Model::get_rating_values();
 
 ?>
 

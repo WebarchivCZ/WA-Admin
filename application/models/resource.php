@@ -109,7 +109,7 @@ class Resource_Model extends Table_Model {
     }
 
     public static function get_to_checkQA($curator_id = NULL) {
-        // TODO nastavit spravne datum
+        // nastavi datum posledni sklizne
         $date = Crawl_Model::get_last_crawl()->date;
 
         $where = "contract_id IS NOT NULL
@@ -225,7 +225,6 @@ class Resource_Model extends Table_Model {
      * @return int
      */
     public function compute_rating($round = 1, $return_type = 'string') {
-        //$ratings_result = Kohana::config('wadmin.ratings_result');
         // FIXME zjistit hodnoceni daneho kola
         $value = parent::__get('rating_result');
         if ($value == '') {
