@@ -10,9 +10,9 @@ if(isset($resources) AND $resources->count() != 0) {
         <tr>
             <th class="first">Název</th>
             <th>URL</th>
-            <th>Zkatalogizováno</th>
+            <th>MARC</th>
             <th>Aleph ID</th>
-            <th class="last" width="30%">Podkategorie</th>
+            <th class="last">Podkategorie</th>
         </tr>
     <?php
             foreach ($resources as $resource) {
@@ -33,7 +33,7 @@ if(isset($resources) AND $resources->count() != 0) {
             </td>
             <td class="center">
                 <?php
-                echo form::input('aleph_id');
+                echo form::input('aleph_id', '', 'size="10"');
                 ?>
             </td>
             <td class="last">
@@ -44,7 +44,7 @@ if(isset($resources) AND $resources->count() != 0) {
                 echo form::dropdown('conspectus_subcategory_id',
                                     $subcategories,
                                     $resource->conspectus_subcategory_id,
-                                    'style="width: 170px;"');
+                                    'style="width: 160px;"');
                 echo form::close();
                 ?>
             </td>
