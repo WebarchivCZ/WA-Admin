@@ -28,7 +28,7 @@ class Conspectus_Subcategory_Model extends Table_Model
     {
         if ($column == 'title')
         {
-            $id = parent::__get('id');
+            $id = parent::__get('subcategory_id');
             $category = parent::__get('subcategory');
             $title = $id.' - '.$category;
             return $title;
