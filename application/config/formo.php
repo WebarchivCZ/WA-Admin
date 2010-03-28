@@ -37,6 +37,7 @@ $config['defaults']['contract_cc'] = array('type'=>'bool');
 $config['defaults']['cc'] = array('type'=>'bool');
 $config['defaults']['addendum'] = array('type'=>'bool');
 $config['defaults']['redirect'] = array('type'=>'bool');
+$config['defaults']['robots'] = array('type'=>'bool');
 
 //$config['plugins'] = array('orm');
 

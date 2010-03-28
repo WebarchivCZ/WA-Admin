@@ -68,6 +68,7 @@ $lang = array
     'date_checked' => 'datum kontroly',
     'date_crawled' => 'sklizeno dne',
     'ticket_no' => 'Číslo ticketu',
-    'conspectus_subcategory' => 'podkategorie'
+    'conspectus_subcategory' => 'podkategorie',
+    'robots' => 'Robots.txt'
     )
 ?>
