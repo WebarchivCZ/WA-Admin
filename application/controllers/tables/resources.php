@@ -52,6 +52,7 @@ class Resources_Controller extends Table_Controller {
             // vyber podkategorii prislusici dane kategorii
             $form->conspectus_subcategory_id->values = ORM::factory('conspectus_subcategory')
                     ->where('conspectus_id', $resource->conspectus_id)
+                    ->orderby('subcategory')
                     ->select_list('id', 'title');
 
             // oznaceni selectu pro javascript menici podkategorie

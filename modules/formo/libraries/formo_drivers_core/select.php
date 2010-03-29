@@ -27,11 +27,12 @@ class Formo_select_Driver extends Formo_Element {
 		$sel.= '<select name="'.$this->name.'"'.Formo::quicktagss($this->_find_tags()).">"."\n";
 		$i=0;
 		foreach ($this->values as $v=>$k) {
+			
 			if ($i == 0 AND $this->blank === TRUE)
-			{
+			{	
 				$sel.= $this->_option('', '', '');
 				$i++;
-				continue;
+				
 			}
 			
 			if (is_array($this->blank) AND in_array($i, $this->blank))
@@ -39,7 +40,7 @@ class Formo_select_Driver extends Formo_Element {
 				$sel.= $this->_option('', '', '');
 				$i++;
 				continue;			
-			}			
+			}
 			
 			$k = preg_replace('/_[bB][lL][aA][nN][kK][0-9]*_/','',$k);
 			$selected = ($v == $this->value) ? ' selected="selected"' : '';

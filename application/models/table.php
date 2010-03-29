@@ -130,12 +130,12 @@ abstract class Table_Model extends ORM
     	if (! in_array($val, $fields)) 
 		{
     		$object = array();
-    		foreach ($this->find_all() as $record)
+    		$records = $this->find_all();
+    		foreach ($records as $record)
     		{
     			$object[$record->{$key}] = $record->{$val};
 			}
-			return $object;
-		
+			return $object;		
     	} 
     	return parent::select_list($key, $val);
     }
