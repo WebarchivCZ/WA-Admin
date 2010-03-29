@@ -32,7 +32,7 @@ class Quality_Control_Controller extends Template_Controller {
         $form->add_html("<p><label>Název:</label>{$resource}</p>");
         $form->add_html("<p><label>URL:</label>".html::anchor($resource->url, $resource->url, array('target'=>'_blank'))."</p>");
         $form->add_html("<p><label>Wayback:</label>".html::anchor($wayback_url, 'otevřít wayback', array('target'=>'_blank'))."</p>");
-        $form->add('date_crawled')->label('Sklizeno dne')->rule('date');
+        $form->add('date_crawled')->label('Sklizeno dne');
         $form->add('ticket_no')->label('Číslo ticketu');
         foreach ($problems as $problem) {
             $form->add_group($problem->problem, $bool_values)
