@@ -24,12 +24,14 @@ class Quality_Control_Controller extends Template_Controller {
         $resource = ORM::factory('resource', $resource_id);
         $bool_values = array('TRUE'=>'Ano', 'FALSE'=>'Ne');
         $check_result_values = Qa_Check_Model::get_result_array();
+        $wayback_url = Kohana::config('wadmin.wayback_url').$resource->url;
 
         $problems = ORM::factory('qa_problem')->find_all();
 
         $form = Formo::factory('qa_form');
         $form->add_html("<p><label>Název:</label>{$resource}</p>");
         $form->add_html("<p><label>URL:</label>".html::anchor($resource->url, $resource->url, array('target'=>'_blank'))."</p>");
+        $form->add_html("<p><label>Wayback:</label>".html::anchor($wayback_url, 'otevřít wayback', array('target'=>'_blank'))."</p>");
         $form->add('date_crawled')->label('Sklizeno dne')->rule('date');
         $form->add('ticket_no')->label('Číslo ticketu');
         foreach ($problems as $problem) {
@@ -37,7 +39,12 @@ class Quality_Control_Controller extends Template_Controller {
                     ->label($problem->question)
                     ->check($problem->problem, 'ano');
         }
-
+		$form->add_group('proxy_fine', $bool_values)
+			 ->label('V proxy je vše v pořádku')
+			 ->check('ano');
+		$form->add('textarea', 'proxy_problems')
+			 ->label('Problémy v proxy');
+			 
         $form->add_select('result', $check_result_values)
                 ->label('Výsledek kontroly');
 

@@ -1,7 +1,8 @@
 .standardform label {
 	float: left;
-	width: 100px;
+	width: 180px;
 	margin-right: 10px;
+	text-align: right;
 }
 
 .standardform label.group {

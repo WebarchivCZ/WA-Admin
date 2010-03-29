@@ -26,7 +26,10 @@ $(document).ready(function () {
 	      $("select#subcategory_select").html(options);
 	    })
 	  });
-
+	  
+//	  $("input[name=proxy_fine]").change(function() {
+//		  $("#proxy_problems").toggle();
+//	  });
 
     $("table.listing tr").hover(
          function() {$(this).find("td").css('background-color', '#CCC')},

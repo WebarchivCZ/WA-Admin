@@ -15,6 +15,8 @@ $config = array(
 
         'title_length' => 35);
 
+$config['wayback_url'] = 'http://raptor.webarchiv.cz:8080/wayback_old/wexp/query?type=urlquery&Submit=Take+Me+Back&url=';
+
 /**
  * Enable debug mode. Display errors and profiler info.
  * Error messages can be set by variable $this->template->debug
