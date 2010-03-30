@@ -19,6 +19,7 @@ class Qa_Check_Model extends Table_Model {
             if ($value == '') {
                 $value = NULL;
             } else {
+            	$value = str_replace(' ', '', $value);
                 $date = new DateTime($value);
                 $value = $date->format(DATE_ATOM);
             }

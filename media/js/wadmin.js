@@ -26,11 +26,18 @@ $(document).ready(function () {
 	      $("select#subcategory_select").html(options);
 	    })
 	  });
-	  
-//	  $("input[name=proxy_fine]").change(function() {
-//		  $("#proxy_problems").toggle();
-//	  });
 
+	  $("input[name=proxy_fine]").change(function() {
+		  $("#proxy_comments").toggle();
+	  });
+
+	$("form[name=qa_form] .problem input").change(function(){
+            var comments = this.name + '_comments';
+            var url = this.name + '_url';
+            $("#"+comments).toggle();
+            $("#"+url).toggle();
+	});
+	  
     $("table.listing tr").hover(
          function() {$(this).find("td").css('background-color', '#CCC')},
          function() {$(this).find("td").css('background-color', '')}
