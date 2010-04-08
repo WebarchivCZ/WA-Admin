@@ -6,7 +6,7 @@ class Qa_Check_Model extends Table_Model {
 
     protected $belongs_to = array ('resource', 'curator');
 
-    protected $has_and_belongs_to_many = array('qa_problems');
+    protected $has_many = array('qa_problems' => 'qa_check_problems');
 
     protected static $result_array = array (1 => 'v pořádku', 0 => 'akceptovatelné', - 1 => 'nevyhovující' );
 

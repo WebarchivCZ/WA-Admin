@@ -1,5 +1,5 @@
 <?php
-if (isset($resources_to_control)) {
+if (isset($resources_to_control) and $resources_to_control->count() > 0) {
     echo '<h2>Zdroje ke kontrole</h2>';
     echo table::header();
     echo '<tr>
@@ -18,6 +18,9 @@ if (isset($resources_to_control)) {
     }
     echo table::footer();
 }
+
+// TODO refaktorovat duplicitu
+
 if (isset($qa_checks_unsatisfactory) AND $qa_checks_unsatisfactory->count() > 0) {
     echo '<h2>Nevyhovující zdroje</h2>';
     echo table::header();
@@ -26,6 +29,27 @@ if (isset($qa_checks_unsatisfactory) AND $qa_checks_unsatisfactory->count() > 0)
             <th>URL</th>
             <th class="last">Poslední kontrola</th>';
     foreach ($qa_checks_unsatisfactory as $qa_check) {
+       $resource = ORM::factory('resource', $qa_check->resource_id);
+       $qa_url = url::site('quality_control/view/'.$qa_check->id);
+       echo '<tr>';
+       echo '<td>'.html::anchor(url::site('tables/resources/view/'.$resource->id), $resource).'</td>';
+       echo '<td class="center">'
+                .html::anchor($resource->url, icon::img('link', $resource->url), array('target'=>'_blank')).
+            '</td>';
+       echo '<td class="center">'.html::anchor($qa_url, icon::img('exclamation', 'Zobrazit kontrolu kvality')).'</td>';
+       echo '</tr>';
+    }
+    echo table::footer();
+}
+
+if (isset($qa_checks_acceptable) AND $qa_checks_acceptable->count() > 0) {
+    echo '<h2>Akceptovatelné zdroje</h2>';
+    echo table::header();
+    echo '<tr>
+            <th class="first">Název</th>
+            <th>URL</th>
+            <th class="last">Poslední kontrola</th>';
+    foreach ($qa_checks_acceptable as $qa_check) {
        $resource = ORM::factory('resource', $qa_check->resource_id);
        $qa_url = url::site('quality_control/view/'.$qa_check->id);
        echo '<tr>';

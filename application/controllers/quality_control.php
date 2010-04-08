@@ -7,9 +7,15 @@ class Quality_Control_Controller extends Template_Controller {
         $view =	new View('quality_control');
 
         $curator_id = $this->user->id;
+		
+      	$resources_to_control = Resource_Model::get_to_checkQA($curator_id);
 
-        $resources_to_control = Resource_Model::get_to_checkQA($curator_id);
-        $qa_checks_unsatisfactory = Qa_Check_Model::get_checks(-1, $curator_id);
+      	if ($this->user->has(ORM::factory('role', 'qa_reviewer'))) {
+      		$qa_checks_unsatisfactory = Qa_Check_Model::get_checks(-1);
+      		$view->qa_checks_acceptable = Qa_Check_Model::get_checks(0);
+      	} else {
+        	$qa_checks_unsatisfactory = Qa_Check_Model::get_checks(-1, $curator_id);
+      	}
         $view->resources_to_control = $resources_to_control;
         $view->qa_checks_unsatisfactory = $qa_checks_unsatisfactory;
         $this->template->content = $view;
@@ -98,7 +104,6 @@ class Quality_Control_Controller extends Template_Controller {
                     $key = str_replace('_id', '',$key);
                 }
                 $values[$key] = $record->{$key};
-
             }
         }
 
@@ -108,6 +113,7 @@ class Quality_Control_Controller extends Template_Controller {
         $view->bind('values', $values);
         $view->set('header', "Zobrazení kontroly kvality");
         $view->set('edit_url', $url);
+        $view->set('qa_check', $record);
         $this->template->content = $view;
     }
 
@@ -124,7 +130,7 @@ class Quality_Control_Controller extends Template_Controller {
         $qa_check->result = $form->result->value;
         $qa_check->comments = $form->comments->value;
         $qa_check->add_curator(Auth::instance()->get_user());
-        
+        // FIXME opravit ukladani problemu s proxy na raptoru
         $qa_check->proxy_problems = $form->proxy_problems->value;
 
         $qa_check->save();

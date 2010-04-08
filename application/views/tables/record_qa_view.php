@@ -1,11 +1,6 @@
 <?php if (isset($values)): ?>
 
-<div class="table">
-
-        <?= html::image(array('src'=>'media/img/bg-th-left.gif', 'width'=>'8', 'height'=>'7', 'class'=>'left')) ?>
-        <?= html::image(array('src'=>'media/img/bg-th-right.gif', 'width'=>'7', 'height'=>'7', 'class'=>'right')) ?>
-
-    <table class="listing" cellpadding="0" cellspacing="0">
+<?php echo table::header(); ?>
         <tr>
             <th class="first" width="60%">Sloupec</th>
             <th class="last">Hodnota</th>
@@ -25,26 +20,36 @@
             <td><?= ucfirst(Kohana::lang('tables.'.$key)) ?></td>
             <td><?= $value ?></td>
         </tr>
+    <?php
+    
+    endforeach;
+            
+	echo table::footer(); 
 
-    <?php endforeach; ?>
-            <?php
-            $problems = ORM::factory('qa_problem')->find_all();
-            foreach ($problems as $problem) {
-                // pokud ma zdroj problem pak je odpoved NE (plyne z polozene otazky)
-                $value = $record->has($problem);
-                $value = ($value == TRUE) ? 'NE' : 'ANO';
-                echo "<tr><td>{$problem->question}</td><td>{$value}</td></tr>";
-            }
-            ?>
-    </table>
-</div>
+	echo "<h3>Problémy</h3>";
+	
+	$problems = $qa_check->qa_check_problems;
+	
+	foreach ($problems as $problem) {
+		
+		$urls = split(' ', $problem->url);
+		
+		echo "<div class='problem'>";
+		echo "<p><strong>{$problem->qa_problem->question}?</strong></p>";
+		echo "<p>{$problem->comments}</p>";
+		if (count($urls) > 0) {
+    		echo "<ul>";
+    		foreach ($urls as $url){
+    			if (! empty($url))
+    			echo "<li>". html::anchor($url, $url, array('target'=>'_blank')) ."</li>";
+    		}
+    		echo "</ul>";
+		}
+		echo "</div>";
+	}
+	
 
-    <?php if (isset($append_view)) {
-        $append_view->render(TRUE);
-    }
-    ?>
-
-<?php endif; ?>
+endif; ?>
 
 <p>
     <button onclick="history.back()" class="floatright">Zpět</button></p>

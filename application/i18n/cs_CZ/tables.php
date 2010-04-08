@@ -69,6 +69,7 @@ $lang = array
     'date_crawled' => 'sklizeno dne',
     'ticket_no' => 'Číslo ticketu',
     'conspectus_subcategory' => 'podkategorie',
-    'robots' => 'Robots.txt'
+    'robots' => 'Robots.txt',
+    'proxy_problems' => 'Proxy v pořádku'
     )
 ?>
