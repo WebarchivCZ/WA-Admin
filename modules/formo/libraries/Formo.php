@@ -100,7 +100,7 @@ class Formo_Core {
 		foreach ($plugins as $name)
 		{
 			self::include_file('plugin', $name);
-			call_user_func('Formo_'.$name.'::load', $this);
+			call_user_func(array('Formo_'.$name, 'load'), $this);
 		}
 
 		return $this;

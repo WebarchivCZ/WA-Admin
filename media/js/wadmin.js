@@ -13,35 +13,45 @@
 //});
 
 $(document).ready(function () {
+
+    $("form div.problem").click(function() {
+        $(this).css('background-color', 'lightgreen');
+        var id = $(this).attr('id');
+        $("form div.problem#"+ id +" div.solution").toggle();
+    });
 	
-	  $("select#category_select").change(function(){
-		  pathArray = window.location.pathname.split( '/' );
-		  var url = window.location.protocol + "//" + window.location.host + "/" + pathArray[1];
+    $("select#category_select").change(function(){
+        pathArray = window.location.pathname.split( '/' );
+        var url = window.location.protocol + "//" + window.location.host + "/" + pathArray[1];
 
-	    $.getJSON(url+"/suggest/get_subcategories/"+$(this).val(), '' , function(j){
-	      var options = '<option value=""></option>\n';
-	      for (var i = 0; i < j.length; i++) {
-	        options += '<option value="' + j[i].optionValue + '">' + j[i].optionDisplay + '</option>\n';
-	      }
-	      $("select#subcategory_select").html(options);
-	    })
-	  });
+        $.getJSON(url+"/suggest/get_subcategories/"+$(this).val(), '' , function(j){
+            var options = '<option value=""></option>\n';
+            for (var i = 0; i < j.length; i++) {
+                options += '<option value="' + j[i].optionValue + '">' + j[i].optionDisplay + '</option>\n';
+            }
+            $("select#subcategory_select").html(options);
+        })
+    });
 
-	  $("input[name=proxy_fine]").change(function() {
-		  $("#proxy_comments").toggle();
-	  });
+    $("input[name=proxy_fine]").change(function() {
+        $("#proxy_comments").toggle();
+    });
 
-	$("form[name=qa_form] .problem input").change(function(){
-            var comments = this.name + '_comments';
-            var url = this.name + '_url';
-            $("#"+comments).toggle();
-            $("#"+url).toggle();
-	});
+    $("form[name=qa_form] .problem input").change(function(){
+        var comments = this.name + '_comments';
+        var url = this.name + '_url';
+        $("p#"+comments).toggle();
+        $("p#"+url).toggle();
+    });
 	  
     $("table.listing tr").hover(
-         function() {$(this).find("td").css('background-color', '#CCC')},
-         function() {$(this).find("td").css('background-color', '')}
-      );
+        function() {
+            $(this).find("td").css('background-color', '#CCC')
+        },
+        function() {
+            $(this).find("td").css('background-color', '')
+        }
+        );
 
     $("#section-rating").click(function () {
         $("#table-ratings").toggle();

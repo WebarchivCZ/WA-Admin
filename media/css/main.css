@@ -406,3 +406,15 @@ h3.record-information {
     width: 200px;
     border-color: red;
 }
+
+form div.problem {
+    margin: 5px 30px;
+    border: 1px solid #CCC;
+    width: 400px;
+    padding: 0 1em;
+    background-color: #f9c7c7;
+}
+
+form div.problem div.solution {
+    display: none;
+}
