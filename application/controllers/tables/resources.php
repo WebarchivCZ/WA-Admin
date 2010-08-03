@@ -5,7 +5,7 @@ class Resources_Controller extends Table_Controller {
     protected $columns_ignored = array('id', 'publisher_id', 'contact_id', 'contract_id', 'annotation');
     protected $columns_order = array('title', 'url', 'creator_id', 'date', 'curator_id',
             'conspectus_id', 'crawl_freq_id', 'resource_status_id',
-            'suggested_by_id', 'rating_result', 'aleph_id', 'ISSN',
+            'suggested_by_id', 'rating_result', 'aleph_id', 'issn',
             'catalogued', 'tech_problems', 'comments');
     protected $header = 'Zdroj';
 

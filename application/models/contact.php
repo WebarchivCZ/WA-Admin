@@ -51,7 +51,24 @@ class Contact_Model extends Table_Model
     }
 
     public function delete_record() {
+        $resources = $this->get_resources();
+        foreach($resources as $resource) {
+            $resource->contact_id = NULL;
+            $resource->save();
+        }
         $this->delete();
+    }
+
+    /**
+     * Vraci vsechny zdroje, ktere patri k danemu kontaktu
+     * @return Resource_Model zdroje nalezici danemu kontaktu
+     */
+    public function get_resources()
+    {
+        $resources = ORM::factory('resource')
+                ->where('contact_id', $this->id)
+                ->find_all();
+        return $resources;
     }
 
     /**

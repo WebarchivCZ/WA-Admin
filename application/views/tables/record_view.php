@@ -14,6 +14,7 @@
             <th class="last">Hodnota</th>
         </tr>
             <?php foreach ($values as $key => $value):
+            // specificke zpracovani konkretnich klicu
             switch ($key) {
                 case 'date':
                     $key = 'inserted';
@@ -28,6 +29,9 @@
                 }
                 if ($key == 'cc' or $key == 'addendum') {
                     $value = ($value == TRUE) ? 'ANO' : 'NE';
+                }
+                if ($key == 'aleph_id') {
+                    $value = "<a href='http://aleph.nkp.cz/F/?func=direct&doc_number={$value}&local_base=nkc'>{$value}</a>";
                 }
                 ?>
 

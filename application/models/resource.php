@@ -108,10 +108,14 @@ class Resource_Model extends Table_Model {
         return $result;
     }
 
+    /**
+     * Get Resources which have new contract from the last crawl or were evaluated as unsatisfactory
+     * @param $curator_id
+     */
     public static function get_to_checkQA($curator_id = NULL) {
-        // nastavi datum posledni sklizne
+        // get the date of the last crawl
         $date = Crawl_Model::get_last_crawl()->date;
-
+        
         $where = "contract_id IS NOT NULL
                         AND date_signed < '{$date}'
                         AND curator_id = {$curator_id}
@@ -122,6 +126,7 @@ class Resource_Model extends Table_Model {
                             FROM resources r, qa_checks q
                             WHERE r.id = q.resource_id
                             AND q.date_checked > '{$date}'
+                            AND q.result != -1
                             )
                         )";
         if ( ! is_null($curator_id)) {
