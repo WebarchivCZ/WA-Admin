@@ -85,6 +85,23 @@ class Publisher_Model extends Table_Model
                 ->find_all();
         return $resources;
     }
+
+    /**
+     * Funkce zjistuje, zda ma vydavatel vice zdroju k osloveni,
+     * aby mohli byt osloveni najednou a ne po castech
+     * @return bool TRUE pokud ma vydavatel vice zdroju k osloveni
+     */
+    public function has_many_to_address()
+    {
+        // stavy schvalen wa a osloven v zavorkach, pouziti v SQL IN
+        $statuses = RS_CONTACTED.','.RS_APPROVED_WA;
+        $sql = "SELECT r.id FROM publishers p, resources r
+                            WHERE p.id = r.publisher_id AND
+                                  p.id = {$this->id} AND
+                                  r.resource_status_id IN ({$statuses})";
+        $query = $this->db->query($sql);
+        return $query->count() > 1 ? TRUE:FALSE;
+    }
 }
 
 ?>
