@@ -47,7 +47,12 @@ class Resource_Model extends Table_Model {
     public function __set ($key, $value) {
         if ($key === 'catalogued') {
             if ($this->__isset('catalogued')) {
-                return;
+                if ($value == 0) {
+                    $this->catalogued = NULL;
+                }
+                else {
+                    return;
+                }
             }
             $date_format = Kohana::config('wadmin.date_format');
             if ($value === TRUE OR $value == 1) {

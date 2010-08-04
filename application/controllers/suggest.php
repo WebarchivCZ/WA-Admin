@@ -135,7 +135,6 @@ class Suggest_Controller extends Template_Controller
             $seed->url = $url;
             $seed->resource_id = $resource->id;
             $seed->seed_status_id = ORM::factory('seed_status', 1)->id;
-            $seed->valid_from = date('Y-m-d');
 
             $seed->save();
 
