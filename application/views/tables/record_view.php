@@ -31,7 +31,7 @@
                     $value = ($value == TRUE) ? 'ANO' : 'NE';
                 }
                 if ($key == 'aleph_id') {
-                    $value = "<a href='http://aleph.nkp.cz/F/?func=direct&doc_number={$value}&local_base=nkc'>{$value}</a>";
+                    $value = "<a href='http://aleph.nkp.cz/F/?func=direct&doc_number={$value}&local_base=nkc' target='_blank'>{$value}</a>";
                 }
                 ?>
 
