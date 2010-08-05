@@ -20,6 +20,9 @@ if (isset ( $values )) {
         if ($key == 'result') {
             $value = Qa_Check_Model::get_result_value ( $value );
         }
+        if ($key == 'solution') {
+            $value = Qa_Check_Model::get_solution_value ( $value );
+        }
         ?>
 <tr>
 	<td><?=ucfirst ( Kohana::lang ( 'tables.' . $key ) )?></td>
@@ -59,6 +62,9 @@ if (isset ( $values )) {
 <a href="<?= url::site('quality_control/edit/'.$qa_check->id) ?>"><button>Editace záznamu</button></a>
 <button onclick="history.back()" class="floatright">Zpět</button>
 </p>
+<?php /*
 <p>
 <a href="<?= url::site('quality_control/add_solution/'.$qa_check->id) ?>"><button>Přidat řešení</button></a>
 </p>
+ *
+ */?>

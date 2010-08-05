@@ -9,6 +9,7 @@ class Qa_Check_Model extends Table_Model {
     protected $has_many = array('qa_problems' => 'qa_check_problems');
 
     protected static $result_array = array (1 => 'v pořádku', 0 => 'akceptovatelné', - 1 => 'nevyhovující' );
+    protected static $solution_array = array(-1 => 'nevyřešeno', 1 => 'vyřešeno', 0 => 'nelze vyřešit');
 
     public function __construct($id = NULL) {
         parent::__construct ( $id );
@@ -42,6 +43,14 @@ class Qa_Check_Model extends Table_Model {
 
     public static function get_result_value($value) {
         return self::$result_array[$value];
+    }
+
+    public static function get_solution_array() {
+        return self::$solution_array;
+    }
+
+    public static function get_solution_value($value) {
+        return self::$solution_array[$value];
     }
 
     public static function get_checks ($qa_result = NULL, $curator_id = NULL) {
