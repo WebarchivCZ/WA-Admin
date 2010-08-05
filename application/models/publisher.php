@@ -94,7 +94,7 @@ class Publisher_Model extends Table_Model
     public function has_many_to_address()
     {
         // stavy schvalen wa a osloven v zavorkach, pouziti v SQL IN
-        $statuses = RS_CONTACTED.','.RS_APPROVED_WA;
+        $statuses = RS_NEW.','.RS_APPROVED_WA;
         $sql = "SELECT r.id FROM publishers p, resources r
                             WHERE p.id = r.publisher_id AND
                                   p.id = {$this->id} AND

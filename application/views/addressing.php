@@ -29,7 +29,7 @@ if(isset($resources) AND $resources->count() != 0)
                     $icon = icon::img('exclamation', 'Zdroj byl navržen ISSN');
                     $class = 'suggested_by_issn';
                 }
-                if ($resource->publisher->has_many_to_address()) {
+                if ($resource->publisher->get_resources()->count() > 1) {
                     $url = url::site('/tables/publishers/view/'.$resource->publisher->id);
                     $icon .= html::anchor($url, icon::img('publisher', $resource->publisher));
                 }

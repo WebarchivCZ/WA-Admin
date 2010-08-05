@@ -363,5 +363,13 @@ class Resource_Model extends Table_Model {
         // resource
         $this->delete();
     }
+    
+    public function has_contract() {
+    	if ($this->contract_id != '') {
+    		return TRUE;
+    	} else {
+    		return FALSE;
+    	}
+    }
 }
 ?>
