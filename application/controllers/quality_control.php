@@ -214,6 +214,9 @@ class Quality_Control_Controller extends Template_Controller {
     private function generate_edit_form($resource, $qa_check = NULL) {
         $solution_values = Qa_Check_Model::get_solution_array();
         $check_result_values = Qa_Check_Model::get_result_array();
+        $users = ORM::factory('curator')->select_list('id', 'lastname');
+        $solution = ($qa_check->solution != '') ? $qa_check->solution: -1;
+
         $form = $this->generate_header_form($resource);
         $form->add('date_crawled')
                 ->label('Sklizeno dne')
@@ -224,10 +227,16 @@ class Quality_Control_Controller extends Template_Controller {
         $form->add_select('result', $check_result_values)
                 ->label('Výsledek kontroly')
                 ->value($qa_check->result);
-
-        $solution = ($qa_check->solution != '') ? $qa_check->solution: -1;
         $form->add_select('solution', $solution_values)
-             ->value(-1);
+             ->value($solution)
+             ->label('Řešení');
+        $form->add('solution_date')
+             ->label('Datum řešení')
+             ->value($qa_check->solution_date);
+        $form->add_select('solution_user', $users)
+                ->value($qa_check->solution_user)
+                ->label('Vyřešil')
+                ->value($this->user->id);
         $form->add('textarea', 'comments')
              ->label('Komentář')
              ->value($qa_check->comments);

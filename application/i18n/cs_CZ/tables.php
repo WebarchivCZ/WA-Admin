@@ -70,6 +70,7 @@ $lang = array
     'ticket_no' => 'Číslo ticketu',
     'conspectus_subcategory' => 'podkategorie',
     'robots' => 'Robots.txt',
-    'proxy_problems' => 'Proxy v pořádku'
+    'proxy_problems' => 'Proxy v pořádku',
+    'solution' => 'Řešení'
     )
 ?>
