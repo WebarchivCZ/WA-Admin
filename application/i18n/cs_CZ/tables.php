@@ -71,6 +71,9 @@ $lang = array
     'conspectus_subcategory' => 'podkategorie',
     'robots' => 'Robots.txt',
     'proxy_problems' => 'Proxy v pořádku',
-    'solution' => 'Řešení'
+    'solution' => 'Řešení',
+    'solution_date' => 'Datum řešení',
+    'solution_user' => 'Vyřešil',
+    'rating_last_round' => 'Počet kol hodnocení'
     )
 ?>

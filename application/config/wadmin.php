@@ -15,7 +15,7 @@ $config = array(
 
         'title_length' => 35);
 
-$config['wayback_url'] = 'http://raptor.webarchiv.cz:8080/wayback_old/wexp/query?type=urlquery&Submit=Take+Me+Back&url=';
+$config['wayback_url'] = 'http://har.webarchiv.cz:8080/AP1/query?type=urlquery&amp;Submit=Take+Me+Back&amp;url=';
 
 /**
  * Enable debug mode. Display errors and profiler info.
@@ -25,7 +25,7 @@ $config['debug_mode'] = TRUE;
 
 $config['version'] = '2.2';
 
-$config['build'] = '07:';
+$config['build'] = '08';
 
 $config['ticket_url'] = 'http://raptor.webarchiv.cz:8000/trac/newticket?component=wa_admin&amp;milestone=WA Admin v2.2&amp;owner=brokes';
 ?>

@@ -226,6 +226,17 @@ class Resource_Model extends Table_Model {
             return 'Nekontaktován';
         }
     }
+    
+    /**
+     * Funkce vraci datum posledniho kola hodnoceni (alespon jeden kurator hodnotil)
+     * Muze byt odlisne od atributu rating_last_round v DB, ktera obsahuje pouze uzavrena hodnoceni.
+     */
+    public function get_last_rating_round() {
+    	$sql = "SELECT MAX(round) as round FROM ratings WHERE resource_id = {$this->id}";
+        $result = Database::instance()->query($sql);
+        $round = $result->current()->round;
+        return $round;
+    }
 
     /**
      * Pokud je jiz zaznam finalniho hodnoceni v databazi (rating_result sloupec), pak je vracena tato hodnota.
@@ -235,27 +246,30 @@ class Resource_Model extends Table_Model {
      * @return int
      */
     public function compute_rating($round = 1, $return_type = 'string') {
-        // FIXME zjistit hodnoceni daneho kola
         $value = parent::__get('rating_result');
         if ($value == '') {
-            $ratings = ORM::factory('rating')->where(array('resource_id'=> $this->id))->find_all();
+            $ratings = ORM::factory('rating')->where(array('resource_id'=> $this->id, 'round' => $round))->find_all();
             if ($ratings->count() == 0) {
                 return FALSE;
             }
             $result = 0;
+            $is_technical_problem = false;
             foreach ($ratings as $rating) {
                 $rating = $rating->get_rating();
                 if ($rating == 4) {
-                    $final_rating = $rating;
+                    $is_technical_problem = true;
                 }
                 $result += $rating;
             }
+            
             $result = $result / $ratings->count();
             if ($result < 0.5) {
                 $final_rating = 1;
             } elseif ($result >= 0.5 AND $rating < 1) {
                 $final_rating = 3;
-            } else {
+            } elseif ($is_technical_problem === true) {
+            	$final_rating = 4;
+            } else  {
                 $final_rating = 2;
             }
         } else {
@@ -274,6 +288,13 @@ class Resource_Model extends Table_Model {
                 'round' => $round))
                 ->find_all();
         return $ratings->count();
+    }
+    
+    public function get_round_count() {
+    	$sql = "SELECT MAX(round) as round FROM ratings WHERE resource_id = {$this->id}";
+        $result = Database::instance()->query($sql);
+        return $result->current()->round;
+  
     }
 
     public function has_rating($round) {
@@ -303,6 +324,41 @@ class Resource_Model extends Table_Model {
         $datum_result = $result->current()->datum;
         $datum = date("d.m.Y", strtotime($datum_result));
         return $datum;
+    }
+    
+    public function save_final_rating($rating = NULL) {
+    	switch ($rating) {
+                case 1:
+                    $status = RS_REJECTED_WA;
+                    break;
+                case 2:
+                    $status = RS_APPROVED_WA;
+                    break;
+                case 3:
+                    $status = RS_RE_EVALUATE;
+                    break;
+                case 4:
+                    $status = RS_REJECTED_WA;
+                    break;
+                default:
+                	return false;
+            }
+            $this->resource_status_id = $status;
+            $this->rating_result = $rating;
+            // set rating round to resource
+            $last_round = $this->rating_last_round;
+            if ($last_round == '') {
+            	$round = 1;
+            } else {
+            	$round = $last_round + 1; 
+            }
+            $this->rating_last_round = $round;
+            $this->save();
+            if ($this->saved) {
+            	return true;
+            } else {
+            	return false;
+            }
     }
 
     /**

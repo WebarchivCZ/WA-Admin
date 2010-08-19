@@ -46,16 +46,18 @@ class Rate_Controller extends Template_Controller {
 
         foreach ($ratings as $resource_id => $rating) {
             if ($rating != 'NULL') {
+            	$resource = ORM::factory('resource', $resource_id);
+            	
                 $o_rating = ORM::factory('rating');
                 $o_rating->add_curator($this->user);
-                $o_rating->resource_id = $resource_id;
+                $o_rating->resource_id = $resource->id;
                 if ($rating == 4) {
                     $o_rating->tech_problems = TRUE;
                 }
-                if ($status == RS_NEW) {
+                if ($resource->rating_last_round == '') {
                     $round = 1;
                 } else {
-                    $round = 2;
+                    $round = $resource->rating_last_round + 1;
                 }
                 $o_rating->round = $round;
                 $o_rating->date = date(Kohana::config('wadmin.date_format'));
@@ -89,8 +91,10 @@ class Rate_Controller extends Template_Controller {
 
     protected function find_resources($resource_status = RS_NEW, $only_rated = FALSE) {
         $db = Database::instance();
-        $round = ($resource_status == RS_NEW) ? 1: 2;
+        
+        $round = ($resource_status == RS_NEW) ? ' = 1': ' >= 2';
         $reevaluate_constraint = '';
+
         if ($resource_status == RS_RE_EVALUATE) {
             $reevaluate_constraint = 'AND reevaluate_date <= CURDATE()';
         }
@@ -100,7 +104,7 @@ class Rate_Controller extends Template_Controller {
                             WHERE r.curator_id = {$this->user->id}
                             AND g.resource_id = r.id
                             AND g.curator_id = c.id
-                            AND g.round = {$round}
+                            AND g.round {$round}
                             AND r.resource_status_id = {$resource_status}
                     {$reevaluate_constraint}
                             GROUP BY g.resource_id
@@ -118,7 +122,7 @@ class Rate_Controller extends Template_Controller {
                             WHERE r.id = g.resource_id
                             AND c.id = g.curator_id
                             AND c.id = {$this->user->id}
-                            AND g.round = {$round}
+                            AND g.round > r.rating_last_round
                         )
                     {$reevaluate_constraint}
                         ORDER BY field(suggested_by_id, 2, 1, 3, 4)";

@@ -1,5 +1,6 @@
 <?php
 if (isset ( $values )) {
+    $resource = $values ['resource'];
     ?>
 
 <?php
@@ -11,17 +12,30 @@ if (isset ( $values )) {
 </tr>
 <?php
     foreach ( $values as $key => $value ) {
-        if ($key == 'url') {
-            $value = "<a href='{$value}' target='_blank'>{$value}</a>";
-        }
-        if ($key == 'email') {
-            $value = "<a href='mailto:{$value}'>{$value}</a>";
-        }
-        if ($key == 'result') {
-            $value = Qa_Check_Model::get_result_value ( $value );
-        }
-        if ($key == 'solution') {
-            $value = Qa_Check_Model::get_solution_value ( $value );
+        switch ($key) {
+        	case 'id':
+        		break;
+            case 'url' :
+                $value = "<a href='{$value}' target='_blank'>{$value}</a>";
+                break;
+            case 'solution_date':
+            	$value = date_helper::short_date($value);
+            	break;
+            case 'resource' :
+                $url = url::site ( '/tables/resources/view/' . $resource->id );
+                $value = "<a href='{$url}'>{$resource->title}</a>";
+                break;
+            case 'solution_user':
+            	$value = ORM::factory('curator', $value)->lastname; 
+            	break;
+            case 'email' :
+                $value = "<a href='mailto:{$value}'>{$value}</a>";
+            case 'result' :
+                $value = Qa_Check_Model::get_result_value ( $value );
+                break;
+            case 'solution' :
+                $value = Qa_Check_Model::get_solution_value ( $value );
+                break;
         }
         ?>
 <tr>
@@ -33,6 +47,10 @@ if (isset ( $values )) {
     }
     
     echo table::footer ();
+    
+    $url = Kohana::config ( 'wadmin.wayback_url' ) . $resource->url;
+    
+    echo "<p><a href='{$url}' target='_blank'><button>Odkaz do waybacku</button></a></p>";
     
     echo "<h3>Problémy</h3>";
     
@@ -58,8 +76,9 @@ if (isset ( $values )) {
 
 }
 ?>
-<p>
-<a href="<?= url::site('quality_control/edit/'.$qa_check->id) ?>"><button>Editace záznamu</button></a>
+<p><a href="<?=url::site ( 'quality_control/edit/' . $qa_check->id )?>">
+<button>Editace záznamu</button>
+</a>
 <button onclick="history.back()" class="floatright">Zpět</button>
 </p>
 <?php /*

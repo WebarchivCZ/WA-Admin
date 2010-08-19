@@ -19,7 +19,8 @@ class Resources_Controller extends Table_Controller {
         $append_view->active_curators = ORM::factory('curator')->where('active', 1)->find_all();
         $append_view->ratings = ORM::factory('rating')->where('resource_id', $resource->id)
                 ->find_all();
-        $append_view->show_final_rating = $resource->is_curated_by($this->user);
+        // TODO zmen, aby nebylo mozne ukladat nova kola 
+        $append_view->show_final_rating = $this->user->could_close_rating($resource->id);
         $append_view->user_id = $this->user->id;
         $append_view->seeds = ORM::factory('seed')->where('resource_id', $resource->id)->find_all();
 
@@ -29,6 +30,8 @@ class Resources_Controller extends Table_Controller {
 
     public function edit($id = FALSE) {
         $resource = ORM::factory('resource')->find($id);
+        // rating_last_round is immutable
+        $this->columns_ignored[] = 'rating_last_round';
 
         if ($resource->__isset('id')) {
             $form = Formo::factory()->orm('resource', $id)
@@ -75,35 +78,24 @@ class Resources_Controller extends Table_Controller {
     }
 
     public function save_final_rating($id, $rating = NULL) {
-        $resource = ORM::factory('resource')->find($id);
+        $resource = ORM::factory('resource', $id);
         if ($rating == NULL) {
             $rating = $this->input->post('final_rating');
         }
+        // conspectus subcategory has to be filled 
         if ($resource->conspectus_subcategory_id == '') {
             message::set_flash('Nelze uložit hodnoceni - není vyplněna podkategorie konspektu.');
         } else {
-            // TODO refaktorovat - moznost zamenit za metodu v rating_model
-            switch ($rating) {
-                case 1:
-                    $status = RS_REJECTED_WA;
-                    break;
-                case 2:
-                    $status = RS_APPROVED_WA;
-                    break;
-                case 3:
-                    $status = RS_RE_EVALUATE;
-                    break;
-                case 4:
-                    $status = RS_REJECTED_WA;
-                    break;
-                default:
-                    message::set_flash('Nesprávné výsledné hodnocení');
-                    $status = RS_NEW;
+        	if ($rating == 3) {
+        		$reevaluate_date = $this->input->post('reevaluate_date');
+        		if ($reevaluate_date != '') {
+        			$resource->reevaluate_date = $reevaluate_date;
+        		}
+        	}
+            $rating_saved = $resource->save_final_rating($rating);
+            if ($rating_saved) {
+            	message::set_flash('Finální hodnocení bylo úspěšně uloženo');
             }
-            $resource->resource_status_id = $status;
-            $resource->rating_result = $rating;
-            $resource->save();
-            message::set_flash('Finální hodnocení bylo úspěšně uloženo');
         }
         url::redirect("{$this->view_record_url}/{$resource->id}");
     }

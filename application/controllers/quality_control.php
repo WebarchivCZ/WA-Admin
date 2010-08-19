@@ -91,7 +91,7 @@ class Quality_Control_Controller extends Template_Controller {
             } else {
                 message::set_flash('Vyskytl se problém a kontrola nebyla uložena.');
             }
-            url::redirect('quality_control');
+            url::redirect('/quality_control/view/'.$qa_check_id);
         } else {
             $this->template->content = $form;
         }
@@ -226,17 +226,19 @@ class Quality_Control_Controller extends Template_Controller {
                 ->value($qa_check->ticket_no);
         $form->add_select('result', $check_result_values)
                 ->label('Výsledek kontroly')
-                ->value($qa_check->result);
+                ->value($qa_check->result)
+                ->blank(TRUE);
         $form->add_select('solution', $solution_values)
              ->value($solution)
-             ->label('Řešení');
+             ->label('Řešení')
+             ->blank(TRUE);
         $form->add('solution_date')
              ->label('Datum řešení')
              ->value($qa_check->solution_date);
         $form->add_select('solution_user', $users)
                 ->value($qa_check->solution_user)
                 ->label('Vyřešil')
-                ->value($this->user->id);
+                ->blank(TRUE);
         $form->add('textarea', 'comments')
              ->label('Komentář')
              ->value($qa_check->comments);

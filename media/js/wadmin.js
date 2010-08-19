@@ -113,5 +113,15 @@ $(document).ready(function () {
             separator:'&nbsp;&nbsp;  '
         }
     });
+    
+    //pri zmene hodnoceni na mozna je treba zajistit zobrazeni "prehodnotit k"
+    $('select#final_rating').change(function() {
+    	if(this.value == 3) {
+    		$('#p_reevaluate_date').show();
+    	} else {
+    		$('#p_reevaluate_date').hide();
+    	}
+    });
+    	
 }
 );

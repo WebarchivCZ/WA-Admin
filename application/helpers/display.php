@@ -33,7 +33,7 @@ class display
         return Kohana::lang('tables.'.$column);
     }
 
-    static function display_rating($resource, $curator, $round = 1)
+    static function display_rating($resource, $curator, $round)
     {
         if (is_string($curator)) {
             $curator = ORM::factory('curator')->where('username', $curator)->find();
@@ -51,7 +51,7 @@ class display
                 $rating_output = "<a href='".url::site('tables/ratings/edit/'.$rating->id)."'>
                     {$rating_output}</a>";
             }
-        } elseif ($resource->resource_status_id == RS_NEW)
+        } elseif ($round > $resource->rating_last_round)
         {
             $rating_output = icon::img('cross', 'Kurátor ještě neohodnotil zdroj');
         } else
