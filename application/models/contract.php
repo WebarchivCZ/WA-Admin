@@ -53,7 +53,7 @@ class Contract_Model extends Table_Model
 
     public function __set ($key, $value)
     {
-        if ($key === 'cc' OR $key === 'addendum')
+        if ($key === 'cc' OR $key === 'addendum' OR $key === 'blanco_contract')
         {
             $value = (boolean) $value;
         }
@@ -149,6 +149,13 @@ class Contract_Model extends Table_Model
                 return FALSE;
             }
         }
+    }
+    
+    public static function domain_has_blanco($domain) {
+    	$domain = trim($domain);
+    	$sql = "SELECT COUNT(id) as count FROM contracts WHERE domain LIKE '%{$domain}%' AND blanco_contract = 1";
+    	$result = Database::instance()->query($sql)->current();
+    	return (bool) $result->count;
     }
 
     public function get_resources() {

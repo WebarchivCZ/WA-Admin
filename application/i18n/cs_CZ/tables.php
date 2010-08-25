@@ -74,6 +74,8 @@ $lang = array
     'solution' => 'Řešení',
     'solution_date' => 'Datum řešení',
     'solution_user' => 'Vyřešil',
-    'rating_last_round' => 'Počet kol hodnocení'
+    'rating_last_round' => 'Počet kol hodnocení',
+    'blanco_contract' => 'Blanco smlouva',
+    'domain' => 'Doména'
     )
 ?>

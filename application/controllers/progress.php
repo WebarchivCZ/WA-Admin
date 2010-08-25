@@ -39,6 +39,8 @@ class Progress_Controller extends Template_Controller
         $form->add('date_signed')->label('Datum podpisu')->value(date('Y-m-d'))->required(TRUE);
         $form->add('checkbox', 'cc')->label('Creative Commons');
         $form->add('checkbox', 'addendum')->label('Doplněk');
+        $form->add('checkbox', 'blanco_contract')->label('Blanco smlouva');
+        $form->add('domain')->label('Doména');
         $form->add('type')->label('Typ smlouvy');
         $form->add('textarea', 'comments')->label('Komentář');
         $form->add('submit', 'odeslat');
@@ -59,6 +61,7 @@ class Progress_Controller extends Template_Controller
         {
             $form->remove('resource_title');
             $values = $form->get_values();
+            //var_dump($values);exit();
             foreach ($values as $name => $value)
             {
                 if ($value != '')

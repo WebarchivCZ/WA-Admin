@@ -245,5 +245,70 @@ class url_Core {
 
 		exit('<h1>'.$method.' - '.$codes[$method].'</h1>'.$output);
 	}
+	
+/** * get_2nd_level_name( string $url ) * Attempts to establish the 2nd level domain of a given URL * * @return string 2nd-level domain on success, or FALSE on failure */ /** 
+     * get_2nd_level_name( string $url ) 
+     * Attempts to establish the 2nd level domain of a given URL 
+     * 
+     * @return string 2nd-level domain on success, or FALSE on failure 
+     */
+    
+    static function get_2nd_level_name($url) {
+        
+        // a list of decimal-separated TLDs 
+        static $doubleTlds = array ('co.uk', 'me.uk', 'net.uk', 'org.uk', 'sch.uk', 'ac.uk', 'gov.uk', 'nhs.uk', 'police.uk', 'mod.uk', 'asn.au', 'com.au', 'net.au', 'id.au', 'org.au', 'edu.au', 'gov.au', 'csiro.au', 'br.com', 'com.cn', 'com.tw', 'cn.com', 'de.com', 'eu.com', 'hu.com', 'idv.tw', 'net.cn', 'no.com', 'org.cn', 'org.tw', 'qc.com', 'ru.com', 'sa.com', 'se.com', 'se.net', 'uk.com', 'uk.net', 'us.com', 'uy.com', 'za.com' );
+        
+        // sanitize the URL 
+        $url = trim ( $url );
+        
+        // if no hostname, use the current by default 
+        if (empty ( $url ) || '/' == $url [0]) {
+            $url = $_SERVER ['HTTP_HOST'] . $url;
+        }
+        
+        // if no scheme, use `http://` by default 
+        if (FALSE === strpos ( $url, '://' )) {
+            $url = 'http://' . $url;
+        }
+        
+        // can we successfully parse the URL? 
+        if ($host = parse_url ( $url, PHP_URL_HOST )) {
+            
+            // is this an IP? 
+            if (preg_match ( '/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/', $host )) {
+                return $host;
+            }
+            
+            // sanitize the hostname 
+            $host = strtolower ( $host );
+            
+            // explode on the decimals 
+            $parts = explode ( '.', $host );
+            
+            // is there just one part? (`localhost`, etc) 
+            if (! isset ( $parts [1] )) {
+                return $parts [0];
+            }
+            
+            // grab the TLD 
+            $tld = array_pop ( $parts );
+            
+            // grab the hostname 
+            $host = array_pop ( $parts ) . '.' . $tld;
+            
+            // have we collected a double TLD? 
+            if (! empty ( $parts ) && in_array ( $host, $doubleTlds )) {
+                $host = array_pop ( $parts ) . '.' . $host;
+            }
+            
+            // send it on it's way 
+            return $host;
+        
+        }
+        
+        // at this point, nah 
+        return FALSE;
+    
+    }
 
 } // End url

@@ -33,6 +33,10 @@ if(isset($resources) AND $resources->count() != 0)
                     $url = url::site('/tables/publishers/view/'.$resource->publisher->id);
                     $icon .= html::anchor($url, icon::img('publisher', $resource->publisher));
                 }
+                $domain = url::get_2nd_level_name($resource->url);
+                if (Contract_Model::domain_has_blanco($domain)) {
+                	$icon = icon::img('publisher_red', 'Pro tuto doménu je blanco smlouva');	
+                }
                 ?>
 
         <tr>
