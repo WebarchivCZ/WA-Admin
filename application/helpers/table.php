@@ -1,7 +1,8 @@
 <?php
 class table {
 
-	public static function header() {
+	public static function header($attributes = '') {
+		// TODO implementovat praci s atributy, pripojit k DIV nebo TABLE (u div jsou rohy tabulky)
 		$header = '<div class="table">' .
     				html::image(array('src' => 'media/img/bg-th-left.gif' , 'width' => '8' , 'height' => '7' , 'class' => 'left')) .
     				html::image(array('src' => 'media/img/bg-th-right.gif' , 'width' => '7' , 'height' => '7' , 'class' => 'right')) .

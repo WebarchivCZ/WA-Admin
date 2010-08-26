@@ -12,25 +12,7 @@
 <?php foreach ($resources as $resource) {
         $resource_url = 'tables/resources/view/'.$resource->id;
         $contact_url = 'tables/contacts/view/'.$resource->contact->id;
-        $resource_icon = '';
-        if ($resource->has_contract()) {
-        	$resource_icon = icon::img('page', 'Zdroj má smlouvu.');
-        } else {
-            $status = $resource->resource_status_id;
-            switch ($status) {
-            	case RS_NEW:
-            	case RS_CONTACTED:
-            	case RS_APPROVED_WA:
-            		$resource_icon = icon::img('tick', 'Zdroj byl schválen, osloven nebo je nový.');
-            		break;
-            	case RS_REJECTED_PUB:
-            	case RS_NO_RESPONSE:
-            		$resource_icon = icon::img('status_busy', 'Zdroj byl odmítnut vydavatelem nebo je bez odezvy.');
-            		break;
-            	case RS_REJECTED_WA:
-            		$resource_icon = icon::img('cross', 'Zdroj byl odmítnut WA.');
-            }
-        }
+        $resource_icon = $resource->get_icon();
 ?>
         <tr>
             <td class="first">

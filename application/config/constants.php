@@ -7,5 +7,5 @@ define('RS_APPROVED_PUB', 5);
 define('RS_REJECTED_PUB', 6);
 define('RS_NO_RESPONSE', 7);
 define('RS_CONTACTED', 8);
-
+define('RS_END_PUBLISHING', 9);
 ?>

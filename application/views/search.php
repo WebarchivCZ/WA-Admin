@@ -8,13 +8,15 @@
 
     <table class="listing" cellpadding="0" cellspacing="0">
         <tr>
-            <th class="first">Název</th>
+            <th class="first">&nbsp;</th>
+            <th>Název</th>
             <th>URL</th>
             <th class="last">Vydavatel</th>
         </tr>
     <?php	foreach ($resources as $resource)
     { ?>
         <tr>
+        	<td><?= $resource->get_icon(); ?></td>
             <td>
 		<?= html::anchor('tables/resources/view/'.$resource->id, $resource->title) ?>
             </td>
