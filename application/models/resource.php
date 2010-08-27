@@ -9,7 +9,7 @@ class Resource_Model extends Table_Model {
     protected $primary_val = 'short_title';
     protected $sorting = array ('title' => 'asc' );
     
-    public $headers = array ('icon', 'short_title', 'url', 'publisher' );
+    public $headers = array ('short_title', 'icon', 'url', 'publisher' );
     
     protected $belongs_to = array ('contact', 'creator' => 'curator', 'curator' => 'curator', 'publisher', 'contract', 'conspectus', 'conspectus_subcategory', 'crawl_freq', 'resource_status', 'suggested_by' );
     
