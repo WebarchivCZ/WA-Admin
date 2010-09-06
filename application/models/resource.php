@@ -7,22 +7,25 @@ defined('SYSPATH') or die('No direct script access.');
 class Resource_Model extends Table_Model {
     
     protected $primary_val = 'short_title';
-    protected $sorting = array ('title' => 'asc' );
+    protected $sorting = array ('title' => 'asc');
     
-    public $headers = array ('short_title', 'icon', 'url', 'publisher' );
+    public $headers = array ('short_title', 'icon', 'url', 'publisher');
     
-    protected $belongs_to = array ('contact', 'creator' => 'curator', 'curator' => 'curator', 'publisher', 'contract', 'conspectus', 'conspectus_subcategory', 'crawl_freq', 'resource_status', 'suggested_by' );
+    protected $belongs_to = array ('contact', 'creator' => 'curator', 'curator' => 'curator', 'publisher', 'contract', 'conspectus', 'conspectus_subcategory', 'crawl_freq', 'resource_status', 'suggested_by');
     
-    protected $has_many = array ('seeds', 'ratings', 'correspondence', 'qa_checks' );
+    protected $has_one = array ('nomination');
+    
+    protected $has_many = array ('seeds', 'ratings', 'correspondence', 'qa_checks');
+    
+    protected $load_with = array('nomination');
     
     // to speed up loading of forms
-    public $formo_ignores = array ('contact_id', 'publisher_id', 'contract_id' );
+    public $formo_ignores = array ('contact_id', 'publisher_id', 'contract_id');
     
     public function __construct($id = NULL) {
         parent::__construct($id);
         if (is_null($id)) {
-            $date_format = Kohana::config('wadmin.date_format');
-            $this->date = date($date_format);
+            $this->date = date_helper::mysql_date_now();
         }
     }
     
@@ -57,8 +60,8 @@ class Resource_Model extends Table_Model {
     }
     
     public function __get($column) {
-   		if ($column == 'icon') {
-        	return $this->get_icon();
+        if ($column == 'icon') {
+            return $this->get_icon();
         }
         if ($column == 'short_title') {
             $value = parent::__get('title');
@@ -79,7 +82,7 @@ class Resource_Model extends Table_Model {
     }
     
     public static function get_rated_resources($round = 1, $limit = NULL, $offset = NULL, $pattern = NULL) {
-        $conditions = array ('ratings.round' => $round );
+        $conditions = array ('ratings.round' => $round);
         if ( ! is_null($pattern)) {
             $conditions ['resources.title'] = $pattern;
         }
@@ -119,9 +122,17 @@ class Resource_Model extends Table_Model {
         return $resources;
     }
     
+    public static function get_new_nominations($curator_id) {
+    	return ORM::factory('resource')
+    			->with('nomination')
+    			->where(array('resources.curator_id' => $curator_id,
+    						  'nomination.resource_id IS NOT' => NULL))
+    			->find_all();
+    }
+    
     public function search($pattern, & $count, $limit = 20, $offset = 0) {
-        $count = $this->join('publishers', 'resources.publisher_id', 'publishers.id', 'LEFT')->orlike(array ('url' => $pattern, 'title' => $pattern, 'publishers.name' => $pattern ))->count_all();
-        $records = $this->join('publishers', 'resources.publisher_id', 'publishers.id', 'LEFT')->orlike(array ('url' => $pattern, 'title' => $pattern, 'publishers.name' => $pattern ))->orwhere('publisher_id', NULL)->find_all($limit, $offset);
+        $count = $this->join('publishers', 'resources.publisher_id', 'publishers.id', 'LEFT')->orlike(array ('url' => $pattern, 'title' => $pattern, 'publishers.name' => $pattern))->count_all();
+        $records = $this->join('publishers', 'resources.publisher_id', 'publishers.id', 'LEFT')->orlike(array ('url' => $pattern, 'title' => $pattern, 'publishers.name' => $pattern))->orwhere('publisher_id', NULL)->find_all($limit, $offset);
         return $records;
     }
     
@@ -170,7 +181,7 @@ class Resource_Model extends Table_Model {
      */
     public function get_correspondence($type = NULL) {
         if ( ! is_null($type)) {
-            $correspondence = ORM::factory('correspondence')->where(array ('resource_id' => $this->id, 'correspondence_type_id' => $type ))->find();
+            $correspondence = ORM::factory('correspondence')->where(array ('resource_id' => $this->id, 'correspondence_type_id' => $type))->find();
         } else {
             $correspondence = ORM::factory('correspondence')->where('resource_id', $this->id)->find_all();
         }
@@ -202,11 +213,11 @@ class Resource_Model extends Table_Model {
     }
     
     public function get_icon() {
-    	if ($this->has_contract()) {
-    		return icon::img('page', 'Zdroj má přiřazenu smlouvu');
-    	} elseif ($this->rating_result == 'TECHNICKÉ NE') {
-    		return icon::img('page_white_flash', 'Zdroj má hodnocení technické ne.');
-    	}
+        if ($this->has_contract()) {
+            return icon::img('page', 'Zdroj má přiřazenu smlouvu');
+        } elseif ($this->rating_result == 'TECHNICKÉ NE') {
+            return icon::img('page_white_flash', 'Zdroj má hodnocení technické ne.');
+        }
         switch($this->resource_status_id) {
             case RS_NEW :
             case RS_APPROVED_WA :
@@ -218,9 +229,9 @@ class Resource_Model extends Table_Model {
             case RS_REJECTED_WA :
                 return icon::img('status_busy', 'Zdroj byl odmítnut WA.');
             case RS_CONTACTED :
-            	return icon::img('email_open', 'Zdroj je osloven.');
+                return icon::img('email_open', 'Zdroj je osloven.');
             case RS_END_PUBLISHING :
-            	return icon::img('stop', 'Zdroj ukončil vydávání.');
+                return icon::img('stop', 'Zdroj ukončil vydávání.');
         }
     }
     
@@ -234,7 +245,7 @@ class Resource_Model extends Table_Model {
     public function compute_rating($round = 1, $return_type = 'string') {
         $value = parent::__get('rating_result');
         if ($value == '') {
-            $ratings = ORM::factory('rating')->where(array ('resource_id' => $this->id, 'round' => $round ))->find_all();
+            $ratings = ORM::factory('rating')->where(array ('resource_id' => $this->id, 'round' => $round))->find_all();
             if ($ratings->count() == 0) {
                 return FALSE;
             }
@@ -270,7 +281,7 @@ class Resource_Model extends Table_Model {
     }
     
     public function rating_count($round = 1) {
-        $ratings = ORM::factory('rating')->where(array ('resource_id' => $this->id, 'round' => $round ))->find_all();
+        $ratings = ORM::factory('rating')->where(array ('resource_id' => $this->id, 'round' => $round))->find_all();
         return $ratings->count();
     }
     
@@ -358,7 +369,7 @@ class Resource_Model extends Table_Model {
         } else {
             $curator_id = $curator;
         }
-        $conditons = array ('round' => $round, 'curator_id' => $curator_id, 'resource_id' => $this->id );
+        $conditons = array ('round' => $round, 'curator_id' => $curator_id, 'resource_id' => $this->id);
         $rating = ORM::factory('rating')->where($conditons)->find();
         if ($rating->id == 0) {
             $rating = NULL;

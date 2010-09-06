@@ -4,49 +4,39 @@ abstract class Table_Controller extends Template_Controller {
     protected $title;
     protected $model;
     protected $view = 'table';
-    protected $columns_ignored = array();
-
+    protected $columns_ignored = array ();
+    
     protected $view_record_url;
-
+    
     protected $record = NULL;
     protected $header = 'Záznam';
-
+    
     public function __construct() {
         parent::__construct();
         $this->model = inflector::singular($this->table);
         if ( ! isset($this->view_record_url)) {
             $this->view_record_url = "tables/{$this->table}/view";
         }
-        $this->template->title = Kohana::lang('tables.'.$this->title);
-        $search_url = url::site('tables/'.$this->table.'/search/');
+        $this->template->title = Kohana::lang('tables.' . $this->title);
+        $search_url = url::site('tables/' . $this->table . '/search/');
         $this->template->set_global('search_url', $search_url);
         $this->template->set_global('table', $this->table);
     }
-
-    // TODO remove
-    public function test_table() {
-        $table = new Table_Presenter();
-        $table->add_th_cell('xxx');
-        $table->set_header('<p>');
-        $table->set_footer('</p>');
-        echo Kohana::debug($table);
-
-    }
-
+    
     public function index() {
         $per_page = $this->input->get('limit', 20);
         $page_num = $this->input->get('page', 1);
-        $offset   = ($page_num - 1) * $per_page;
-
+        $offset = ($page_num - 1) * $per_page;
+        
         $this->session->set('ref_page', $page_num);
-
+        
         $model = ORM::factory($this->model);
-        $items = $model->table_view($per_page,$offset);
+        $items = $model->table_view($per_page, $offset);
         $count = $model->count_table_view();
         $pages = Pagination::dropdown($count, $per_page);
-
+        
         $pages_inline = Pagination::inline($count, $per_page);
-
+        
         $view = View::factory($this->view);
         $view->title = $this->title;
         $view->headers = $model->headers;
@@ -54,52 +44,55 @@ abstract class Table_Controller extends Template_Controller {
         $view->items = $items;
         $view->pages = $pages . $pages_inline;
         $this->template->content = $view;
-        $this->template->title = Kohana::lang('tables.'.$this->title) . " | " . Kohana::lang('tables.index');
+        $this->template->title = Kohana::lang('tables.' . $this->title) . " | " . Kohana::lang('tables.index');
     }
-
+    
     public function view($id = FALSE) {
         $this->template->title = 'Zobrazení záznamu';
         $this->view = 'tables/record_view';
         if (is_null($this->record)) {
             if (isset($this->columns_order)) {
-                $record = ORM::factory($this->model)->where('id', $id)
-                        ->find();
+                $record = ORM::factory($this->model)->where('id', $id)->find();
             } else {
                 $record = ORM::factory($this->model, $id);
             }
-        }
-
-        $record_values = $record->as_array();
-        $values = array();
-        foreach ($record_values as $key => $value) {
-            if ($record->__isset($key) AND ! in_array($key, $this->columns_ignored)) {
-                // TODO elegantnejsi vypisovani cizich klicu
-                if ($record->is_related(str_replace('_id', '', $key))) {
-                    $key = str_replace('_id', '',$key);
+            
+            $record_values = $record->as_array();
+            $has_one = $record->get_has_one();
+            if ( ! empty($has_one)) {
+                foreach($has_one as $nested) {
+                    $record->with($nested);
+                    array_push($record_values, $record->{$nested});
                 }
-                $values[$key] = $record->{$key};
-
             }
         }
-
+        
+        $values = array ();
+        foreach($record_values as $key=>$value) {
+            if ($record->__isset($key) and  ! in_array($key, $this->columns_ignored)) {
+                // TODO elegantnejsi vypisovani cizich klicu
+                if ($record->is_related(str_replace('_id', '', $key))) {
+                    $key = str_replace('_id', '', $key);
+                }
+                $values [$key] = $record->{$key};
+            }
+        }
+        
         $this->record = $record;
         $url = url::site("/tables/{$this->table}/edit/{$id}");
+        
         $view = View::factory($this->view);
         $view->bind('values', $values);
         $view->bind('header', $this->header);
         $view->set('edit_url', $url);
         $this->template->content = $view;
     }
-
+    
     public function edit($id = FALSE) {
         if ($id) {
             $this->record = ORM::factory($this->model, $id);
         }
-        $form = Formo::factory()->orm($this->model, $id)
-                ->add('submit', 'Upravit')
-                ->remove($this->columns_ignored)
-                ->label_filter('display::translate_orm')
-                ->label_filter('ucfirst');
+        $form = Formo::factory()->orm($this->model, $id)->add('submit', 'Upravit')->remove($this->columns_ignored)->label_filter('display::translate_orm')->label_filter('ucfirst');
         $view = new View('tables/record_edit');
         $view->bind('header', $this->header);
         $view->form = $form->get();
@@ -110,16 +103,12 @@ abstract class Table_Controller extends Template_Controller {
             $this->redirect('view');
         }
     }
-
+    
     public function add($values = NULL) {
-        $form = Formo::factory()->orm($this->model)
-                ->label_filter('display::translate_orm')
-                ->label_filter('ucfirst')
-                ->add('submit', 'Vložit')
-                ->remove($this->columns_ignored);
-
-        if (! is_null($values)) {
-            foreach ($values as $column => $value) {
+        $form = Formo::factory()->orm($this->model)->label_filter('display::translate_orm')->label_filter('ucfirst')->add('submit', 'Vložit')->remove($this->columns_ignored);
+        
+        if ( ! is_null($values)) {
+            foreach($values as $column=>$value) {
                 $form->{$column}->value = $value;
             }
         }
@@ -130,57 +119,57 @@ abstract class Table_Controller extends Template_Controller {
         if ($form->validate()) {
             $form->save();
             $this->record = $form->get_model($this->model);
-
+            
             message::set_flash('Záznam úspěšně přidán');
             $this->redirect('view');
         }
     }
-
+    
     public function delete($id = FALSE) {
         if ($this->user->has(ORM::factory('role', 'admin'))) {
             if ($id) {
                 $this->record = ORM::factory($this->model, $id);
             }
-            if (isset($_POST['sent'])) {
-                if (isset($_POST['confirm'])) {
+            if (isset($_POST ['sent'])) {
+                if (isset($_POST ['confirm'])) {
                     $this->record->delete_record();
                     message::set_flash('Záznam byl úspěšně smazán.');
-                    url::redirect(url::site('tables/'.$this->table));
+                    url::redirect(url::site('tables/' . $this->table));
                 } else {
                     $this->redirect();
                 }
             }
             $view = new View('tables/record_delete');
             $view->bind('header', $this->header);
-
+            
             $this->template->content = $view;
         } else {
             message::set_flash('Nemáte právo mazání.');
             url::redirect(url::site("tables/{$this->table}"));
         }
     }
-
+    
     /**
      *
      * @param array $conditions podminky za WHERE
      */
     public function search($conditions = NULL) {
         $search_string = $this->input->get('search_string');
-        if ( ! is_null( $conditions )) {
+        if ( ! is_null($conditions)) {
             $search_string = $conditions;
         }
-
+        
         $model = ORM::factory($this->model);
-
+        
         $per_page = $this->input->get('limit', 20);
         $page_num = $this->input->get('page', 1);
-        $offset   = ($page_num - 1) * $per_page;
-
+        $offset = ($page_num - 1) * $per_page;
+        
         $count = 0;
         $result = $model->search($search_string, $count, $per_page, $offset);
-
+        
         $pages_inline = Pagination::inline($count, $per_page);
-
+        
         // create and display the view
         $view = new View($this->view);
         $view->title = $this->title;
@@ -189,13 +178,13 @@ abstract class Table_Controller extends Template_Controller {
         $view->items = $result;
         $view->pages = $pages_inline;
         $this->template->content = $view;
-        $this->template->title = Kohana::lang('tables.'.$this->title) . " | " . Kohana::lang('tables.index');
+        $this->template->title = Kohana::lang('tables.' . $this->title) . " | " . Kohana::lang('tables.index');
     }
-
+    
     protected function redirect($action = 'view') {
-        if ($action == 'view' OR $action = 'edit') {
+        if ($action == 'view' or $action = 'edit') {
             url::redirect("/tables/{$this->table}/{$action}/{$this->record->id}");
-        }elseif ($action == 'list') {
+        } elseif ($action == 'list') {
             url::redirect("/tables/{$this->table}/");
         }
     }

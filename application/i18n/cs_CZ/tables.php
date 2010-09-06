@@ -77,6 +77,7 @@ $lang = array
     'rating_last_round' => 'Počet kol hodnocení',
     'blanco_contract' => 'Blanco smlouva',
     'domain' => 'Doména',
-    'icon' => ''
+    'icon' => '',
+    'important' => 'Významný'
     )
 ?>

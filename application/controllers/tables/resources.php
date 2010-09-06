@@ -13,6 +13,7 @@ class Resources_Controller extends Table_Controller {
         parent::view($id);
 
         $resource = $this->record;
+        
         /* @var $resource Resource_Model */
         $append_view = View::factory('tables/append_resource');
         $append_view->resource = $resource;

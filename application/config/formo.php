@@ -40,6 +40,7 @@ $config['defaults']['addendum'] = array('type'=>'bool');
 $config['defaults']['blanco_contract'] = array('type'=>'bool');
 $config['defaults']['redirect'] = array('type'=>'bool');
 $config['defaults']['robots'] = array('type'=>'bool');
+$config['defaults']['important'] = array('type'=>'bool');
 
 //$config['plugins'] = array('orm');
 

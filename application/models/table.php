@@ -50,6 +50,10 @@ abstract class Table_Model extends ORM
             ->find_all($limit,$offset);
         return $result;
     }
+    
+    public function get_has_one() {
+    	return $this->has_one;
+    }
 
     /**
      * Metoda smaze dany zaznam a k nemu prislusne objektu (pokud nejake jsou).
