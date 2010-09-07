@@ -76,6 +76,9 @@ class Resource_Model extends Table_Model {
             $rating_array = Rating_Model::get_final_array();
             $value = $rating_array [$value];
         }
+        if ($column == 'important') {
+            $value = ($value = 1) ? "ANO" : "NE";
+        }
         return $value;
     }
     
@@ -121,11 +124,21 @@ class Resource_Model extends Table_Model {
     }
     
     public static function get_new_nominations($curator_id) {
-    	return ORM::factory('resource')
-    			->with('nomination')
-    			->where(array('resources.curator_id' => $curator_id,
-    						  'nomination.resource_id IS NOT' => NULL))
-    			->find_all();
+        return ORM::factory('resource')->with('nomination')->where(array ('resources.curator_id' => $curator_id, 'nomination.resource_id IS NOT' => NULL))->find_all();
+    }
+    
+    public static function get_important($curator_id = null, $filter = null) {
+        $conditions = array ('important' => true);
+        if ($curator_id != null) {
+            $conditions ['curator_id'] = $curator_id;
+        }
+        if ($filter != null) {
+            $conditions ['conspectus_id'] = $filter ['conspectus'];
+            if ($filter ['conspectus_subcategory'] != '') {
+                $conditions ['conspectus_subcategory_id'] = $filter ['conspectus_subcategory'];
+            }
+        }
+        return ORM::factory('resource')->with('nomination')->where($conditions)->orderby(array ('conspectus_id' => 'asc', 'title' => 'asc'))->find_all();
     }
     
     public function search($pattern, & $count, $limit = 20, $offset = 0) {
@@ -231,6 +244,19 @@ class Resource_Model extends Table_Model {
             case RS_END_PUBLISHING :
                 return icon::img('stop', 'Zdroj ukončil vydávání.');
         }
+    }
+    
+    public function print_correspondence() {
+        $correspondence = $this->get_correspondence();
+        $last_contact = $this->get_last_contact();
+        $result = '';
+        
+        $i = 0;
+        foreach($correspondence as $corr_object) {
+            $result .= icon::img('email_open', $last_contact) . ' ';
+            $i ++ ;
+        }
+        return $result;
     }
     
     /**

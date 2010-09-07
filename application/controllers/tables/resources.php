@@ -2,7 +2,7 @@
 class Resources_Controller extends Table_Controller {
     protected $table = 'resources';
     protected $title = 'Resources';
-    protected $columns_ignored = array('id', 'publisher_id', 'contact_id', 'contract_id', 'annotation');
+    protected $columns_ignored = array('id', 'publisher_id', 'contact_id', 'contract_id', 'annotation', 'rating_last_round');
     protected $columns_order = array('title', 'url', 'creator_id', 'date', 'curator_id',
             'conspectus_id', 'crawl_freq_id', 'resource_status_id',
             'suggested_by_id', 'rating_result', 'aleph_id', 'issn',
@@ -50,7 +50,7 @@ class Resources_Controller extends Table_Controller {
             $form->_order = array('title', 'url', 'date', 'creator_id', 'curator_id',
                     'conspectus_id', 'conspectus_subcategory_id', 'crawl_freq_id',
                     'resource_status_id', 'suggested_by_id', 'rating_result', 'reevaluate_date',
-                    'aleph_id', 'issn', 'catalogued',
+                    'aleph_id', 'issn', 'catalogued', 'important',
                     'tech_problems', 'comments', 'upravit');
 
             // vyber podkategorii prislusici dane kategorii

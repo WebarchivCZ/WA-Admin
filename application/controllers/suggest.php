@@ -122,7 +122,7 @@ class Suggest_Controller extends Template_Controller {
             if ($form->important->value == TRUE) {
                 $nomination = new Nomination_Model();
                 $nomination->resource_id = $resource->id;
-                $nomination->curator_id = $curator_id;
+                $nomination->proposer_id = $curator_id;
                 $nomination->save();
             }
             

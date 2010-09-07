@@ -1,6 +1,6 @@
 <?php
 if (isset($form)) { ?>
-<form method="POST">
+<form method="POST" action="<?= url::site('conspectus/filter/') ?>">
 <input type='hidden' name='filter' value='true' />
 <p>
     <?=$form['conspectus']?>
@@ -39,8 +39,37 @@ if (isset($nominations) AND $nominations->count() > 0) { ?>
 	}
 	
 	echo table::footer();
-} else {
+} elseif (isset($nominations) AND $nominations->count() == 0) {
 	echo "<h3>Nenalezen žádný zdroj</h3>\n";
 }
+
+if (isset($resources) AND $resources->count() > 0) { ?>
+	<?= table::header() ?>
+	<tr>
+		<th class="first">Název</th>
+		<th>Vydavatel</th>
+		<th>Kategorie</th>
+		<th>Podkategorie</th>
+		<th>Stav</th>
+		<th class="last">Oslovení</th>
+	</tr>
+	
+	<?php
+	foreach ($resources as $resource) {
+		$resource_title = html::anchor(url::site('/tables/resources/view/'.$resource->id), $resource->title);
+		//$url_icon = html::anchor($resource->url, icon::img('link'), array('target'=>'_blank'));
+		echo "<tr>\n
+				<td>{$resource_title}</td>\n
+				<td>{$resource->publisher}</td>\n
+				<td>{$resource->conspectus}</td>\n
+				<td>{$resource->conspectus_subcategory}</td>\n
+				<td class='center'>{$resource->get_icon()}</td>\n
+				<td class='center'>". $resource->print_correspondence() ."</td>\n
+			  </tr>\n";
+	}
+	
+	echo table::footer();
+}
+
 
 ?>

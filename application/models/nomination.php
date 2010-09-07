@@ -9,7 +9,7 @@ class Nomination_Model extends Table_Model {
     
 	protected $primary_key = 'resource_id';
 	
-    protected $belongs_to = array ('resource');
+    protected $belongs_to = array ('resource', 'proposer' => 'curator');
     
     protected $sorting = array('resource.conspectus_id' => 'asc', 'resource.title' => 'asc');
     

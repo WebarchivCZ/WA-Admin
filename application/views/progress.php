@@ -28,14 +28,7 @@ if(isset($resources) AND $resources->count() != 0)
             </td>
             <td width="14%">
                 <?php
-                $correspondence = $resource->get_correspondence();
-                $last_contact = $resource->get_last_contact();
-
-                $i = 0;
-                foreach ($correspondence as $corr_object) {
-                    echo icon::img('email_open', $last_contact). ' ';
-                    $i++;
-                }
+                echo $resource->print_correspondence();
                 ?>
                         
             </td>

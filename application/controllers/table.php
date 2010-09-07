@@ -58,13 +58,6 @@ abstract class Table_Controller extends Template_Controller {
             }
             
             $record_values = $record->as_array();
-            $has_one = $record->get_has_one();
-            if ( ! empty($has_one)) {
-                foreach($has_one as $nested) {
-                    $record->with($nested);
-                    array_push($record_values, $record->{$nested});
-                }
-            }
         }
         
         $values = array ();

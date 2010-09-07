@@ -78,6 +78,6 @@ $lang = array
     'blanco_contract' => 'Blanco smlouva',
     'domain' => 'Doména',
     'icon' => '',
-    'important' => 'Významný'
+    'important' => 'Významný zdroj'
     )
 ?>
