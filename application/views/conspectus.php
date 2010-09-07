@@ -50,7 +50,6 @@ if (isset($resources) AND $resources->count() > 0) { ?>
 	<tr>
 		<th class="first">Název</th>
 		<th>Vydavatel</th>
-		<th>Kategorie</th>
 		<th>Podkategorie</th>
 		<th>Stav</th>
 		<th class="last">Oslovení</th>
@@ -68,7 +67,6 @@ if (isset($resources) AND $resources->count() > 0) { ?>
 		echo "<tr>\n
 				<td>{$resource_title}</td>\n
 				<td>{$publisher_title}</td>\n
-				<td>{$resource->conspectus}</td>\n
 				<td>{$resource->conspectus_subcategory}</td>\n
 				<td class='center'>{$resource->get_icon()}</td>\n
 				<td class='center'>". $correspondence ."</td>\n
