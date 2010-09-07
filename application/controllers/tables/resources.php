@@ -192,6 +192,22 @@ class Resources_Controller extends Table_Controller {
         message::set_flash('Ke zdroji byl přiřazen vydavatel: '.$publisher->name);
         url::redirect("{$this->view_record_url}/{$resource_id}");
     }
+    
+    public function nominate($resource_id) {
+    	$resource = new Resource_Model($resource_id);
+    	if ( ! $resource->has_nomination()) {
+    		$resource->nominate($this->user->id);
+    		message::set_flash('Zdroj byl úspěšně nominován.');
+    	} else {
+    		message::set_flash('Zdroj je již nominovaný.');
+    	}
+    	$request_page = $this->session->get('request_page'); 
+    	if ($request_page != '') {
+    		url::redirect($this->session->get('request_page'));
+    	} else {
+    		$this->redirect(url::site('conspectus_table'));
+    	}
+    }
 
     private function set_publisher ($resource_id, $publisher_id) {
         $publisher = ORM::factory('publisher', $publisher_id);

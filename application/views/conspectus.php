@@ -1,16 +1,5 @@
-<?php
-if (isset($form)) {
-    ?>
-<form method="POST" action="<?=url::site('conspectus/filter/')?>"><input
-	type='hidden' name='filter' value='true' />
-<p>
-    <?=$form ['conspectus']?>
-    <?=$form ['conspectus_subcategory']?>
-    <button class='floatright'>Filtrovat</button>
-</p>
-</form>
 <?
-}
+View::factory('forms/conspectus_filter')->set('form', $form)->render(TRUE);
 
 if (isset($nominations) and $nominations->count() > 0) {
     ?>

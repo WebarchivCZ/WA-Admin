@@ -36,6 +36,7 @@ abstract class Template_Controller extends Controller {
      */
     public function __construct () {
         $this->session = Session::instance();
+        
         parent::__construct();
 
         // load constants from config/constants.php file
@@ -79,6 +80,7 @@ abstract class Template_Controller extends Controller {
             $this->profiler = new Profiler();
         }
     }
+
 
     /**
      * Render the loaded template.

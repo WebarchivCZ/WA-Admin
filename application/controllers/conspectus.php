@@ -8,7 +8,7 @@ class Conspectus_Controller extends Template_Controller {
         
         $nominations = Nomination_Model::get_new($this->user->id);
         
-        $content->form = $this->generate_filter_form()->get(1);
+        $content->form = self::generate_filter_form()->get(1);
         $content->nominations = $nominations;
         $this->template->content = $content;
     }
@@ -18,13 +18,13 @@ class Conspectus_Controller extends Template_Controller {
         if (isset($_POST ['filter']) and $_POST ['filter'] == true and $_POST ['conspectus'] != '') {
             $selected_conspectus = $_POST ['conspectus'];
             $selected_conspectus_subcategory = $_POST ['conspectus_subcategory'];
-            $form = $this->generate_filter_form($selected_conspectus);
+            $form = self::generate_filter_form($selected_conspectus);
             $form->conspectus->value = $selected_conspectus;
             $form->conspectus_subcategory->value = $selected_conspectus_subcategory;
             $filter ['conspectus'] = $selected_conspectus;
             $filter ['conspectus_subcategory'] = $selected_conspectus_subcategory;
         } else {
-        	$form = $this->generate_filter_form();
+        	$form = self::generate_filter_form();
         }
         $resources = Resource_Model::get_important($this->user->id, $filter);
         
@@ -64,7 +64,7 @@ class Conspectus_Controller extends Template_Controller {
         url::redirect('conspectus');
     }
 
-    protected function generate_filter_form($selected_conspectus = 1, $selected_conspectus_subcategory = null) {
+    public static function generate_filter_form($selected_conspectus = 1, $selected_conspectus_subcategory = null) {
     	$conspectus = ORM::factory('conspectus')->select_list('id', 'title');
     	$form = Formo::factory('conspectus_select');
         $form->add_select('conspectus', $conspectus, 'style=width:250px;')->id('category_select')->blank(true);

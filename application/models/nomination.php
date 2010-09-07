@@ -11,7 +11,7 @@ class Nomination_Model extends Table_Model {
 	
     protected $belongs_to = array ('resource', 'proposer' => 'curator');
     
-    protected $sorting = array('resource.conspectus_id' => 'asc', 'resource.title' => 'asc');
+    //protected $sorting = array('resource.conspectus_id' => 'asc', 'resource.title' => 'asc');
     
     public function __construct($id = NULL) {
         parent::__construct($id);

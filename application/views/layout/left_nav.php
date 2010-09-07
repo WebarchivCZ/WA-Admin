@@ -6,7 +6,8 @@
                    'correspondence' => 'Oslovení',
                    'contracts' => 'Smlouvy',
                    'ratings' => 'Hodnocení',
-                   'seeds' => 'Semínka');
+                   'seeds' => 'Semínka',
+    			   'conspectus_table' => 'Konspekt');
 ?>
 
 <h3>Prohlížet</h3>
@@ -16,7 +17,7 @@
     <?php
         foreach ($pages as $link => $page) {
             $class = '';
-            if (isset($this->table) AND $this->table == $link) {
+            if (isset($this->table) AND $this->uri->segment(2) == $link) {
                 $class = " class='active'";
             }
             // TODO pokud je to posledni link v tabulce, pak pridat do class i 'last'

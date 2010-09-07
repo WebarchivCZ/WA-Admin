@@ -141,6 +141,17 @@ class Resource_Model extends Table_Model {
         return ORM::factory('resource')->with('nomination')->where($conditions)->orderby(array ('conspectus_id' => 'asc', 'title' => 'asc'))->find_all();
     }
     
+    public static function get_by_conspectus($conspectus_id = '', $subcategory_id = '', $limit = 20, $offset = 0) {
+    	$conditions = array();
+    	if ($conspectus_id != '') {
+    		$conditions['conspectus_id'] = $conspectus_id;
+    	}
+    	if ($subcategory_id) {
+    		$conditions['conspectus_subcategory_id'] = $subcategory_id;
+    	}
+    	return ORM::factory('resource')->where($conditions)->find_all($limit, $offset);
+    }
+    
     public function search($pattern, & $count, $limit = 20, $offset = 0) {
         $count = $this->join('publishers', 'resources.publisher_id', 'publishers.id', 'LEFT')->orlike(array ('url' => $pattern, 'title' => $pattern, 'publishers.name' => $pattern))->count_all();
         $records = $this->join('publishers', 'resources.publisher_id', 'publishers.id', 'LEFT')->orlike(array ('url' => $pattern, 'title' => $pattern, 'publishers.name' => $pattern))->orwhere('publisher_id', NULL)->find_all($limit, $offset);
@@ -243,6 +254,30 @@ class Resource_Model extends Table_Model {
                 return icon::img('email_open', 'Zdroj je osloven.');
             case RS_END_PUBLISHING :
                 return icon::img('stop', 'Zdroj ukončil vydávání.');
+        }
+    }
+    
+    public function get_nomination_icon($get_result = false) {
+        if ($get_result) {
+            $value = $this->nomination->accepted;
+            if ($this->has_nomination()) {
+                if (is_null($value)) {
+                    return icon::img('bullet_red', 'Zdroj nebyl vyhodnocen.');
+                } elseif ($value == 1) {
+                    return icon::img('tick', 'Zdroj byl schválen jako významný.');
+                } elseif ($value == 0) {
+                    return icon::img('cancel', 'Zdroj byl zamítnut jako významný.');
+                }
+            } else {
+                return '';
+            }
+        } else {
+            if ($this->has_nomination()) {
+                return icon::img('tick', 'Zdroj byl již nominován.');
+            } else {
+            	$icon = icon::img('pencil', 'Nominovat zdroj'); 
+                return html::anchor(url::site('/tables/resources/nominate/'.$this->id), $icon);
+            }
         }
     }
     
@@ -380,6 +415,13 @@ class Resource_Model extends Table_Model {
         }
     }
     
+    public function nominate($proposer_id = null) {
+        $nomination = new Nomination_Model();
+        $nomination->resource_id = $this->id;
+        $nomination->proposer_id = $proposer_id;
+        $nomination->save();
+    }
+    
     /**
      * Vraci hodnoceni od daneho kuratora pro dany zdroj a dane kolo
      * @param <int/string> $curator_id
@@ -410,6 +452,7 @@ class Resource_Model extends Table_Model {
      * hodnoceni (vsechna) LiCo?: OK
      * seminka (vsechna) LiCo?: OK
      * osloveni (vsechna) LiCo?: OK
+     * nominace
      */
     public function delete_record() {
         // contact
@@ -420,6 +463,9 @@ class Resource_Model extends Table_Model {
         
         // seeds
         ORM::factory('seed')->where('resource_id', $this->id)->delete_all();
+        
+        //nomination
+        ORM::factory('nomination')->where('resource_id', $this->id)->delete_all();
         
         // correspondence
         ORM::factory('correspondence')->where('resource_id', $this->id)->delete_all();
@@ -444,6 +490,16 @@ class Resource_Model extends Table_Model {
             return TRUE;
         } else {
             return FALSE;
+        }
+    }
+    
+    public function has_nomination() {
+        $sql = "SELECT resource_id FROM nominations WHERE resource_id = {$this->id}";
+        $count = Database::instance()->query($sql)->count();
+        if ($count > 0) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

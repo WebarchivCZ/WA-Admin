@@ -24,6 +24,11 @@ abstract class Table_Controller extends Template_Controller {
     }
     
     public function index() {
+        $this->template->content = $this->show_items_view();
+        $this->template->title = Kohana::lang('tables.' . $this->title) . " | " . Kohana::lang('tables.index');
+    }
+    
+    protected function show_items_view($items = null) {
         $per_page = $this->input->get('limit', 20);
         $page_num = $this->input->get('page', 1);
         $offset = ($page_num - 1) * $per_page;
@@ -31,7 +36,9 @@ abstract class Table_Controller extends Template_Controller {
         $this->session->set('ref_page', $page_num);
         
         $model = ORM::factory($this->model);
-        $items = $model->table_view($per_page, $offset);
+        if (is_null($items)) {
+            $items = $model->table_view($per_page, $offset);
+        }
         $count = $model->count_table_view();
         $pages = Pagination::dropdown($count, $per_page);
         
@@ -43,8 +50,8 @@ abstract class Table_Controller extends Template_Controller {
         $view->columns = $model->table_columns();
         $view->items = $items;
         $view->pages = $pages . $pages_inline;
-        $this->template->content = $view;
-        $this->template->title = Kohana::lang('tables.' . $this->title) . " | " . Kohana::lang('tables.index');
+        return $view;
+    
     }
     
     public function view($id = FALSE) {
@@ -151,16 +158,13 @@ abstract class Table_Controller extends Template_Controller {
         if ( ! is_null($conditions)) {
             $search_string = $conditions;
         }
-        
-        $model = ORM::factory($this->model);
-        
         $per_page = $this->input->get('limit', 20);
         $page_num = $this->input->get('page', 1);
         $offset = ($page_num - 1) * $per_page;
         
         $count = 0;
-        $result = $model->search($search_string, $count, $per_page, $offset);
-        
+        $model = ORM::factory($this->model);
+        $items = $model->search($search_string, $count, $per_page, $offset);
         $pages_inline = Pagination::inline($count, $per_page);
         
         // create and display the view
@@ -168,8 +172,9 @@ abstract class Table_Controller extends Template_Controller {
         $view->title = $this->title;
         $view->headers = $model->headers;
         $view->columns = $model->table_columns();
-        $view->items = $result;
+        $view->items = $items;
         $view->pages = $pages_inline;
+        
         $this->template->content = $view;
         $this->template->title = Kohana::lang('tables.' . $this->title) . " | " . Kohana::lang('tables.index');
     }
@@ -181,5 +186,6 @@ abstract class Table_Controller extends Template_Controller {
             url::redirect("/tables/{$this->table}/");
         }
     }
+
 }
 ?>

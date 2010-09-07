@@ -1,58 +1,46 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
-    <head>
-        <title>WA Admin - <?= $title ?></title>
-        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-        <?php
-        echo html::stylesheet('media/css/formo');
-        echo html::stylesheet('media/css/main');
-        echo html::script('media/js/jquery.js');
-        echo html::script('media/js/wadmin.js');
-        ?>
-    </head>
-    <body>
-        <div id="main" style="padding: 25px;">
-            <?php if ($items->count() > 0)
-            { ?>
-            <div class="table">
-
-                    <?= html::image(array('src'=>'media/img/bg-th-left.gif', 'width'=>'8', 'height'=>'7', 'class'=>'left')) ?>
-                    <?= html::image(array('src'=>'media/img/bg-th-right.gif', 'width'=>'7', 'height'=>'7', 'class'=>'right')) ?>
-
-
-                <table class="listing" cellpadding="0" cellspacing="0">
-                    <tr>
-                        <th class="first">Název</th>
-                        <th>URL</th>
-                        <th>Vydavatel</th>
-                        <th class="last">Výsledek hodnocení</th>
-                    </tr>
-                        <?php
-                        foreach ($items as $resource)
-                        {
-        ?>
-                    <tr>
-                        <td class="first"><?= html::anchor('tables/resources/view/'.$resource->id, $resource, array('target'=>'_parent')) ?></td>
-                        <td class="center"><a href="<?=$resource->url ?>" target="_blank"><?= icon::img('link', $resource->url) ?></a></td>
-                        <td><?= $resource->publisher ?></td>
-                        <td class="last"><?= $resource->rating_result ?></td>
-                    </tr>
-    <?php } ?>
-                </table>
-
-    <?= $pages ?>
-
-            </div>
-            <?php
-            }
-            else
-            {
-                echo '<h2>Nebyly nalezeny žádné záznamy</h2>';
-            }
+<div class="top-bar">
+    <h1><?= Kohana::lang('tables.'.$title) ?></h1>
+    <div class="breadcrumbs"><a href="<?= url::base() ?>">Home</a> / <a href="<?= url::base().url::current() ?>"><?= Kohana::lang('tables.'.$title) ?></a></div>
+</div>
+<br />
+<div class="select-bar">
+    <form action="<?= $search_url ?>" method="GET">
+        <label> <input type="text" name="search_string" /> </label>
+        <label> <input type="submit" name="Submit" value="<?= Kohana::lang('tables.search');?>" /> </label>
+    </form>
+</div>
+<? View::factory('forms/conspectus_filter')->set(array('form' => $form, 'conspectus_table' => true))->render(TRUE); ?>
+<?= table::header() ?>
+<tr>
+    <th class="first">Vydavatel</th>
+    <th>Zdroj</th>
+    <th>Kat</th>
+    <th>Podkategorie</th>
+    <th>Nominace</th>
+    <th>Schválen</th>
+    <th class="last">Stav</th>
+</tr>
+<?php
+foreach ($items as $resource) {
+	$publisher = $resource->publisher; ?>
+<tr>
+    <td class="first">
+        <?= html::anchor('tables/resources/view/'.$resource->id, $resource) ?>
+    </td>
+    <td>
+        <?= html::anchor('tables/publishers/view/'.$publisher->id, $publisher->short_name) ?>
+    </td>
+    <td><?= $resource->conspectus->id ?></td>
+    <td><?= $resource->conspectus_subcategory ?></td>
+    <td class="center"><?= $resource->get_nomination_icon() ?></td>
+    <td class="center"><?= $resource->get_nomination_icon(true) ?></td>
+    <td class="last center"><?= $resource->icon ?></td>
+</tr>
+        <?
+}
 ?>
-            <h3 style="clear: both; text-align: center;">
-                <a href="#" onclick="window.close()">Zavřít okno</a>
-            </h3>
-        </div>
-    </body>
-</html>
+</table>
+
+<?= $pages ?>
+
+</div>

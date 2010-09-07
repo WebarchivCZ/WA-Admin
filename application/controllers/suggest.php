@@ -120,10 +120,7 @@ class Suggest_Controller extends Template_Controller {
             
             //pokud je zdroj nominovan na dulezity, vytvorime nominaci
             if ($form->important->value == TRUE) {
-                $nomination = new Nomination_Model();
-                $nomination->resource_id = $resource->id;
-                $nomination->proposer_id = $curator_id;
-                $nomination->save();
+                $resource->nominate();
             }
             
             $this->session->delete('resource_val');
