@@ -14,6 +14,7 @@ class Conspectus_Controller extends Template_Controller {
     }
     
     public function filter() {
+    	$filter = null;
         if (isset($_POST ['filter']) and $_POST ['filter'] == true and $_POST ['conspectus'] != '') {
             $selected_conspectus = $_POST ['conspectus'];
             $selected_conspectus_subcategory = $_POST ['conspectus_subcategory'];
@@ -22,16 +23,15 @@ class Conspectus_Controller extends Template_Controller {
             $form->conspectus_subcategory->value = $selected_conspectus_subcategory;
             $filter ['conspectus'] = $selected_conspectus;
             $filter ['conspectus_subcategory'] = $selected_conspectus_subcategory;
-        
+        } else {
+        	$form = $this->generate_filter_form();
+        }
         $resources = Resource_Model::get_important($this->user->id, $filter);
         
         $content = View::factory('conspectus');
         $content->form = $form->get(1);
         $content->resources = $resources;
         $this->template->content = $content;
-        } else {
-        	message::set_flash('Chybné nastavení filtru');
-        }
     }
     
     public function accept($resource_id) {
