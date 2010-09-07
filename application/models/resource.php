@@ -17,8 +17,6 @@ class Resource_Model extends Table_Model {
     
     protected $has_many = array ('seeds', 'ratings', 'correspondence', 'qa_checks');
     
-    protected $load_with = array('nomination');
-    
     // to speed up loading of forms
     public $formo_ignores = array ('contact_id', 'publisher_id', 'contract_id');
     
