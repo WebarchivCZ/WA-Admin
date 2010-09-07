@@ -1,6 +1,6 @@
 <?php
 class Conspectus_Controller extends Template_Controller {
-    protected $title = 'Konspekt - nominace';
+    protected $title = 'Konspekt - významné zdroje';
     protected $page_title = 'Konspekt';
     
     public function index() {
@@ -14,17 +14,14 @@ class Conspectus_Controller extends Template_Controller {
     }
     
     public function filter() {
-        $form = $this->generate_filter_form();
-    	    	
-    	$filter = null;
         if (isset($_POST ['filter']) and $_POST ['filter'] == true and $_POST ['conspectus'] != '') {
             $selected_conspectus = $_POST ['conspectus'];
             $selected_conspectus_subcategory = $_POST ['conspectus_subcategory'];
+            $form = $this->generate_filter_form($selected_conspectus);
             $form->conspectus->value = $selected_conspectus;
             $form->conspectus_subcategory->value = $selected_conspectus_subcategory;
             $filter ['conspectus'] = $selected_conspectus;
             $filter ['conspectus_subcategory'] = $selected_conspectus_subcategory;
-        }
         
         $resources = Resource_Model::get_important($this->user->id, $filter);
         
@@ -32,6 +29,9 @@ class Conspectus_Controller extends Template_Controller {
         $content->form = $form->get(1);
         $content->resources = $resources;
         $this->template->content = $content;
+        } else {
+        	message::set_flash('Chybné nastavení filtru');
+        }
     }
     
     public function accept($resource_id) {
