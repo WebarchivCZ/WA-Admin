@@ -76,9 +76,6 @@ class Resource_Model extends Table_Model {
             $rating_array = Rating_Model::get_final_array();
             $value = $rating_array [$value];
         }
-        if ($column == 'important') {
-            $value = ($value = 1) ? "ANO" : "NE";
-        }
         return $value;
     }
     

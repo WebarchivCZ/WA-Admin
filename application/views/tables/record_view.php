@@ -27,7 +27,7 @@
                 if ($key == 'email') {
                     $value = "<a href='mailto:{$value}'>{$value}</a>";
                 }
-                if ($key == 'cc' or $key == 'addendum') {
+                if ($key == 'cc' OR $key == 'addendum' OR $key == 'important') {
                     $value = ($value == TRUE) ? 'ANO' : 'NE';
                 }
                 if ($key == 'aleph_id') {
