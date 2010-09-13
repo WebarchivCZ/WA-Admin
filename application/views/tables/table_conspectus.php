@@ -12,8 +12,8 @@
 <? View::factory('forms/conspectus_filter')->set(array('form' => $form, 'conspectus_table' => true))->render(TRUE); ?>
 <?= table::header() ?>
 <tr>
-    <th class="first">Vydavatel</th>
-    <th>Zdroj</th>
+    <th class="first">Zdroj</th>
+    <th>Vydavatel</th>
     <th>Kat</th>
     <th>Podkategorie</th>
     <th>Nominace</th>

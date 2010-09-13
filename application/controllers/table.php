@@ -105,7 +105,11 @@ abstract class Table_Controller extends Template_Controller {
     }
     
     public function add($values = NULL) {
-        $form = Formo::factory()->orm($this->model)->label_filter('display::translate_orm')->label_filter('ucfirst')->add('submit', 'Vložit')->remove($this->columns_ignored);
+        $form = Formo::factory()->orm($this->model)
+                                ->label_filter('display::translate_orm')
+                                ->label_filter('ucfirst')
+                                ->add('submit', 'Vlozit')
+                                ->remove($this->columns_ignored);
         
         if ( ! is_null($values)) {
             foreach($values as $column=>$value) {

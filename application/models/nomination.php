@@ -20,6 +20,14 @@ class Nomination_Model extends Table_Model {
         }
     }
     
+    public function __get($key) {
+    	$value = parent::__get($key);
+    	if ($value != '' AND $key == 'date_nominated' OR $key == 'date_resolved') {
+    		$value = date_helper::short_date($value);
+    	}
+    	return $value;
+    }
+    
     public function __set($column, $value) {
     	if ($column === 'accepted') {
     		$value = ($value === true) ? "1" : "0";

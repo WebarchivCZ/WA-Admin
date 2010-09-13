@@ -572,3 +572,18 @@ form div.problem {
 form div.problem div.solution {
 	display: none;
 }
+
+/* tabs */
+#tabs div.table {
+	width: 601px;
+	float: none;
+}
+
+#tabs table {
+	float: none;
+	width: 600px;
+}
+
+#tabs p {
+	margin-bottom: .3em;
+}

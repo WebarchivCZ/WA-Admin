@@ -122,6 +122,11 @@ $(document).ready(function () {
     		$('#p_reevaluate_date').hide();
     	}
     });
+    
+    $(function() {
+		$("#tabs").tabs();
+	});
+
     	
 }
 );

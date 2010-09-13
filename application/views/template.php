@@ -6,7 +6,9 @@
         <?php
         echo html::stylesheet('media/css/formo');
         echo html::stylesheet('media/css/main');
+        echo html::stylesheet('media/css/jquery');
         echo html::script('media/js/jquery.js');
+        echo html::script('media/js/jquery-ui.js');
         echo html::script('media/js/jquery.confirm-1.2.js');
         echo html::script('media/js/wadmin.js');
         ?>

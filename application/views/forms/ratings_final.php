@@ -1,4 +1,5 @@
-<h2><?= $title ?></h2>
+<?php $rating_result_array = Rating_Model::get_final_array(); ?>
+<div id="tabs-<?= $tab_id ?>">
 <?= table::header(); ?>
         <tr>
             <th class="first" width="75%">Název</th>
@@ -29,3 +30,4 @@
         </tr>
                     <?php } 
 echo table::footer();?>
+</div>

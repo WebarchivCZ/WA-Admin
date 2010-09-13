@@ -7,6 +7,9 @@ class date_helper {
      * @param DATETIME $long_date
      */
     static function short_date($long_date) {
+    	if ($long_date == '') {
+    		return '';
+    	}
         $format = Kohana::config('wadmin.short_date_format');
         $date = date($format, strtotime($long_date));
         return $date;

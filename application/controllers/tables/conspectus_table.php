@@ -18,7 +18,8 @@ class Conspectus_Table_Controller extends Table_Controller {
     
     // FIXME Metodu kompletne refaktorovat a prepsat .. regulerni humus
     public function filter() {
-        if ($this->input->post('filter', $this->session->get_once('filter')) == true) {
+    	$filter_on = $this->input->post('filter', $this->session->get_once('filter'));
+        if ($filter_on == true) {
             $view = View::factory($this->view);
             
             $selected_conspectus = $this->input->post('conspectus', $this->session->get_once('conspectus'));

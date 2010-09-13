@@ -434,10 +434,12 @@ class Resource_Model extends Table_Model {
         }
         $conditons = array ('round' => $round, 'curator_id' => $curator_id, 'resource_id' => $this->id);
         $rating = ORM::factory('rating')->where($conditons)->find();
-        if ($rating->id == 0) {
-            $rating = NULL;
-        }
+        
         return $rating;
+    }
+    
+    public function get_ratings_with_comment() {
+    	return ORM::factory('rating')->where(array ('resource_id' => $this->id, 'comments !=' => ''))->find_all();
     }
     
     /**

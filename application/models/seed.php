@@ -18,6 +18,8 @@ class Seed_Model extends Table_Model
 
     protected $belongs_to = array(
     'resource', 'seed_status');
+    
+    public $formo_ignores = array ('id');
 
     public function __get($column)
     {

@@ -6,37 +6,24 @@ class Rate_Controller extends Template_Controller {
     public function index() {
         $view =	new View('rate');
 
-        $id_array = $this->find_resources(RS_NEW);
-        $resources_new = ($id_array != FALSE) ? ORM::factory('resource')
-                ->in('id', $id_array)
-                ->orderby('date', 'ASC')
-                ->find_all() : FALSE;
-
-        $id_array = $this->find_resources(RS_RE_EVALUATE);
-        $resources_reevaluate = ($id_array != FALSE) ? ORM::factory('resource')
-                ->in('id', $id_array)
-                ->orderby('date', 'ASC')
-                ->find_all() : FALSE;
+        $status_array = array('resources_new' => RS_NEW, 'resources_reevaluate' => RS_RE_EVALUATE);
         
-        $id_array = $this->find_resources(RS_NEW, TRUE);
-        $resources_rated_new = ($id_array != FALSE) ? ORM::factory('resource')
+        foreach ($status_array as $key => $status) {
+        	$id_array = $this->find_resources($status);
+        	$resources = ORM::factory('resource')
                 ->in('id', $id_array)
                 ->orderby('date', 'ASC')
-                ->find_all() : FALSE;
-
-        $id_array = $this->find_resources(RS_RE_EVALUATE, TRUE);
-        $resources_rated_reevaluate = ($id_array != FALSE) ? ORM::factory('resource')
+                ->find_all();
+            $view->{$key} = $resources;
+             
+            $id_array = $this->find_resources($status, TRUE);
+        	$resources = ORM::factory('resource')
                 ->in('id', $id_array)
                 ->orderby('date', 'ASC')
-                ->find_all() : FALSE;
+                ->find_all();
+            $view->{"rated_".$key} = $resources; 
+        }
 
-        $view->resources_new = $resources_new;
-        $view->resources_reevaluate = $resources_reevaluate;
-
-        $view->rated_resources_new = $resources_rated_new;
-        $view->rated_resources_reevaluate = $resources_rated_reevaluate;
-
-        $view->ratings = NULL;
         $this->template->content = $view;
     }
 
@@ -134,7 +121,7 @@ class Rate_Controller extends Template_Controller {
         foreach($query->result_array(FALSE) as $row) {
             array_push($id_array, $row['id']);
         }
-        $result = count($id_array) != 0? $id_array : FALSE;
+        $result = count($id_array) != 0? $id_array : 0;
         return $result;
     }
 }

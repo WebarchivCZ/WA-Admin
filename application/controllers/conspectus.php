@@ -14,7 +14,7 @@ class Conspectus_Controller extends Template_Controller {
     }
     
     public function filter() {
-    	$filter = null;
+        $filter = null;
         if (isset($_POST ['filter']) and $_POST ['filter'] == true and $_POST ['conspectus'] != '') {
             $selected_conspectus = $_POST ['conspectus'];
             $selected_conspectus_subcategory = $_POST ['conspectus_subcategory'];
@@ -24,7 +24,7 @@ class Conspectus_Controller extends Template_Controller {
             $filter ['conspectus'] = $selected_conspectus;
             $filter ['conspectus_subcategory'] = $selected_conspectus_subcategory;
         } else {
-        	$form = self::generate_filter_form();
+            $form = self::generate_filter_form();
         }
         $resources = Resource_Model::get_important($this->user->id, $filter);
         
@@ -54,19 +54,20 @@ class Conspectus_Controller extends Template_Controller {
         $nomination->accepted = $accepted;
         $nomination->save();
         
-        if ($accepted === true) {
-            $resource->important = true;
-            $resource->save();
-        }
+        $resource->important = $accepted;
+        $resource->save();
+        
         if ($nomination->saved) {
             message::set_flash('Rozhodnutí bylo úspěšně uloženo');
         }
-        url::redirect('conspectus');
+        
+        $page = $this->session->get_once('request_page', 'conspectus');
+        url::redirect($page);
     }
-
+    
     public static function generate_filter_form($selected_conspectus = 1, $selected_conspectus_subcategory = null) {
-    	$conspectus = ORM::factory('conspectus')->select_list('id', 'title');
-    	$form = Formo::factory('conspectus_select');
+        $conspectus = ORM::factory('conspectus')->select_list('id', 'title');
+        $form = Formo::factory('conspectus_select');
         $form->add_select('conspectus', $conspectus, 'style=width:250px;')->id('category_select')->blank(true);
         $form->add_select('conspectus_subcategory', '', 'style=width:270px;')->id('subcategory_select')->blank(true);
         
