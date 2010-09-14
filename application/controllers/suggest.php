@@ -157,10 +157,10 @@ class Suggest_Controller extends Template_Controller {
         
         $output = "[";
         foreach($subcategories as $subcategory) {
-            $output .= "{optionValue: '" . $subcategory->id . "'";
+            $output .= '{"optionValue": "' . $subcategory->id . '"';
             $output .= ', ';
-            $output .= 'optionDisplay: ';
-            $output .= "'" . $subcategory->title . "'";
+            $output .= '"optionDisplay": ';
+            $output .= '"' . $subcategory->title . '"';
             $output .= '},';
         }
         $output = trim($output, ",");

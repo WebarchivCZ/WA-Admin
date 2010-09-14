@@ -23,8 +23,8 @@ $(document).ready(function () {
     $("select#category_select").change(function(){
         pathArray = window.location.pathname.split( '/' );
         var url = window.location.protocol + "//" + window.location.host + "/" + pathArray[1];
-
-        $.getJSON(url+"/suggest/get_subcategories/"+$(this).val(), '' , function(j){
+        
+        $.getJSON(url+"/suggest/get_subcategories/"+$(this).val(), function(j){
             var options = '<option value=""></option>\n';
             for (var i = 0; i < j.length; i++) {
                 options += '<option value="' + j[i].optionValue + '">' + j[i].optionDisplay + '</option>\n';

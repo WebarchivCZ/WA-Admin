@@ -139,14 +139,14 @@ class Resource_Model extends Table_Model {
     }
     
     public static function get_by_conspectus($conspectus_id = '', $subcategory_id = '', $limit = 20, $offset = 0) {
-    	$conditions = array();
-    	if ($conspectus_id != '') {
-    		$conditions['conspectus_id'] = $conspectus_id;
-    	}
-    	if ($subcategory_id) {
-    		$conditions['conspectus_subcategory_id'] = $subcategory_id;
-    	}
-    	return ORM::factory('resource')->where($conditions)->find_all($limit, $offset);
+        $conditions = array ();
+        if ($conspectus_id != '') {
+            $conditions ['conspectus_id'] = $conspectus_id;
+        }
+        if ($subcategory_id) {
+            $conditions ['conspectus_subcategory_id'] = $subcategory_id;
+        }
+        return ORM::factory('resource')->where($conditions)->find_all($limit, $offset);
     }
     
     public function search($pattern, & $count, $limit = 20, $offset = 0) {
@@ -174,6 +174,16 @@ class Resource_Model extends Table_Model {
             }
         } else {
             throw new InvalidArgumentException('Predany argument neni kurator');
+        }
+    }
+    
+    public function is_ratable() {
+        if ($this->resource_status_id == RS_NEW) {
+            return true;
+        } elseif ($this->resource_status_id == RS_RE_EVALUATE and $this->reevaluate_date <= date(DATE_ATOM)) {
+            return true;
+        } else {
+            return false;
         }
     }
     
@@ -272,8 +282,8 @@ class Resource_Model extends Table_Model {
             if ($this->has_nomination()) {
                 return icon::img('tick', 'Zdroj byl již nominován.');
             } else {
-            	$icon = icon::img('pencil', 'Nominovat zdroj'); 
-                return html::anchor(url::site('/tables/resources/nominate/'.$this->id), $icon);
+                $icon = icon::img('pencil', 'Nominovat zdroj');
+                return html::anchor(url::site('/tables/resources/nominate/' . $this->id), $icon);
             }
         }
     }
@@ -372,9 +382,13 @@ class Resource_Model extends Table_Model {
     public function get_ratings_date($round = 1) {
         $sql = "SELECT MAX(date) as datum FROM ratings WHERE resource_id = {$this->id} AND round = {$round}";
         $result = Database::instance()->query($sql);
-        $datum_result = $result->current()->datum;
-        $datum = date("d.m.Y", strtotime($datum_result));
-        return $datum;
+        $date = $result->current()->datum;
+        if ( ! is_null($date)) {
+            $date = date("d.m.Y", strtotime($date));
+        } else {
+            $date = 'nehodnocen';
+        }
+        return $date;
     }
     
     public function save_final_rating($rating = NULL) {
@@ -439,7 +453,7 @@ class Resource_Model extends Table_Model {
     }
     
     public function get_ratings_with_comment() {
-    	return ORM::factory('rating')->where(array ('resource_id' => $this->id, 'comments !=' => ''))->find_all();
+        return ORM::factory('rating')->where(array ('resource_id' => $this->id, 'comments !=' => ''))->find_all();
     }
     
     /**

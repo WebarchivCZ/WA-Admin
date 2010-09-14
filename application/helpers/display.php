@@ -38,14 +38,10 @@ class display {
         $user_id = Session::instance()->get('auth_curator')->id;
         $rating = $resource->get_curator_rating($curator_id, $round);
         if ($rating->loaded) {
-            if ($user_id == $rating->curator_id AND $rating->round == $round) {
+            if ($user_id == $rating->curator_id AND $round == $resource->rating_last_round + 1 AND $resource->is_ratable()) {
                 $rating_output = display::rating_form($rating->get_rating());
             } else {
                 $rating_output = "<span title='{$rating->date}'>{$rating->rating}</span>";
-                if ($rating->curator_id == $user_id) {
-                    $rating_output = "<a href='" . url::site('tables/ratings/edit/' . $rating->id) . "'>
-                    {$rating_output}</a>";
-                }
             }
         } elseif ($round > $resource->rating_last_round) {
             if ($user_id == $curator_id) {
