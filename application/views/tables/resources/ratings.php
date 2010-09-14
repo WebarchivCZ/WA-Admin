@@ -8,7 +8,6 @@ if ($resource->is_ratable()) {
 } else {
 	$rounds = $resource->get_round_count();
 }
-
 echo table::header();
 ?>
 
@@ -45,9 +44,11 @@ for($round = 1; $round <= $rounds; $round ++ ) {
 }
 echo table::footer();
 $comment = $resource->get_curator_rating($this->user->id, $rounds)->comments;
+if ($resource->is_ratable()){
 echo '<p>' . form::label('comment', 'Komentář:') . ' ';
 echo form::input("comment", $comment, 'size=45 id=comment') . ' ';
 echo form::submit('save_rating', 'Uložit hodnocení') . '</p>';
+}
 echo form::close();
 
 $ratings_w_comment = $resource->get_ratings_with_comment();
