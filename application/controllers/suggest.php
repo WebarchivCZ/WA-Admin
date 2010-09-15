@@ -63,7 +63,11 @@ class Suggest_Controller extends Template_Controller {
         
         $suggested_by = ORM::factory('suggested_by')->select_list('id', 'proposer');
         
-        $subcategories = ORM::factory('conspectus_subcategory')->where('conspectus_id', 1)->select_list('id', 'title');
+        $sel_conspectus = $this->input->post('conspectus', 1);
+        
+        $subcategories = ORM::factory('conspectus_subcategory')
+        							->where('conspectus_id', $sel_conspectus)
+        							->select_list('id', 'title');
         
         $curator_id = Auth::instance()->get_user()->id;
         
@@ -155,16 +159,11 @@ class Suggest_Controller extends Template_Controller {
         }
         $subcategories = ORM::factory('conspectus_subcategory')->where('conspectus_id', $conspectus_id)->find_all();
         
-        $output = "[";
         foreach($subcategories as $subcategory) {
-            $output .= '{"optionValue": "' . $subcategory->id . '"';
-            $output .= ', ';
-            $output .= '"optionDisplay": ';
-            $output .= '"' . $subcategory->title . '"';
-            $output .= '},';
+        	$sub_array[] = array("optionValue" => $subcategory->id, "optionDisplay" => $subcategory->title);
         }
-        $output = trim($output, ",");
-        $output .= "]";
+        $output = json_encode($sub_array);        
+        
         echo $output;
     }
 
