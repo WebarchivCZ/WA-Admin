@@ -29,7 +29,7 @@ abstract class Table_Controller extends Template_Controller {
     }
     
     protected function show_items_view($items = null) {
-        $per_page = $this->input->get('limit', 20);
+        $per_page = $this->input->get('limit', 40);
         $page_num = $this->input->get('page', 1);
         $offset = ($page_num - 1) * $per_page;
         

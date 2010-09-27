@@ -146,7 +146,7 @@ class Resource_Model extends Table_Model {
         if ($subcategory_id) {
             $conditions ['conspectus_subcategory_id'] = $subcategory_id;
         }
-        return ORM::factory('resource')->where($conditions)->find_all($limit, $offset);
+        return ORM::factory('resource')->where($conditions)->orderby(array('resource_status_id' => 'desc', 'title' => 'asc'))->find_all($limit, $offset);
     }
     
     public function search($pattern, & $count, $limit = 20, $offset = 0) {
@@ -156,7 +156,6 @@ class Resource_Model extends Table_Model {
     }
     
     public function is_related($column) {
-        // TODO prepsat natvrdo napsaneho kuratora, ktery zdroj vlozil
         return in_array($column, $this->belongs_to) or $column == 'creator';
     }
     

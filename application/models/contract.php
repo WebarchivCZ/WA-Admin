@@ -9,7 +9,7 @@ class Contract_Model extends Table_Model
 {
 
     protected $primary_val = 'contract_title';
-    protected $sorting = array('year' => 'asc', 'contract_no' => 'asc');
+    protected $sorting = array('year' => 'desc', 'contract_no' => 'desc');
 
     public $headers = array(
     'contract_title' ,

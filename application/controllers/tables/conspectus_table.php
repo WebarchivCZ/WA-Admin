@@ -16,9 +16,9 @@ class Conspectus_Table_Controller extends Table_Controller {
         $this->insert_filter_form();
     }
     
-    // FIXME Metodu kompletne refaktorovat a prepsat .. regulerni humus
+    // FIXME Metodu kompletne refaktorovat a prepsat
     public function filter() {
-    	$filter_on = $this->input->post('filter', $this->session->get_once('filter'));
+        $filter_on = $this->input->post('filter', $this->session->get_once('filter'));
         if ($filter_on == true) {
             $view = View::factory($this->view);
             
@@ -33,7 +33,7 @@ class Conspectus_Table_Controller extends Table_Controller {
             $this->session->set('conspectus', $selected_conspectus);
             $this->session->set('conspectus_subcategory', $selected_conspectus_subcategory);
             
-            $per_page = $this->input->get('limit', 20);
+            $per_page = $this->input->get('limit', 40);
             $page_num = $this->input->get('page', 1);
             $offset = ($page_num - 1) * $per_page;
             
@@ -56,7 +56,7 @@ class Conspectus_Table_Controller extends Table_Controller {
             $view->pages = $pages . $pages_inline;
             $this->template->content = $view;
         } else {
-        	url::redirect('tables/conspectus_table');
+            url::redirect('tables/conspectus_table');
         }
     }
     
