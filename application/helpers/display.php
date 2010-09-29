@@ -28,7 +28,7 @@ class display {
         return Kohana::lang('tables.' . $column);
     }
     
-    static function rating($resource, $curator, $round) {
+    static function rating($resource, $curator, $round, $static = false) {
         if (is_string($curator)) {
             $curator = ORM::factory('curator')->where('username', $curator)->find();
             $curator_id = $curator->id;
@@ -38,7 +38,7 @@ class display {
         $user_id = Session::instance()->get('auth_curator')->id;
         $rating = $resource->get_curator_rating($curator_id, $round);
         if ($rating->loaded) {
-            if ($user_id == $rating->curator_id AND $round == $resource->rating_last_round + 1 AND $resource->is_ratable()) {
+            if ($user_id == $rating->curator_id AND $round == $resource->rating_last_round + 1 AND $resource->is_ratable() AND ! $static) {
                 $rating_output = display::rating_form($rating->get_rating());
             } else {
                 $rating_output = "<span title='{$rating->date}'>{$rating->rating}</span>";

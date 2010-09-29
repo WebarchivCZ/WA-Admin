@@ -43,7 +43,7 @@ $(document).ready(function () {
         $("p#"+comments).toggle();
         $("p#"+url).toggle();
     });
-	  
+    
     $("table.listing tr").hover(
         function() {
             $(this).find("td").css('background-color', '#CCC')
@@ -80,7 +80,7 @@ $(document).ready(function () {
         window.location = $(this).attr('href');
         return false;
     });
-
+    
     // smazani vydavatele
     $('a.delete_publisher_conf').confirm({
         timeout:5000,
@@ -123,10 +123,14 @@ $(document).ready(function () {
     	}
     });
     
+    // nastylovani tab zalozek
     $(function() {
 		$("#tabs").tabs();
 	});
 
-    	
+    // nastylovani tlacitek
+    $(function() {
+		$( "button, input:submit").button();
+	});    	
 }
 );

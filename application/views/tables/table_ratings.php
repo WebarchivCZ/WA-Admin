@@ -34,11 +34,11 @@
             <?= html::anchor('tables/resources/view/'.$resource->id, $resource) ?>
             </td>
             <td class="center"><?= $resource->get_ratings_date($round) ?></td>
-            <td class="center"><?= display::display_rating($resource, 'hrdlickova', $round) ?></td>
-            <td class="center"><?= display::display_rating($resource, 'coufal', $round) ?></td>
-            <td class="center"><?= display::display_rating($resource, 'gruber', $round) ?></td>
-            <td class="center"><?= display::display_rating($resource, 'kupcova', $round) ?></td>
-            <td class="last center"><?= display::display_rating($resource, 'sibek', $round) ?></td>
+            <td class="center"><?= display::rating($resource, 'hrdlickova', $round, true) ?></td>
+            <td class="center"><?= display::rating($resource, 'coufal', $round, true) ?></td>
+            <td class="center"><?= display::rating($resource, 'gruber', $round, true) ?></td>
+            <td class="center"><?= display::rating($resource, 'kupcova', $round, true) ?></td>
+            <td class="last center"><?= display::rating($resource, 'sibek', $round, true) ?></td>
         </tr>
         <?}
             }

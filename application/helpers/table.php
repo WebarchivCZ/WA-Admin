@@ -4,8 +4,8 @@ class table {
 	public static function header($attributes = '') {
 		// TODO implementovat praci s atributy, pripojit k DIV nebo TABLE (u div jsou rohy tabulky)
 		$header = '<div class="table">' .
-    				html::image(array('src' => 'media/img/bg-th-left.gif' , 'width' => '8' , 'height' => '7' , 'class' => 'left')) .
-    				html::image(array('src' => 'media/img/bg-th-right.gif' , 'width' => '7' , 'height' => '7' , 'class' => 'right')) .
+    				html::image(array('src' => 'media/img/bg-th-left.gif' , 'width' => '8' , 'height' => '7' , 'class' => 'left', 'alt' => 'left_corner')) .
+    				html::image(array('src' => 'media/img/bg-th-right.gif' , 'width' => '7' , 'height' => '7' , 'class' => 'right', 'alt' => 'right_corner')) .
     				'<table class="listing" cellpadding="0" cellspacing="0">';
     	return $header;
 	}

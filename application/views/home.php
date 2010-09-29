@@ -2,6 +2,4 @@
 
 <?=$dashboard?>
 
-<h2>Statistiky</h2>
-
 <?=$stats?>

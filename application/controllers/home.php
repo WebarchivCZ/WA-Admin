@@ -12,8 +12,8 @@ class Home_Controller extends Template_Controller
         $dashboard->fill_dashboard($this->user);
         $view->dashboard = $dashboard;
         $content->dashboard = $view;
-        $content->stats = Statistic_Model::getBasic();
-
+		$content->stats = View::factory('mockup/statistics');
+        
         $this->template->content = $content;
     }
 
