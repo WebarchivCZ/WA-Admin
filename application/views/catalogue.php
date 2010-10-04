@@ -25,7 +25,7 @@ if(isset($resources) AND $resources->count() != 0) {
         if($resource->catalogued == NULL) {
                             $url = url::site(url::current()).'/save/catalogued/'.$resource->id;
                             echo form::open($url);
-                            echo form::button('catalogued', icon::img('pencil', 'Zaznamenat katalogizaci'));
+                            echo form::button('catalogued', icon::img('pencil', 'Zaznamenat katalogizaci'), 'class=icon');
                         } else {
                             echo icon::img('tick', $resource->catalogued);
                         }

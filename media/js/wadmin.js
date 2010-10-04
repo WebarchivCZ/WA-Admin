@@ -115,10 +115,8 @@ $(document).ready(function () {
 	});
 
     // nastylovani tlacitek
-    $(function() {
-		$( "button, input:submit").button();
-	});
-    
+	$( "button, input:submit").button();
+	$( ".icon").button("destroy");
     $( "input#reevaluate_date" ).datepicker({ dateFormat: 'dd.mm.yy' });
     $( "input#date" ).datepicker({ dateFormat: 'dd.mm.yy' });
     $.datepicker.setDefaults($.datepicker.regional['cs']);

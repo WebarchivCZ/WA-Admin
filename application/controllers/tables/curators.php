@@ -8,17 +8,11 @@ class Curators_Controller extends Table_Controller
     public function add ()
     {
 
-        $form = new Forge();
-        $form->input('username')->rules('required')->label(TRUE);
-        $form->password('password')->rules('required')->label(TRUE);
-        $form->password('password_confirm')->rules('required')->label(TRUE);
-        $form->input('firstname')->label(TRUE);
-        $form->input('lastname')->label(TRUE);
-        $form->input('email')->label(TRUE);
-        $form->input('icq')->label(TRUE);
-        $form->input('skype')->label(TRUE);
-        $form->textarea('comments')->label(TRUE);
-        $form->submit('odeslat');
+        $form = Formo::factory();
+        $form->add('username')->label('Uzivatelske jmeno');
+        $form->add('password', 'password')->label('Heslo');
+		$form->add('password', 'password_confirm')->label('Potvrdit heslo');
+        $form->add('submit', 'odeslat');
 
         $this->template->content = $form;
 
@@ -33,13 +27,11 @@ class Curators_Controller extends Table_Controller
 
                 $curator = new Curator_Model();
 
-                $values = $form->as_array();
-                foreach ($values as $key => $val)
-                {
-                    $curator->$key = $val;
-                }
+                $curator->username = $form->username->value;
+                $curator->password = $form->password->value;
+                $curator->save();
 
-                if ($curator->add(ORM::factory('role', 'login')) and $curator->save())
+                if ($curator->add(ORM::factory('role', 'login')) and $curator->saved)
                 {
                     $this->template->content = '<h2>Uzivatel byl uspesne vlozen</h2>';
                 }

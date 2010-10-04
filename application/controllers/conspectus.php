@@ -26,7 +26,7 @@ class Conspectus_Controller extends Template_Controller {
         } else {
             $form = self::generate_filter_form();
         }
-        $resources = Resource_Model::get_important($this->user->id, $filter);
+        $resources = Resource_Model::get_important(null, $filter);
         
         $content = View::factory('conspectus');
         $content->form = $form->get(1);
