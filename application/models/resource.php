@@ -177,9 +177,11 @@ class Resource_Model extends Table_Model {
     }
     
     public function is_ratable() {
+    	$today = strtotime(date('Y-m-d'));
+    	$reevaluate_date = strtotime($this->get_reevaluate_date_plain());
         if ($this->resource_status_id == RS_NEW) {
             return true;
-        } elseif ($this->resource_status_id == RS_RE_EVALUATE and $this->reevaluate_date <= date(DATE_ATOM)) {
+        } elseif ($this->resource_status_id == RS_RE_EVALUATE and $today >= $reevaluate_date) {
             return true;
         } else {
             return false;
@@ -355,6 +357,10 @@ class Resource_Model extends Table_Model {
         $result = Database::instance()->query($sql);
         return $result->current()->round;
     
+    }
+    
+    public function get_reevaluate_date_plain() {
+    	return parent::__get('reevaluate_date');
     }
     
     public function has_rating($round) {
