@@ -10,7 +10,11 @@ class Statistic_Model extends Model {
         $settings = self::get_settings($type);
         $conditions = $settings['conditions'];
         if ( ! is_null($curator_id)) {
-            $conditions .= " AND curator_id = {$curator_id}";
+        	if ($type == 'suggested') {
+        		$conditions .= " AND creator_id = {$curator_id}";
+        	} else {
+            	$conditions .= " AND curator_id = {$curator_id}";
+        	}
         }
         if ( ! is_null($year)) {
             $conditions .= " AND YEAR({$settings['date_column']}) = {$year}";
