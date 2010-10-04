@@ -120,7 +120,8 @@ $(document).ready(function () {
 	});
     
     $( "input#reevaluate_date" ).datepicker({ dateFormat: 'dd.mm.yy' });
-    $( "input#reevaluate_date" ).datepicker( $.datepicker.regional[ "cs" ] );
+    $( "input#date" ).datepicker({ dateFormat: 'dd.mm.yy' });
+    $.datepicker.setDefaults($.datepicker.regional['cs']);
 
 }
 );
