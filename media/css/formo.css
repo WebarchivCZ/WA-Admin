@@ -169,3 +169,4 @@ a.autocomplete_item:active {
 	padding: 15px;
 	border: 1px solid #ccc;
 }
+button.icon { background: none; border: 0; cursor: pointer;}
