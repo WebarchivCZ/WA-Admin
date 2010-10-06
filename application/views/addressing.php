@@ -1,12 +1,7 @@
 <?php
 if(isset($resources) AND $resources->count() != 0)
 {
-    ?>
-<div class="table">
-        <?=html::image(array('src' => 'media/img/bg-th-left.gif' , 'width' => '8' , 'height' => '7' , 'class' => 'left'))?>
-        <?=html::image(array('src' => 'media/img/bg-th-right.gif' , 'width' => '7' , 'height' => '7' , 'class' => 'right'))?>
-
-    <table class="listing" cellpadding="0" cellspacing="0">
+echo table::header(); ?>
         <tr>
             <th class="first">Název</th>
             <th>URL</th>
@@ -50,7 +45,7 @@ if(isset($resources) AND $resources->count() != 0)
                     $new_email = true;
                     for($i = 1; $i<=3; $i++)
                     {
-                        $correspondence = $resource->get_correspondence($i);
+                        $correspondence = $resource->get_correspondence($i);                        
                         echo '<td class="center">';
                         if ($correspondence->id != 0)
                         {
@@ -70,9 +65,6 @@ if(isset($resources) AND $resources->count() != 0)
         </tr>
             <? } ?>
     </table>
-    <p class="center">
-        <button>Zobrazit všechny neoslovené zdroje</button>
-    </p>
 </div>
 <?php } else
 {

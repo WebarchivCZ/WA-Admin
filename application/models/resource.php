@@ -296,7 +296,7 @@ class Resource_Model extends Table_Model {
         
         $i = 0;
         foreach($correspondence as $corr_object) {
-            $result .= icon::img('email_open', $last_contact) . ' ';
+            $result .= icon::img('email_open', $corr_object->date) . ' ';
             $i ++ ;
         }
         return $result;
