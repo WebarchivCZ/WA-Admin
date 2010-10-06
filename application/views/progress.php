@@ -45,9 +45,6 @@ if(isset($resources) AND $resources->count() != 0)
 
             <? } ?>
     </table>
-    <p class="center">
-        <button>Zobrazit všechny zdroje v jednání</button>
-    </p>
 </div>
 <?php } else
 {
