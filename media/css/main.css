@@ -524,7 +524,7 @@ div.table .select select {
 }
 
 .dashboard li {
-	margin: 3px 0;
+	line-height: 1.8em;
 }
 
 .hovering:hover {
