@@ -1,8 +1,6 @@
 <div class="dashboard">
+<p style="margin: .3em 1.7em .25em;">Ahoj, máš:</p>
 <table>
-	<tr>
-		<td colspan="2" style="text-align:left;">Ahoj, máš:</td>
-	</tr>
 	<tr>
 		<td><a href='<?=url::base()?>addressing'>zdroje k oslovení</a></td>
 		<td><a href='<?=url::base()?>addressing'><?=$dashboard->to_address?></a></td>
