@@ -1,5 +1,8 @@
-<div class="dashboard">Ahoj, máš:
+<div class="dashboard">
 <table>
+	<tr>
+		<td colspan="2" style="text-align:left;">Ahoj, máš:</td>
+	</tr>
 	<tr>
 		<td><a href='<?=url::base()?>addressing'>zdroje k oslovení</a></td>
 		<td><a href='<?=url::base()?>addressing'><?=$dashboard->to_address?></a></td>
@@ -13,10 +16,6 @@
 	<tr>
 		<td><a href='<?=url::base()?>quality_control'>zdroje k QA</a></td>
 		<td><a href='<?=url::base()?>quality_control'><?=$dashboard->to_qa?></a></td>
-	
-	</tr>
-	<tr>
-		<td colspan="2" class="show-all"><a href='#' id='show-all'>zobrazit vše</a></td>
 	
 	</tr>
 	<tr class="hidden">
@@ -49,6 +48,6 @@
 		<td><a href='<?=url::base()?>conspectus'><?=$dashboard->nominated?></a></td>
 	
 	</tr>
-
 </table>
+<p style="margin: .3em 3em 1em;"><a href='#' id='show-all'>zobrazit vše</a></p>
 </div>

@@ -527,12 +527,12 @@ div.table .select select {
 .dashboard td {
 	border: 1px solid #CCC;
 	margin: 1px;
-	text-align: left;
+	text-align: right;
 	padding: .35em;
 }
 
 .dashboard td:FIRST-CHILD {
-	text-align: right;
+	text-align: left;
 }
 
 .dashboard tr a {
@@ -555,6 +555,10 @@ div.table .select select {
 
 .hovering:hover {
 	background-color: #ff8300;
+}
+
+.left {
+	text-align: left;
 }
 
 div#debug {
