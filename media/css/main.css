@@ -525,7 +525,6 @@ div.table .select select {
 }
 
 .dashboard td {
-	border: 1px solid #CCC;
 	margin: 1px;
 	text-align: right;
 	padding: .35em;
