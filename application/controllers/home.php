@@ -1,7 +1,7 @@
 <?php
 class Home_Controller extends Template_Controller
 {
-    protected $title = 'Úvodní stránka';
+    protected $title = 'Důležité informace';
     protected $page_title = 'Dashboard';
 
     public function index()

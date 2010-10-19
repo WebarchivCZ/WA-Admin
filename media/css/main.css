@@ -519,13 +519,39 @@ div.table .select select {
 }
 
 /* dashboard */
-.dashboard {
-	font-size: 12px;
+.dashboard table {
+	margin: .5em 2.5em;
+	padding: .2em;
 }
 
-.dashboard li {
-	line-height: 1.8em;
+.dashboard td {
+	border: 1px solid #CCC;
+	margin: 1px;
+	text-align: left;
+	padding: .35em;
 }
+
+.dashboard td:FIRST-CHILD {
+	text-align: right;
+}
+
+.dashboard tr a {
+	width: 100%;
+	display: block;
+}
+
+.dashboard tr a:hover {
+	text-decoration: none;
+	color: white;	
+}
+
+.dashboard tr td:hover {
+	background: #999;
+}
+.dashboard tr td:hover a {
+	color: white;
+}
+
 
 .hovering:hover {
 	background-color: #ff8300;

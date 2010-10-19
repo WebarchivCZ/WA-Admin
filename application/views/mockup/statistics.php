@@ -52,13 +52,19 @@ Na tomto se pilně pracuje...
 	<td>640</td>
 </tr>
 <tr>
-	<td>smlouvy</td>
+	<td> - odmítnutí wa</td>
 	<td>15</td>
 	<td>140</td>
 	<td>640</td>
 </tr>
 <tr>
-	<td>vydavatele</td>
+	<td> - se smlouvou</td>
+	<td>15</td>
+	<td>140</td>
+	<td>640</td>
+</tr>
+<tr>
+	<td>smlouvy</td>
 	<td>15</td>
 	<td>140</td>
 	<td>640</td>

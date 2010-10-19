@@ -1,5 +1,12 @@
 $(document).ready(function () {
 
+	// dashboard - display all
+	
+	$(".dashboard #show-all").click(function () {
+		$(".dashboard table tr.hidden").toggle();
+		$(".dashboard .show-all").hide();
+	})
+	
     $("form div.problem").click(function() {
         $(this).css('background-color', 'lightgreen');
         var id = $(this).attr('id');
