@@ -124,7 +124,7 @@ class Suggest_Controller extends Template_Controller {
             
             //pokud je zdroj nominovan na dulezity, vytvorime nominaci
             if ($form->important->value == TRUE) {
-                $resource->nominate();
+                $resource->nominate($this->user->id);
             }
             
             $this->session->delete('resource_val');
