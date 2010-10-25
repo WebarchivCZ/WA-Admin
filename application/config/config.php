@@ -101,7 +101,6 @@ $config['modules'] = array
 	MODPATH.'kodoc',     // Self-generating documentation
 	MODPATH.'media',     // Media caching and compression
 	MODPATH.'formo',
-	MODPATH.'phpunit',
 	// MODPATH.'formation',
 	// MODPATH.'gmaps',     // Google Maps integration
 	// MODPATH.'archive',   // Archive utility
