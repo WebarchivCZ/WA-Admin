@@ -15,7 +15,10 @@ class Statistic_Model extends Model {
         if ( ! is_null($curator_id)) {
             if ($type == 'suggested') {
                 $conditions [] = "creator_id = {$curator_id}";
-            } else {
+            } elseif ($type == 'rated') {
+            	$conditions [] = "t.curator_id = {$curator_id}";
+            } 
+            else {
                 $conditions [] = "r.curator_id = {$curator_id}";
             }
         }
@@ -113,7 +116,6 @@ class Statistic_Model extends Model {
         $settings ['conditions'] = 'r.id = t.resource_id';
         $settings ['tables_add'] = ', ratings t';
         $settings ['date_column'] = 't.date';
-        $settings ['distinct'] = true;
         return $settings;
     }
     
