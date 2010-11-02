@@ -61,6 +61,26 @@ class Statistic_Model extends Model {
         return self::evaluate_sql($sql);
     }
     
+	public static function get_rated($year = null, $month = null) {
+    	$conditions = array();
+        if ( ! is_null($year)) {
+            $conditions [] = "YEAR(last_date) = {$year}";
+        }
+        if ( ! is_null($month)) {
+            $conditions [] = "MONTH(last_date) = {$month}";
+        }
+        
+        if ( ! empty($conditions)) {
+            $conditions = implode(' AND ', $conditions);
+            $where = ' HAVING ' . $conditions;
+        } else {
+            $where = '';
+        }
+        
+        $sql = "SELECT id, MAX(date) AS last_date FROM ratings GROUP BY resource_id, round {$where}";
+        return self::evaluate_sql($sql);
+    }
+    
     protected static function get_resources() {
         $settings ['conditions'] = null;
         $settings ['tables_add'] = null;
@@ -112,7 +132,7 @@ class Statistic_Model extends Model {
         return $settings;
     }
     
-    protected static function get_rated() {
+    protected static function get_ratings() {
         $settings ['conditions'] = 'r.id = t.resource_id';
         $settings ['tables_add'] = ', ratings t';
         $settings ['date_column'] = 't.date';
@@ -125,8 +145,8 @@ class Statistic_Model extends Model {
             case "resources" :
                 $settings = self::get_resources();
                 break;
-            case "rated" :
-                $settings = self::get_rated();
+            case "ratings" :
+                $settings = self::get_ratings();
                 break;
             case "contracted" :
                 $settings = self::get_contracted();
