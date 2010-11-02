@@ -1,6 +1,6 @@
 <?
 $months = date::months();
-$years = date::years(2005, date('Y'));
+$years = date::years(2003, date('Y'));
 $curators = ORM::factory('curator')->select_list('id', 'firstname');
 
 $prefix = '';
