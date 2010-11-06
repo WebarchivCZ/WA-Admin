@@ -9,14 +9,16 @@ class Statistic_Model extends Model {
     public static function get_resource_statistic($type, $curator_id = null, $year = null, $month = null) {
         $settings = self::get_settings($type);
         $conditions = array ();
+        $select_column = 'r.id';
         if ( ! is_null($settings ['conditions'])) {
             $conditions [] = $settings ['conditions'];
         }
         if ( ! is_null($curator_id)) {
             if ($type == 'suggested') {
                 $conditions [] = "creator_id = {$curator_id}";
-            } elseif ($type == 'rated') {
+            } elseif ($type == 'ratings') {
             	$conditions [] = "t.curator_id = {$curator_id}";
+            	$select_column = 't.id';
             } 
             else {
                 $conditions [] = "r.curator_id = {$curator_id}";
@@ -37,7 +39,7 @@ class Statistic_Model extends Model {
         } else {
             $where = '';
         }
-        $sql = "SELECT {$distinct} r.id FROM resources r{$settings['tables_add']} {$where}";
+        $sql = "SELECT {$distinct} {$select_column} FROM resources r{$settings['tables_add']} {$where}";
         return self::evaluate_sql($sql);
     }
     
