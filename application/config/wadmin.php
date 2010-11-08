@@ -28,5 +28,5 @@ $config['version'] = '2.3';
 
 $config['build'] = '10';
 
-$config['ticket_url'] = 'http://raptor.webarchiv.cz:8000/trac/newticket?component=wa_admin&amp;milestone=WA Admin v2.2&amp;owner=brokes';
+$config['ticket_url'] = 'http://intranet.webarchiv.cz:8000/trac/newticket?component=wa_admin&amp;milestone=WA Admin v2.2&amp;owner=brokes';
 ?>

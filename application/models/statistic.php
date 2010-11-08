@@ -7,7 +7,16 @@ class Statistic_Model extends Model {
     protected $result;
     
     public static function get_resource_statistic($type, $curator_id = null, $year = null, $month = null) {
-        $settings = self::get_settings($type);
+        switch($type) {
+            case 'contracts' :
+                return self::get_contracts($year, $month);
+                break;
+            case 'rated' :
+                return self::get_rated($year, $month);
+                break;
+            default :
+                $settings = self::get_settings($type);
+        }
         $conditions = array ();
         $select_column = 'r.id';
         if ( ! is_null($settings ['conditions'])) {
@@ -17,10 +26,9 @@ class Statistic_Model extends Model {
             if ($type == 'suggested') {
                 $conditions [] = "creator_id = {$curator_id}";
             } elseif ($type == 'ratings') {
-            	$conditions [] = "t.curator_id = {$curator_id}";
-            	$select_column = 't.id';
-            } 
-            else {
+                $conditions [] = "t.curator_id = {$curator_id}";
+                $select_column = 't.id';
+            } else {
                 $conditions [] = "r.curator_id = {$curator_id}";
             }
         }
@@ -44,7 +52,7 @@ class Statistic_Model extends Model {
     }
     
     public static function get_contracts($year = null, $month = null) {
-    	$conditions = array();
+        $conditions = array ();
         if ( ! is_null($year)) {
             $conditions [] = "year = {$year}";
         }
@@ -63,8 +71,8 @@ class Statistic_Model extends Model {
         return self::evaluate_sql($sql);
     }
     
-	public static function get_rated($year = null, $month = null) {
-    	$conditions = array();
+    public static function get_rated($year = null, $month = null) {
+        $conditions = array ();
         if ( ! is_null($year)) {
             $conditions [] = "YEAR(last_date) = {$year}";
         }
@@ -85,6 +93,13 @@ class Statistic_Model extends Model {
     
     protected static function get_resources() {
         $settings ['conditions'] = null;
+        $settings ['tables_add'] = null;
+        $settings ['date_column'] = 'date';
+        return $settings;
+    }
+    
+	protected static function get_approved() {
+        $settings ['conditions'] = 'rating_result = 2';
         $settings ['tables_add'] = null;
         $settings ['date_column'] = 'date';
         return $settings;
@@ -171,6 +186,9 @@ class Statistic_Model extends Model {
             case "addressed" :
                 $settings = self::get_addressed();
                 break;
+            case "approved":
+            	$settings = self::get_approved();
+            	break;              
             default :
                 throw new WaAdmin_Exception('Nesprávný typ statistik', 'Nebyl zadán správný typ statistik');
         }

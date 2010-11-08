@@ -2,11 +2,11 @@
 	$lang = array
 	(
 		'resources' => 'Zdroje',
-		'suggested' => 'Kurátorem navržené zdroje',
+		'suggested' => 'Navržené zdroje',
 		'addressed' => 'Oslovené zdroje',
 		'contracted' => 'Nasmlouvané zdroje',
 		'catalogued' => 'Zkatalogizované zdroje',
-		'ratings' => 'Počet hodnocení',
+		'ratings' => 'Hodnocené zdroje',
 		'all_resources' => 'Navržené zdroje:',
 		'all_suggested' => ' - kurátorem',
 		'all_addressed' => 'Oslovené zdroje',
@@ -16,5 +16,7 @@
 		'all_suggested_publisher' => ' - vydavatelem',
 		'all_suggested_visitor' => ' - návštěvníkem',
 		'all_suggested_issn' => ' - ISSN',
+		'all_contracts' => 'Počet smluv',
+		'all_approved' => 'Schválené zdroje'
 	)
 ?>

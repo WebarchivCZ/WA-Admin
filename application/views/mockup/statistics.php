@@ -11,7 +11,7 @@ $selected_month = $this->input->post($prefix . 'stat_month', date('n'));
 $selected_year = $this->input->post($prefix . 'stat_year', date('Y'));
 $selected_curator = $this->input->post('stat_curator', $this->user->id);
 
-$res_stats = array ('suggested', 'addressed', 'contracted', 'catalogued', 'ratings');
+$res_stats = array ('suggested', 'ratings', 'addressed', 'contracted', 'catalogued');
 ?>
 <div id="tabs">
 <ul>
@@ -51,7 +51,7 @@ echo table::footer();
 	<th class='last'>Celkem</th>
 </tr>
 <?php
-$res_stats = array ('resources', 'suggested', 'suggested_issn', 'suggested_visitor', 'suggested_publisher', 'contracted');
+$res_stats = array ('resources', 'suggested', 'suggested_issn', 'suggested_visitor', 'suggested_publisher', 'rated', 'approved', 'addressed', 'contracted', 'contracts');
 foreach($res_stats as $stat) {
     echo '<tr>
 		<td>' . Kohana::lang('stats.all_' . $stat) . '</td>
@@ -60,20 +60,6 @@ foreach($res_stats as $stat) {
 		<td>' . Statistic_Model::get_resource_statistic($stat)->count() . '</td>
 </tr>';
 } ?>
-
-<tr>
-		<td>Hodnocené zdroje - TODO</td>
-		<td><?= Statistic_Model::get_rated($selected_year, $selected_month)->count() ?></td>
-		<td><?= Statistic_Model::get_rated($selected_year)->count() ?></td>
-		<td><?= Statistic_Model::get_rated()->count() ?></td>
-</tr>
-
-<tr>
-		<td>Smlouvy</td>
-		<td><?= Statistic_Model::get_contracts($selected_year, $selected_month)->count() ?></td>
-		<td><?= Statistic_Model::get_contracts($selected_year)->count() ?></td>
-		<td><?= Statistic_Model::get_contracts()->count() ?></td>
-</tr>
 
 <?=table::footer();?>
 <button type="submit" name="send_all" value='true'>Aktualizovat</button>
