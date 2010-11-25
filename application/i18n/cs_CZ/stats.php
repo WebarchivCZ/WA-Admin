@@ -3,10 +3,10 @@
 	(
 		'resources' => 'Zdroje',
 		'suggested' => 'Navržené zdroje',
-		'addressed' => 'Oslovené zdroje',
+		'correspondence' => 'Počet oslovení',
 		'contracted' => 'Nasmlouvané zdroje',
 		'catalogued' => 'Zkatalogizované zdroje',
-		'ratings' => 'Hodnocené zdroje',
+		'ratings' => 'Počet hodnocení',
 		'all_resources' => 'Navržené zdroje:',
 		'all_suggested' => ' - kurátorem',
 		'all_addressed' => 'Oslovené zdroje',

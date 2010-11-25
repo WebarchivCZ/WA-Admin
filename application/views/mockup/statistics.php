@@ -11,7 +11,7 @@ $selected_month = $this->input->post($prefix . 'stat_month', date('n'));
 $selected_year = $this->input->post($prefix . 'stat_year', date('Y'));
 $selected_curator = $this->input->post('stat_curator', $this->user->id);
 
-$res_stats = array ('suggested', 'ratings', 'addressed', 'contracted', 'catalogued');
+$res_stats = array ('suggested', 'ratings', 'correspondence', 'contracted', 'catalogued');
 ?>
 <div id="tabs">
 <ul>

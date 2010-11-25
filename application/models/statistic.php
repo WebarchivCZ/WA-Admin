@@ -18,7 +18,12 @@ class Statistic_Model extends Model {
                 $settings = self::get_settings($type);
         }
         $conditions = array ();
-        $select_column = 'r.id';
+        if (isset($settings ['select_column']) and  ! is_null($settings ['select_column'])) {
+            $select_column = $settings ['select_column'];
+        } else {
+            $select_column = 'r.id';
+        }
+        
         if ( ! is_null($settings ['conditions'])) {
             $conditions [] = $settings ['conditions'];
         }
@@ -27,7 +32,6 @@ class Statistic_Model extends Model {
                 $conditions [] = "creator_id = {$curator_id}";
             } elseif ($type == 'ratings') {
                 $conditions [] = "t.curator_id = {$curator_id}";
-                $select_column = 't.id';
             } else {
                 $conditions [] = "r.curator_id = {$curator_id}";
             }
@@ -91,6 +95,14 @@ class Statistic_Model extends Model {
         return self::evaluate_sql($sql);
     }
     
+    protected static function get_addressed() {
+        $settings ['conditions'] = 'r.id = c.resource_id AND correspondence_type_id = 1';
+        $settings ['tables_add'] = ', correspondence c';
+        $settings ['date_column'] = 'c.date';
+        $settings ['distinct'] = true;
+        return $settings;
+    }
+    
     protected static function get_resources() {
         $settings ['conditions'] = null;
         $settings ['tables_add'] = null;
@@ -98,7 +110,7 @@ class Statistic_Model extends Model {
         return $settings;
     }
     
-	protected static function get_approved() {
+    protected static function get_approved() {
         $settings ['conditions'] = 'rating_result = 2';
         $settings ['tables_add'] = null;
         $settings ['date_column'] = 'date';
@@ -134,11 +146,11 @@ class Statistic_Model extends Model {
         return $settings;
     }
     
-    protected static function get_addressed() {
+    protected static function get_correspondence() {
         $settings ['conditions'] = 'r.id = c.resource_id';
         $settings ['tables_add'] = ', correspondence c';
         $settings ['date_column'] = 'c.date';
-        $settings ['distinct'] = true;
+        $settings ['select_column'] = 'c.id';
         return $settings;
     }
     
@@ -153,6 +165,7 @@ class Statistic_Model extends Model {
         $settings ['conditions'] = 'r.id = t.resource_id';
         $settings ['tables_add'] = ', ratings t';
         $settings ['date_column'] = 't.date';
+        $settings ['select_column'] = 't.id';
         return $settings;
     }
     
@@ -183,12 +196,15 @@ class Statistic_Model extends Model {
             case "catalogued" :
                 $settings = self::get_catalogued();
                 break;
+            case "correspondence" :
+                $settings = self::get_correspondence();
+                break;
             case "addressed" :
                 $settings = self::get_addressed();
                 break;
-            case "approved":
-            	$settings = self::get_approved();
-            	break;              
+            case "approved" :
+                $settings = self::get_approved();
+                break;
             default :
                 throw new WaAdmin_Exception('Nesprávný typ statistik', 'Nebyl zadán správný typ statistik');
         }
