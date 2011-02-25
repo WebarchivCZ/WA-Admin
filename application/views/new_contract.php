@@ -15,7 +15,8 @@
         </tr>
             <?php foreach($contracts as $contract)
             {
-                $resources = $contract->get_resources();
+            	$publisher = ORM::factory('resource', $resource_id)->publisher;
+                $resources = $contract->get_resources($publisher);
                 foreach ($resources as $resource)
                 {
             ?>
