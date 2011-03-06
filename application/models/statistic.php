@@ -58,7 +58,7 @@ class Statistic_Model extends Model {
     public static function get_contracts($year = null, $month = null) {
         $conditions = array ();
         if ( ! is_null($year)) {
-            $conditions [] = "year = {$year}";
+            $conditions [] = "YEAR(date_signed) = {$year}";
         }
         if ( ! is_null($month)) {
             $conditions [] = "MONTH(date_signed) = {$month}";

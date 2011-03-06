@@ -76,8 +76,9 @@ $lang = array
     'solution_user' => 'Vyřešil',
     'rating_last_round' => 'Počet kol hodnocení',
     'blanco_contract' => 'Blanco smlouva',
-    'domain' => 'Doména',
+    'domain' => 'Blanko doména',
     'icon' => '',
-    'important' => 'Významný zdroj'
+    'important' => 'Významný zdroj',
+    'active' => 'Aktivní',
     )
 ?>

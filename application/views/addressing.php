@@ -28,8 +28,7 @@ echo table::header(); ?>
                     $url = url::site('/tables/publishers/view/'.$resource->publisher->id);
                     $icon .= html::anchor($url, icon::img('publisher', $resource->publisher));
                 }
-                $domain = url::get_2nd_level_name($resource->url);
-                if (Contract_Model::domain_has_blanco($domain)) {
+                if (Contract_Model::domain_has_blanco($resource->url)) {
                 	$icon = icon::img('publisher_red', 'Pro tuto doménu je blanco smlouva');	
                 }
                 ?>

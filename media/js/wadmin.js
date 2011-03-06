@@ -116,6 +116,21 @@ $(document).ready(function () {
     	}
     });
     
+    //pri zaskrtnuti blanko_smlouva, zobrazit url pro blanko
+    if ( ! $('input#blanco_contract').attr('checked')) {
+        $('input#domain').attr('disabled', true);
+    }
+    $('input#blanco_contract').click(function () {
+    	var domain = $('input#domain');
+    	if ($(this).is(':checked'))
+    	{
+    		domain.attr('disabled', false);
+    	}
+    	else {
+    		domain.attr('disabled', true);
+    	}
+    })
+    
     // nastylovani tab zalozek
     $(function() {
 		$("#tabs").tabs();

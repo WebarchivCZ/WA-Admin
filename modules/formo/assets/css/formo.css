@@ -46,8 +46,7 @@
 	display: block;
 }
 
-.submit,
-.button {
+.submit,.button {
 	margin-left: 110px;
 }
 
@@ -86,21 +85,55 @@
 }
 
 /* autocompleter */
-div.autocomplete-w1 { background:url(../img/shadow.png) no-repeat bottom right; position:absolute; top:0px; left:0px; margin:8px 0 0 6px; /* IE6 fix: */ _background:none; _margin:0; }
-div.autocomplete { border:1px solid #999; background:#FFF; cursor:default; text-align:left; max-height:350px; overflow:auto; margin:-6px 6px 6px -6px; /* IE6 specific: */ _height:350px;  _margin:0; _overflow-x:hidden; }
-div.autocomplete .selected { background:#DDD; }
-div.autocomplete div { padding:2px 5px; white-space:nowrap; }
-div.autocomplete strong { font-weight:normal; color:#3399FF; }
+div.autocomplete-w1 {
+	background: url(../img/shadow.png) no-repeat bottom right;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	margin: 8px 0 0 6px; /* IE6 fix: */
+	_background: none;
+	_margin: 0;
+}
+
+div.autocomplete {
+	border: 1px solid #999;
+	background: #FFF;
+	cursor: default;
+	text-align: left;
+	max-height: 350px;
+	overflow: auto;
+	margin: -6px 6px 6px -6px; /* IE6 specific: */
+	_height: 350px;
+	_margin: 0;
+	_overflow-x: hidden;
+}
+
+div.autocomplete .selected {
+	background: #DDD;
+}
+
+div.autocomplete div {
+	padding: 2px 5px;
+	white-space: nowrap;
+}
+
+div.autocomplete strong {
+	font-weight: normal;
+	color: #3399FF;
+}
+
 a.autocomplete_item {
 	padding: 4px 10px 4px 20px;
-	background: #E5E5E5 url(../img/bullet_toggle_minus.png) 2px 50% no-repeat;
+	background: #E5E5E5 url(../img/bullet_toggle_minus.png) 2px 50%
+		no-repeat;
 	border: 1px solid #999;
 	margin-right: 5px;
 	font-size: 10px;
 	color: #000;
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
-	text-decoration: none; }
+	text-decoration: none;
+}
 
 a.autocomplete_item:hover {
 	background-color: #cecece;

@@ -10,7 +10,6 @@ class Suggest_Controller extends Template_Controller {
         $form->add('title')->label('Název');
         $form->add('publisher')->label('Vydavatel');
         $form->add('url')->label('URL')->add_rule('url', 'valid_custom::simple_domain', 'Zadejte co nejkratší doménu (domena.cz).');
-        ;
         $form->add_rules('required', 'title|publisher|url', 'Povinná položka');
         $form->add('submit', 'check')->value('Ověřit');
         

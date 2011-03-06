@@ -48,21 +48,21 @@ class Addressing_Controller extends Template_Controller {
         $rs_contacted_status = RS_CONTACTED;
 
         $sql = "(
-                SELECT r.id, r.date AS created, '', 0 as count
-                FROM `resources` r
-                WHERE resource_status_id = {$rs_approved_status}
-                AND r.curator_id = {$curator_id}
+	                SELECT r.id, r.date AS created, '', 0 as count
+	                FROM `resources` r
+	                WHERE resource_status_id = {$rs_approved_status}
+	                AND r.curator_id = {$curator_id}
                 )
                 UNION (
 
-                SELECT r.id, r.date AS created, date_add( MAX( c.date ) , INTERVAL 1
-                MONTH ) AS `new_one`, count(c.resource_id) as count
-                FROM `resources` r, correspondence c
-                WHERE resource_status_id = {$rs_contacted_status}
-                AND c.resource_id = r.id
-                AND r.curator_id = {$curator_id}
-                GROUP BY c.resource_id
-                HAVING new_one <= NOW( )
+	                SELECT r.id, r.date AS created, date_add( MAX( c.date ) , INTERVAL 1
+	                MONTH ) AS `new_one`, count(c.resource_id) as count
+	                FROM `resources` r, correspondence c
+	                WHERE resource_status_id = {$rs_contacted_status}
+	                AND c.resource_id = r.id
+	                AND r.curator_id = {$curator_id}
+	                GROUP BY c.resource_id
+	                HAVING new_one <= NOW( )
                 )
                 ORDER BY count";
 
