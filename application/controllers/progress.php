@@ -1,9 +1,15 @@
 <?php
-class Progress_Controller extends Template_Controller {
+class Progress_Controller extends Template_Controller
+{
     protected $title = 'Zdroje v jednání';
 
-    public function index() {
-        $resources = ORM::factory('resource')->in('resource_status_id', RS_CONTACTED)->where('curator_id', $this->user->id)->orderby('title', 'ASC')->find_all();
+    public function index()
+    {
+        $resources = ORM::factory('resource')
+                ->in('resource_status_id', RS_CONTACTED)
+                ->where('curator_id', $this->user->id)
+                ->orderby('title', 'ASC')
+                ->find_all();
 
         $view = View::factory('progress');
         $view->resources = $resources;
@@ -15,26 +21,23 @@ class Progress_Controller extends Template_Controller {
      * Zobrazí formulář pro přiřazení nové smlouvy ke zdroji s daným ID.
      * @param int $id
      */
-    public function new_contract($resource_id) {
+    public function new_contract($resource_id)
+    {
         $resource = ORM::factory('resource', $resource_id);
         $publisher = ORM::factory('publisher', $resource->publisher_id);
-
-        if (Contract_Model::domain_has_blanco($resource->url)) {
-            $publisher_contracts = Contract_Model::domain_get_blanco($resource->url);
-        } else {
-            $publisher_contracts = $publisher->get_contracts();
-        }
 
         $form = $this->generate_new_contract_form($resource->title);
 
         if (!$form->validate()) {
             $view = View::factory('new_contract');
 
-            if ($publisher_contracts->count() > 0) {
-                $view->contracts = $publisher_contracts;
+            if (Contract_Model::domain_has_blanco($resource->url)) {
+                $view->blanko_contract = Contract_Model::domain_get_blanco($resource->url);
+            } else {
+                $view->contracts = $publisher->get_contracts();
             }
 
-            $view->resource_id = $resource->id;
+            $view->set_global('resource_id', $resource->id);
             $view->form = $form;
             $this->template->content = $view;
         } else {
@@ -49,7 +52,8 @@ class Progress_Controller extends Template_Controller {
 
     }
 
-    public function save_contract($resource_id) {
+    public function save_contract($resource_id)
+    {
         $contract_val = $this->session->get('contract_val', NULL);
         if (!is_null($contract_val)) {
             $contract = Contract_Model::create($contract_val);
@@ -57,9 +61,16 @@ class Progress_Controller extends Template_Controller {
             $new_contract_no = Contract_Model::new_contract_no($contract->date_signed);
 
             $form = Formo::factory('save_contract');
-            $form->add('contract_no')->label('Číslo smlouvy')->value($new_contract_no)->required(TRUE);
-            $form->add('year')->label('Rok')->value(substr($contract->date_signed, 0, 4))->required(TRUE);
-            $form->add('submit', 'odeslat')->value('Uložit smlouvu');
+            $form->add('contract_no')
+                    ->label('Číslo smlouvy')
+                    ->value($new_contract_no)
+                    ->required(TRUE);
+            $form->add('year')
+                    ->label('Rok')
+                    ->value(substr($contract->date_signed, 0, 4))
+                    ->required(TRUE);
+            $form->add('submit', 'odeslat')
+                    ->value('Uložit smlouvu');
 
             if ($form->validate()) {
                 $contract->year = $form->year->value;
@@ -94,7 +105,8 @@ class Progress_Controller extends Template_Controller {
         }
     }
 
-    public function reject($reason, $id) {
+    public function reject($reason, $id)
+    {
         $resource = ORM::factory('resource', $id);
 
         switch ($reason) {
@@ -116,7 +128,8 @@ class Progress_Controller extends Template_Controller {
         url::redirect('progress');
     }
 
-    public function assign_existing_contract($resource_id = NULL, $contract_id = NULL) {
+    public function assign_existing_contract($resource_id = NULL, $contract_id = NULL)
+    {
         if ($resource_id == NULL or $contract_id == NULL) {
             $this->session->set_flash('message', 'Není nastaveno ID smlouvy');
             url::redirect('progress');
@@ -135,7 +148,8 @@ class Progress_Controller extends Template_Controller {
         }
     }
 
-    private function process_form($form, $resource) {
+    private function process_form($form, $resource)
+    {
         $contract = ORM::factory('contract');
 
         $form->remove('resource_title');
@@ -150,16 +164,37 @@ class Progress_Controller extends Template_Controller {
         }
     }
 
-    private function generate_new_contract_form($resource_title) {
+    private function generate_new_contract_form($resource_title)
+    {
         $form = Formo::factory('add_contract');
-        $form->add('resource_title')->label('Název zdroje')->value($resource_title)->disabled();
-        $form->add('date_signed')->label('Datum podpisu')->value(date('Y-m-d'))->required(TRUE);
-        $form->add('checkbox', 'cc')->label('Creative Commons');
-        $form->add('checkbox', 'addendum')->label('Doplněk');
-        $form->add('checkbox', 'blanco_contract')->label('Blanco smlouva');
-        $form->add('domain')->label('Doména');
-        $form->add('type')->label('Typ smlouvy');
-        $form->add('textarea', 'comments')->label('Komentář');
+        $form
+                ->add('resource_title')
+                ->label('Název zdroje')
+                ->value($resource_title)
+                ->disabled();
+        $form
+                ->add('date_signed')
+                ->label('Datum podpisu')
+                ->value(date('Y-m-d'))
+                ->required(TRUE);
+        $form
+                ->add('checkbox', 'cc')
+                ->label('Creative Commons');
+        $form
+                ->add('checkbox', 'addendum')
+                ->label('Doplněk');
+        $form
+                ->add('checkbox', 'blanco_contract')
+                ->label('Blanco smlouva');
+        $form
+                ->add('domain')
+                ->label('Doména');
+        $form
+                ->add('type')
+                ->label('Typ smlouvy');
+        $form
+                ->add('textarea', 'comments')
+                ->label('Komentář');
         $form->add('submit', 'Odeslat');
         return $form;
     }

@@ -26,7 +26,7 @@ $config['debug_mode'] = TRUE;
 
 $config['version'] = '2.3';
 
-$config['build'] = '12';
+$config['build'] = '13';
 
 $config['ticket_url'] = 'http://intranet.webarchiv.cz:8000/trac/newticket?component=wa_admin&amp;milestone=WA Admin v2.2&amp;owner=brokes';
 ?>
