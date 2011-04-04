@@ -23,4 +23,8 @@
         <p>WA Admin <?= Kohana::config('wadmin.version') ?>.<?= Kohana::config('wadmin.build') ?></p>
         <p><a href="http://raptor.webarchiv.cz:8000/trac/milestone/WA%20Admin%20v2.2" target="_blank">Stav nové verze</a></p>
     </div>
+    <strong class="h">Nástroje</strong>
+    <div class="box">
+        <p><?= html::anchor(url::site('/tables/seeds/generate_list'), 'Semínkáč')?></p>
+    </div>
 </div>

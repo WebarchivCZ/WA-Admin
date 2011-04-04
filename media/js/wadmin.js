@@ -156,6 +156,9 @@ $(document).ready(function () {
     $( "input#date" ).datepicker({ dateFormat: 'dd.mm.yy' });
     $.datepicker.setDefaults($.datepicker.regional['cs']);
 
+    $('#send_new_window').click(function() {
+        $(this).parent().attr('target', '_blank');
+    });
 }
 );
 
