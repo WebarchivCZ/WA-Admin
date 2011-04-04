@@ -77,6 +77,10 @@ class Resources_Controller extends Table_Controller {
                     $resource->reevaluate_date = $reevaluate_date;
                 }
             }
+            if ($rating == 2) {
+                $crawl_freq = $this->input->post('crawl_freq_id');
+                $resource->crawl_freq_id = $crawl_freq;
+            }
             $rating_saved = $resource->save_final_rating($rating);
             if ($rating_saved) {
                 message::set_flash('Finální hodnocení bylo úspěšně uloženo');

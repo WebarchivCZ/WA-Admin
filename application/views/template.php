@@ -13,7 +13,7 @@
         echo html::script('media/js/wadmin.js');
         ?>
     </head>
-    <body>
+    <body id="<?= $this->uri->string() ?>">
         <div id="main">
             <div id="header">
                 <h1>

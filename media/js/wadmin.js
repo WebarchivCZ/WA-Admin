@@ -1,22 +1,23 @@
 $(document).ready(function () {
 
 	// dashboard - display all
-	
+    var pageID = $('body').attr('id');
+
 	$(".dashboard #show-all").click(function () {
 		$(".dashboard table tr.hidden").toggle();
 		$(".dashboard .show-all").hide();
 	})
-	
+
     $("form div.problem").click(function() {
         $(this).css('background-color', 'lightgreen');
         var id = $(this).attr('id');
         $("form div.problem#"+ id +" div.solution").toggle();
     });
-	
+
     $("select#category_select").change(function(){
         pathArray = window.location.pathname.split( '/' );
         var url = window.location.protocol + "//" + window.location.host + "/" + pathArray[1];
-        
+
         $.getJSON(url+"/suggest/get_subcategories/"+$(this).val(), function(j){
             var options = '<option value=""></option>\n';
             for (var i = 0; i < j.length; i++) {
@@ -36,7 +37,7 @@ $(document).ready(function () {
         $("p#"+comments).toggle();
         $("p#"+url).toggle();
     });
-    
+
     $("table.listing tr").hover(
         function() {
             $(this).find("td").css('background-color', '#CCC')
@@ -68,12 +69,12 @@ $(document).ready(function () {
             separator:'&nbsp;&nbsp;  '
         }
     });
-    
+
     $('a.delete_publisher_conf').click(function() {
         window.location = $(this).attr('href');
         return false;
     });
-    
+
     // smazani vydavatele
     $('a.delete_publisher_conf').confirm({
         timeout:5000,
@@ -106,16 +107,28 @@ $(document).ready(function () {
             separator:'&nbsp;&nbsp;  '
         }
     });
-    
-    //pri zmene hodnoceni na mozna je treba zajistit zobrazeni "prehodnotit k"
-    $('select#final_rating').change(function() {
-    	if(this.value == 3) {
-    		$('#p_reevaluate_date').show();
-    	} else {
-    		$('#p_reevaluate_date').hide();
-    	}
-    });
-    
+
+    // zobrazeni jednotliveho zaznamu zdroje
+    if (new RegExp("resources/view").test(pageID)){
+
+        var final_rating = $('select#final_rating').val();
+        if (final_rating == 2) {
+             $('#p_crawl_freq').show();
+        } else if (final_rating == 3) {
+             $('#p_reevaluate_date').show();
+        }
+
+        //pri zmene hodnoceni na mozna je treba zajistit zobrazeni "prehodnotit k" nebo pri ano "frekvence sklizeni"
+        $('select#final_rating').change(function() {
+            $('.hidden_toggle_elements').hide();
+            if(this.value == 3) {
+                $('#p_reevaluate_date').show();
+            } else if(this.value == 2) {
+                $('#p_crawl_freq').show();
+            }
+        });
+    }
+
     //pri zaskrtnuti blanko_smlouva, zobrazit url pro blanko
     if ( ! $('input#blanco_contract').attr('checked')) {
         $('input#domain').attr('disabled', true);
@@ -130,7 +143,7 @@ $(document).ready(function () {
     		domain.attr('disabled', true);
     	}
     })
-    
+
     // nastylovani tab zalozek
     $(function() {
 		$("#tabs").tabs();
