@@ -64,6 +64,8 @@ if ($show_final_rating == TRUE) {
     $resource_rating = $resource->compute_rating($resource->rating_last_round + 1, 'int');
     $rating_options = Rating_Model::get_final_array();
     $subcategory = ($resource->conspectus_subcategory_id != '') ? $resource->conspectus_subcategory : 'není vyplněno';
+    $crawl_freq_options[0] = 'Vyplnit!';
+    $crawl_freq_options = array_merge($crawl_freq_options, ORM::factory('crawl_freq')->select_list('id', 'frequency'));
     ?>
 
     <?= form::open(url::site('tables/resources/save_final_rating/' . $resource->id)) ?>
@@ -75,7 +77,7 @@ if ($show_final_rating == TRUE) {
 </p>
 <p id='p_crawl_freq' class="hidden_toggle_elements">
     Frekvence sklízení:
-    <?=form::dropdown('crawl_freq_id', ORM::factory('crawl_freq')->select_list('id', 'frequency'))?>
+    <?=form::dropdown('crawl_freq_id', $crawl_freq_options)?>
 </p>
 <p><strong>Souhlasí podkategorie?</strong> - <?=$subcategory?></p>
 <p><?=form::submit('save_rating', 'Uložit finální hodnocení');?></p>
