@@ -69,7 +69,7 @@ class Resources_Controller extends Table_Controller
                 url::redirect("{$this->view_record_url}/{$resource->id}");
             }
         } else {
-            message::set_flash('Zdroj s daným ID neexistuje');
+            message::set_flash('Zdroj s daným ID neexistuje!');
             url::redirect('tables/resources');
         }
     }
@@ -101,7 +101,7 @@ class Resources_Controller extends Table_Controller
             }
             $rating_saved = $resource->save_final_rating($rating);
             if ($rating_saved) {
-                message::set_flash('Finální hodnocení bylo úspěšně uloženo');
+                message::set_flash('Finální hodnocení bylo úspěšně uloženo.');
             }
         }
         url::redirect("{$this->view_record_url}/{$resource->id}");

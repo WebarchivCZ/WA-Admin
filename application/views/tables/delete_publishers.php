@@ -17,7 +17,7 @@ if ($resources->count() > 1)
 		$resource_title = html::anchor(url::site('/tables/resources/view/'.$resource->id),$resource->title);
 		echo "<tr>
 				<td>{$resource_title}</td>
-				<td class='center'><a href='{$delete_url}' class='remove_from_resource_conf'>{$delete_icon}</a></td>
+				<td class='center'><a href='{$delete_url}' class='confirm'>{$delete_icon}</a></td>
 			  </tr>";
 	}	
 }
@@ -27,7 +27,7 @@ echo table::footer();
 $delete_url = url::site('/tables/publishers/erase/'.$publisher->id);
 ?>
 <div class="center">
-	<a href="<?= $delete_url ?>" class="delete_publisher_conf"><button>Smazat vydavatele</button></a>
+	<a href="<?= $delete_url ?>" class="confirm"><button>Smazat vydavatele</button></a>
 </div>
 
 <?php } ?>

@@ -7,7 +7,7 @@ class Contracts_Controller extends Table_Controller
     protected $columns_ignored = array('id');
     protected $view = 'tables/table_contracts';
 
-    public function view ($id = NULL)
+    public function view($id = NULL)
     {
         parent::view($id);
 
@@ -23,19 +23,17 @@ class Contracts_Controller extends Table_Controller
 
     public function delete($id = FALSE)
     {
-        if ($this->user->has(ORM::factory('role', 'admin')))
-        {
-            if ($id)
-            {
-                $view = View::factory ( 'tables/delete_contracts' );
-                $contract = ORM::factory ( 'contract', $id );
+        if ($this->user->has(ORM::factory('role', 'admin'))) {
+            if ($id) {
+                $view = View::factory('tables/delete_contracts');
+                $contract = ORM::factory('contract', $id);
                 $resources = $contract->get_resources();
                 $view->contract = $contract;
                 $view->resources = $resources;
                 $this->template->content = $view;
             } else
             {
-                message::set_flash ( 'Není vyplněno ID smlouvy.' );
+                message::set_flash('Není vyplněno ID smlouvy.');
                 url::redirect(url::site("tables/{$this->table}"));
             }
         } else
@@ -50,39 +48,26 @@ class Contracts_Controller extends Table_Controller
      */
     public function remove_from_resource($resource_id = FALSE)
     {
-        if ($resource_id)
-        {
-            $resource = ORM::factory ( 'resource', $resource_id );
-            if ($resource->loaded)
-            {
-                $contract_id = $resource->contract_id;
-                $contract = ORM::factory ( 'contract', $contract_id );
-
-                $resource->contract_id = NULL;
-                $resource->save ();
-
-                message::set_flash ( "Zdroj {$resource->title} byl úspěšně odstraněn od smlouvy {$contract}" );
+        if ($resource_id) {
+            $resource = ORM::factory('resource', $resource_id);
+            $contract = $resource->contract;
+            // odstranime smlouvu od zdroje
+            if ($resource->unset_contract()) {
+                message::set_flash("Zdroj {$resource->title} byl úspěšně odstraněn od smlouvy {$contract}");
             } else
             {
-                message::set_flash ( 'Neexistujíci zdroj!' );
+                message::set_flash("Při odstraňování propojení smlouvy u {$resource->title} došlo k chybě!");
             }
         } else
         {
-            message::set_flash ( 'Nenastavené ID zdroje!' );
+            message::set_flash('Nenastavené ID zdroje!');
         }
-        if ($contract_id != 0)
-        {
-            url::redirect ( url::site ( '/tables/contracts/delete/' . $contract_id ) );
-        } else
-        {
-            url::redirect ( url::site ( '/tables/contracts/' ) );
-        }
+            url::redirect(url::site('/tables/contracts/view/'.$contract->id));
     }
 
     public function erase($contract_id = FALSE)
     {
-        if ($contract_id)
-        {
+        if ($contract_id) {
             $contract = new Contract_Model($contract_id);
             $resources = $contract->get_resources();
 
@@ -95,4 +80,5 @@ class Contracts_Controller extends Table_Controller
         url::redirect(url::site('/tables/contracts/'));
     }
 }
+
 ?>

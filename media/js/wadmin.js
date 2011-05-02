@@ -52,28 +52,13 @@ $(document).ready(function () {
     });
 
     // smazani prirazeni vydavatele ke zdroji
-    $('a.remove_from_resource_conf').click(function(event) {
+    $('a.confirm').click(function(event) {
         window.location = $(this).attr('href');
         return false;
     }).confirm({timeout:5000,
         dialogShow:'fadeIn',
         dialogSpeed:'slow',
         msg: 'Určitě?',
-        buttons: {
-            ok: 'Ano',
-            cancel: 'Ne',
-            wrapper:'<button></button>',
-            separator:'&nbsp;&nbsp;  '
-        }
-    });
-
-    // smazani vydavatele
-    $('a.delete_publisher_conf').click(function(event) {
-        window.location = $(this).attr('href');
-    }).confirm({timeout:5000,
-        dialogShow:'fadeIn',
-        dialogSpeed:'slow',
-        msg: '<br /><b>POZOR!</b> Touto akcí vymažete vydavatele od všech zdrojů! Chcete opravdu pokračovat? <br />',
         buttons: {
             ok: 'Ano',
             cancel: 'Ne',

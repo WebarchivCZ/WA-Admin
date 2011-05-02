@@ -16,7 +16,10 @@ if ($resource->contact_id != '') {
 }
 if ($resource->contract_id != '') {
     $contract_url = url::site('tables/contracts/view/' . $resource->contract_id);
-    $contract = "<a href='{$contract_url}'>{$resource->contract}</a>";
+    $replace_contract = html::anchor(url::site('/tables/contracts/replace_contract/' . $resource->id),
+                                     icon::img('arrow_refresh', 'Vyměnit smlouvu'),
+                                     array('class' => 'confirm'));
+    $contract = "<a href='{$contract_url}'>{$resource->contract}</a> {$replace_contract}";
 } else {
     $contract_add = url::site("progress/new_contract/{$resource->id}");
     $contract = "<a href='{$contract_add}'>vytvořit</a>";
@@ -24,22 +27,22 @@ if ($resource->contract_id != '') {
 echo "<h3 class='record-information'>Vydavatel: {$publisher}</h3>";
 echo "<h3 class='record-information'>Kontakt: {$contact}</h3>";
 echo "<h3 class='record-information'>Smlouva: {$contract}</h3>"; ?>
-<hr />
+<hr/>
 
 
 <div id="tabs">
-<ul>
-	<li><a href="#tabs-1">Hodnocení</a></li>
-	<li><a href="#tabs-2">Semínka</a></li>
-	<li><a href="#tabs-3">Významný vydavatel</a></li>
-</ul>
-<div id="tabs-1">
-<?php View::factory('tables/resources/ratings')->render(TRUE)?>
-</div>
-<div id="tabs-2">
-<?php View::factory('tables/resources/seeds')->render(TRUE)?>
-</div>
-<div id="tabs-3">
-<?php View::factory('tables/resources/nominations')->render(TRUE)?>
-</div>
+    <ul>
+        <li><a href="#tabs-1">Hodnocení</a></li>
+        <li><a href="#tabs-2">Semínka</a></li>
+        <li><a href="#tabs-3">Významný vydavatel</a></li>
+    </ul>
+    <div id="tabs-1">
+        <?php View::factory('tables/resources/ratings')->render(TRUE)?>
+    </div>
+    <div id="tabs-2">
+        <?php View::factory('tables/resources/seeds')->render(TRUE)?>
+    </div>
+    <div id="tabs-3">
+        <?php View::factory('tables/resources/nominations')->render(TRUE)?>
+    </div>
 </div>
