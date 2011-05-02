@@ -51,14 +51,11 @@ $(document).ready(function () {
         $("#table-ratings").toggle();
     });
 
-    $('a.remove_from_resource_conf').click(function() {
+    // smazani prirazeni vydavatele ke zdroji
+    $('a.remove_from_resource_conf').click(function(event) {
         window.location = $(this).attr('href');
         return false;
-    });
-
-    // smazani prirazeni vydavatele ke zdroji
-    $('a.remove_from_resource_conf').confirm({
-        timeout:5000,
+    }).confirm({timeout:5000,
         dialogShow:'fadeIn',
         dialogSpeed:'slow',
         msg: 'Určitě?',
@@ -70,14 +67,10 @@ $(document).ready(function () {
         }
     });
 
-    $('a.delete_publisher_conf').click(function() {
-        window.location = $(this).attr('href');
-        return false;
-    });
-
     // smazani vydavatele
-    $('a.delete_publisher_conf').confirm({
-        timeout:5000,
+    $('a.delete_publisher_conf').click(function(event) {
+        window.location = $(this).attr('href');
+    }).confirm({timeout:5000,
         dialogShow:'fadeIn',
         dialogSpeed:'slow',
         msg: '<br /><b>POZOR!</b> Touto akcí vymažete vydavatele od všech zdrojů! Chcete opravdu pokračovat? <br />',
@@ -89,13 +82,10 @@ $(document).ready(function () {
         }
     });
 
+    // smazani smlouvy
     $('a.delete_contract_conf').click(function() {
         window.location = $(this).attr('href');
-        return false;
-    });
-
-    // smazani vydavatele
-    $('a.delete_contract_conf').confirm({
+    }).confirm({
         timeout:5000,
         dialogShow:'fadeIn',
         dialogSpeed:'slow',
@@ -156,7 +146,7 @@ $(document).ready(function () {
     $( "input#date" ).datepicker({ dateFormat: 'dd.mm.yy' });
     $.datepicker.setDefaults($.datepicker.regional['cs']);
 
-    $('#send_new_window').click(function() {
+    $('.send_new_window').click(function() {
         $(this).parent().attr('target', '_blank');
     });
 }
