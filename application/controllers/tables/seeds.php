@@ -22,9 +22,25 @@ class Seeds_Controller extends Table_Controller
         $view = View::factory('tables/seeds/generate_list');
         $this->template->content = $view;
 
-        $crawl_freq_id = $this->input->post('seed_list');
+        $crawl_freq_id = $this->input->post('crawl_freq_id');
+
         if ($crawl_freq_id != '') {
-            if ($this->input->post('send_new_window')) {
+            if ($this->input->post('get_archive_it')) {
+                $sql = "SELECT s.url
+                        FROM seeds s, contracts c, resources r
+                        WHERE r.contract_id = c.id
+                        AND r.id = s.resource_id
+                        AND r.crawl_freq_id = 5
+                        AND YEAR( c.date_signed ) = YEAR(CURDATE())
+                        AND MONTH( c.date_signed ) = (MONTH(CURDATE())-1)
+                        ORDER BY c.date_signed";
+
+                $seedlist = Database::instance()->query($sql);
+
+                $view->seedlist = $seedlist;
+                $this->template = $view;
+            }
+            else if ($this->input->post('get_seeds')) {
                 if ($crawl_freq_id == 'null') {
                     $crawl_limit = "AND r.crawl_freq_id IS NULL";
                 } else {
@@ -45,6 +61,7 @@ class Seeds_Controller extends Table_Controller
                         valid_from < CURDATE( )
                         OR valid_from IS NULL
                     )";
+
                 $seedlist = Database::instance()->query($sql);
 
                 $view->seedlist = $seedlist;
