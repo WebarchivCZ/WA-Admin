@@ -104,7 +104,7 @@ class Resource_Model extends Table_Model
         // get the date of the last crawl
         $date = Crawl_Model::get_last_crawl()->date;
 
-        $where = "contract_id IS NOT NULL
+        $where = "resources.contract_id IS NOT NULL
                         AND date_signed < '{$date}'
                         AND curator_id = {$curator_id}
                         AND (
