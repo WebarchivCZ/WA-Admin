@@ -32,7 +32,7 @@ else {
     echo form::dropdown('crawl_freq_id', $crawl_freq_array);
     echo form::submit('get_seeds', 'Vygenerovat SEMÍNKA', 'class=send_new_window');
     echo form::submit('send', 'Vygenerovat ZDROJE');
-    echo "<br/>".form::submit('get_archive_it', 'ArchiveIt semínka za poslední měsíc', 'class=send_new_window');
+    echo "<br/>".form::submit('get_archive_it', 'Semínka s frekvenci (archiveIt, 1x a 2x ročně) - za poslední měsíc', 'class=send_new_window');
     echo form::close();
 }
 ?>
