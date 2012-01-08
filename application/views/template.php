@@ -7,10 +7,12 @@
         echo html::stylesheet('media/css/formo');
         echo html::stylesheet('media/css/main');
         echo html::stylesheet('media/css/jquery');
+        echo html::stylesheet('media/css/jquery.lightbox-0.5.css');
         echo html::script('media/js/jquery.js');
         echo html::script('media/js/jquery-ui.js');
         echo html::script('media/js/jquery.confirm.js');
         echo html::script('media/js/wadmin.js');
+        echo html::script('media/js/jquery.lightbox-0.5.min.js');
         ?>
     </head>
     <body id="<?= $this->uri->string() ?>">
