@@ -71,7 +71,7 @@ if ($rounds > 0 || $resource->is_ratable()) {
         ?>
 
         <?= form::open(url::site('tables/resources/save_final_rating/' . $resource->id)) ?>
-    <p><strong>Finalni hodnoceni:</strong>
+    <p><strong>Finalní hodnocení:</strong>
         <?=form::dropdown('final_rating', $rating_options, $resource_rating)?>
     <p id='p_reevaluate_date' class="hidden_toggle_elements">
         Prehodnotit k:
