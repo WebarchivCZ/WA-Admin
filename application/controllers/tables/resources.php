@@ -115,7 +115,7 @@ class Resources_Controller extends Table_Controller
         if ($rating != 'NULL') {
             $resource = ORM::factory('resource', $resource_id);
             $o_rating = $resource->get_curator_rating((int)$curator_id, $round);
-            if ($o_rating->loaded) {
+            if ($o_rating->__get('loaded')) {
                 $o_rating->rating = $rating;
                 $o_rating->comments = $comments;
             } else {
@@ -140,7 +140,7 @@ class Resources_Controller extends Table_Controller
             }
 
             $o_rating->save();
-            if ($o_rating->saved) {
+            if ($o_rating->__get('saved')) {
                 message::set_flash('Hodnocení bylo úspěšně uloženo.');
             }
 
