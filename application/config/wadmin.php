@@ -24,11 +24,11 @@ $config['wayback_url'] = 'http://har.webarchiv.cz:8080/AP1/query?type=urlquery&a
  */
 $config['debug_mode'] = TRUE;
 
-$config['version'] = '2.3';
+$config['version'] = '2.31';
 
-$config['build'] = '14';
+$config['build'] = '1';
 
-$config['ticket_url'] = 'http://intranet.webarchiv.cz:8000/trac/newticket?component=wa_admin&amp;milestone=WA Admin v2.2&amp;owner=brokes';
+$config['ticket_url'] = 'https://github.com/WebArchivCZ/WA-Admin/issues/new';
 
 $config['url_path_screenshots'] = "/media/screenshots/";
 $config['screenshots_dir'] = "D:\\xampplite\\htdocs\\wadmin\\media\\screenshots\\";
