@@ -8,12 +8,13 @@ class Resource_Model extends Table_Model
 {
     protected $primary_val = 'short_title';
     protected $sorting = array('title' => 'asc');
-    public $headers = array('short_title', 'icon', 'url', 'publisher');
     protected $belongs_to =
-    array('contact', 'creator' => 'curator', 'curator' => 'curator', 'publisher', 'contract', 'conspectus',
-          'conspectus_subcategory', 'crawl_freq', 'resource_status', 'suggested_by');
+        array('contact', 'creator' => 'curator', 'curator' => 'curator', 'publisher', 'contract', 'conspectus',
+            'conspectus_subcategory', 'crawl_freq', 'resource_status', 'suggested_by');
     protected $has_one = array('nomination');
-    protected $has_many = array('seeds', 'ratings', 'correspondence', 'qa_checks');
+    protected $has_many = array('seeds', 'ratings', 'correspondence', 'qa_checks', 'screenshots');
+
+    public $headers = array('short_title', 'icon', 'url', 'publisher');
     // to speed up loading of forms
     public $formo_ignores = array('contact_id', 'publisher_id', 'contract_id');
 
@@ -53,7 +54,18 @@ class Resource_Model extends Table_Model
                 $value = NULL;
             }
         }
+        if ($key == 'contract_id') {
+            $this->set_contract($value);
+            return;
+        }
         parent::__set($key, $value);
+    }
+
+    private function set_contract($contract_id)
+    {
+        $new_contract = new Contract_Model($contract_id);
+        // TODO pridat poznamku do komentaru
+        parent::__set('contract_id', $new_contract->id);
     }
 
     public function __get($column)
@@ -87,10 +99,10 @@ class Resource_Model extends Table_Model
         }
         if (!is_null($limit) and  !is_null($offset)) {
             $result = ORM::factory('resource')->join('ratings', 'resources.id = ratings.resource_id')->like($conditions)
-                    ->groupby('resources.id')->find_all($limit, $offset);
+                ->groupby('resources.id')->find_all($limit, $offset);
         } else {
             $result = ORM::factory('resource')->join('ratings', 'resources.id = ratings.resource_id')->like($conditions)
-                    ->groupby('resources.id')->find_all();
+                ->groupby('resources.id')->find_all();
         }
         return $result;
     }
@@ -121,7 +133,7 @@ class Resource_Model extends Table_Model
             $where .= " AND curator_id = {$curator_id}";
         }
         $resources = ORM::factory('resource')->join('contracts', 'contracts.id', 'resources.contract_id')->where($where)
-                ->find_all();
+            ->find_all();
         return $resources;
     }
 
@@ -166,7 +178,7 @@ class Resource_Model extends Table_Model
             array('url' => $pattern, 'title' => $pattern, 'publishers.name' => $pattern))->count_all();
         $records = $this->join('publishers', 'resources.publisher_id', 'publishers.id', 'LEFT')->orlike(
             array('url' => $pattern, 'title' => $pattern, 'publishers.name' => $pattern))->orwhere('publisher_id', NULL)
-                ->find_all($limit, $offset);
+            ->find_all($limit, $offset);
         return $records;
     }
 
@@ -247,7 +259,7 @@ class Resource_Model extends Table_Model
     public function get_last_contact()
     {
         $correspondence = ORM::factory('correspondence')->where('resource_id', $this->id)->orderby('date', 'DESC')
-                ->find();
+            ->find();
         if ($correspondence->date != '') {
             return date_helper::short_date($correspondence->date);
         } else {
@@ -572,6 +584,11 @@ class Resource_Model extends Table_Model
         } else {
             return false;
         }
+    }
+
+    public function get_screenshot()
+    {
+        return Screenshot_Model::get_screen_for_resource($this->id);
     }
 }
 

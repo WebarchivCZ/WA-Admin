@@ -1,20 +1,20 @@
 <?php
 $config = array(
-	'top_menu' => array(
-		'home' , 
-		'suggest' , 
-		'rate' , 
-		'addressing' , 
-		'progress' , 
-		'catalogue' , 
-		'quality_control',
-		'conspectus') , 
+    'top_menu' => array(
+        'home',
+        'suggest',
+        'rate',
+        'addressing',
+        'progress',
+        'catalogue',
+        'quality_control',
+        'conspectus'),
 
-        'date_format' => 'Y-m-d H:i:s' ,
+    'date_format' => 'Y-m-d H:i:s',
 
-        'short_date_format' => 'd.m.Y',
+    'short_date_format' => 'd.m.Y',
 
-        'title_length' => 35);
+    'title_length' => 35);
 
 $config['wayback_url'] = 'http://har.webarchiv.cz:8080/AP1/query?type=urlquery&amp;Submit=Take+Me+Back&amp;url=';
 
@@ -26,7 +26,14 @@ $config['debug_mode'] = TRUE;
 
 $config['version'] = '2.3';
 
-$config['build'] = '13';
+$config['build'] = '14';
 
 $config['ticket_url'] = 'http://intranet.webarchiv.cz:8000/trac/newticket?component=wa_admin&amp;milestone=WA Admin v2.2&amp;owner=brokes';
+
+$config['url_path_screenshots'] = "/media/screenshots/";
+$config['screenshots_dir'] = "D:\\xampplite\\htdocs\\wadmin\\media\\screenshots\\";
+
+// Screenshot constants
+$config['full_screenshot_prefix'] = 'big_';
+$config['thumbnail_screenshot_prefix'] = 'small_';
 ?>

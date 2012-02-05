@@ -4,10 +4,10 @@ class Resources_Controller extends Table_Controller
     protected $table = 'resources';
     protected $title = 'Resources';
     protected $columns_ignored =
-    array('id', 'publisher_id', 'contact_id', 'contract_id', 'annotation', 'rating_last_round');
+        array('id', 'publisher_id', 'contact_id', 'contract_id', 'annotation', 'rating_last_round');
     protected $columns_order =
-    array('title', 'url', 'creator_id', 'date', 'curator_id', 'conspectus_id', 'crawl_freq_id', 'resource_status_id',
-          'suggested_by_id', 'rating_result', 'aleph_id', 'issn', 'catalogued', 'tech_problems', 'comments');
+        array('title', 'url', 'creator_id', 'date', 'curator_id', 'conspectus_id', 'crawl_freq_id', 'resource_status_id',
+            'suggested_by_id', 'rating_result', 'aleph_id', 'issn', 'catalogued', 'tech_problems', 'comments');
     protected $header = 'Zdroj';
 
     public function view($id = FALSE)
@@ -38,7 +38,7 @@ class Resources_Controller extends Table_Controller
 
         if ($resource->__isset('id')) {
             $form = Formo::factory()->orm('resource', $id)->remove($this->columns_ignored)->add('submit', 'Upravit')
-                    ->label_filter('display::translate_orm')->label_filter('ucfirst');
+                ->label_filter('display::translate_orm')->label_filter('ucfirst');
 
             $form->rating_result->type('select');
             $form->rating_result->values(Rating_Model::get_final_array());
@@ -46,14 +46,14 @@ class Resources_Controller extends Table_Controller
             $form->catalogued->checked(!is_null($resource->catalogued))->title($resource->catalogued);
 
             $form->_order = array('title', 'url', 'date', 'creator_id', 'curator_id', 'conspectus_id',
-                                  'conspectus_subcategory_id', 'crawl_freq_id', 'resource_status_id', 'suggested_by_id',
-                                  'rating_result', 'reevaluate_date', 'aleph_id', 'issn', 'catalogued', 'important',
-                                  'tech_problems', 'comments', 'upravit');
+                'conspectus_subcategory_id', 'crawl_freq_id', 'resource_status_id', 'suggested_by_id',
+                'rating_result', 'reevaluate_date', 'aleph_id', 'issn', 'catalogued', 'important',
+                'tech_problems', 'comments', 'upravit');
 
             // vyber podkategorii prislusici dane kategorii
             $form->conspectus_subcategory_id->values = ORM::factory('conspectus_subcategory')
-                    ->where('conspectus_id', $resource->conspectus_id)->orderby('subcategory')
-                    ->select_list('id', 'title');
+                ->where('conspectus_id', $resource->conspectus_id)->orderby('subcategory')
+                ->select_list('id', 'title');
 
             // oznaceni selectu pro javascript menici podkategorie
             $form->conspectus_id->id = 'category_select';
@@ -275,6 +275,65 @@ class Resources_Controller extends Table_Controller
             array('publishers.name' => $publisher_name))->find_all();
 
         return $resources;
+    }
+
+    public function upload_screenshot()
+    {
+        $resource_id = $this->input->post('resource_id');
+        if ($resource_id != '') {
+            $redirect_url = url::site('tables/resources/view/' . $resource_id);
+        } else {
+            $redirect_url = url::site('tables/resources/');
+        }
+
+        if (count($_FILES) > 0) {
+            $date = $this->input->post('screenshot_date', date('d.m.Y'));
+
+            $screenshot = new Screenshot_Model();
+            $screenshot->set_resource_id($resource_id);
+            $screenshot->set_datetime(date_helper::screenshot_date($date));
+
+            $this->convert_screenshot($_FILES['screenshot_file'], $screenshot);
+        }
+
+        url::redirect($redirect_url);
+    }
+
+    public function convert_screenshot($screenshot_file, $screenshot)
+    {
+        $is_converted = false;
+
+        $file_type = $screenshot_file['type'];
+        $tmp_file_name = $screenshot_file['tmp_name'];
+        $screenshot_dir = Screenshot_Model::get_screens_dir();
+        $new_image_path = $screenshot_dir . $screenshot->get_filename();
+
+        if (file_exists($new_image_path)) {
+            unlink($new_image_path);
+        }
+
+        if ($file_type == 'image/jpeg') {
+            $jpg_for_conversion = imagecreatefromjpeg($tmp_file_name);
+            if (imagepng($jpg_for_conversion, $new_image_path, 5, PNG_ALL_FILTERS)) {
+                $is_converted = true;
+            }
+            imagedestroy($jpg_for_conversion);
+        } elseif ($file_type == 'image/png') {
+            if (rename($tmp_file_name, $new_image_path)) {
+                $is_converted = true;
+            }
+        } else {
+            throw new WaAdmin_Exception('Nesprávný formát', 'Screenshot musí být typu JPEG nebo PNG');
+        }
+
+        if ($is_converted) {
+            $this->image = new Image($new_image_path);
+            $this->image->resize(800, 600, IMAGE::WIDTH);
+            $this->image->save();
+
+            $this->image->resize(120, 80, IMAGE::WIDTH);
+            $this->image->save($screenshot_dir . $screenshot->get_filename(true));
+        }
     }
 }
 

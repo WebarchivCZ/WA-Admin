@@ -4,7 +4,7 @@
  * then a full URL will be used, eg: http://localhost/kohana/. If it only includes
  * the path, and a site_protocol is specified, the domain will be auto-detected.
  */
-$config['site_domain'] = 'localhost/wadmin/';
+$config['site_domain'] = 'webdev/wadmin/';
 
 /**
  * Force a default protocol to be used by the site. If no site_protocol is
@@ -18,7 +18,8 @@ $config['site_protocol'] = '';
  *
  * This can be removed by using URL rewriting.
  */
-$config['index_page'] = 'index.php';
+// TODO - possible further consequences
+$config['index_page'] = '';
 
 /**
  * Fake file extension that will be added to all generated URLs. Example: .html
@@ -67,7 +68,7 @@ $config['log_threshold'] = 4;
 /**
  * Message logging directory.
  */
-$config['log_directory'] = APPPATH.'logs';
+$config['log_directory'] = APPPATH . 'logs';
 
 /**
  * Enable or display displaying of Kohana error pages. This will not affect
@@ -96,15 +97,15 @@ $config['extension_prefix'] = 'MY_';
  */
 $config['modules'] = array
 (
-	MODPATH.'auth',      // Authentication
-	//MODPATH.'forge',     // Form generation
-	MODPATH.'kodoc',     // Self-generating documentation
-	MODPATH.'media',     // Media caching and compression
-	MODPATH.'formo',
-	// MODPATH.'formation',
-	// MODPATH.'gmaps',     // Google Maps integration
-	// MODPATH.'archive',   // Archive utility
-	// MODPATH.'payment',   // Online payments
-	// MODPATH.'unit_test', // Unit testing
-	// MODPATH.'object_db', // New OOP Database library (testing only!)
+    MODPATH . 'auth', // Authentication
+    //MODPATH.'forge',     // Form generation
+    MODPATH . 'kodoc', // Self-generating documentation
+    MODPATH . 'media', // Media caching and compression
+    MODPATH . 'formo',
+    // MODPATH.'formation',
+    // MODPATH.'gmaps',     // Google Maps integration
+    // MODPATH.'archive',   // Archive utility
+    // MODPATH.'payment',   // Online payments
+    // MODPATH.'unit_test', // Unit testing
+    // MODPATH.'object_db', // New OOP Database library (testing only!)
 );
