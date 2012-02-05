@@ -1,8 +1,4 @@
 <?php
-/**
- * TODO zobrazovat zdroje, ktere vyhovuji podminkam - zjistit
- *
- */
 class Catalogue_Controller extends Template_Controller
 {
 
@@ -21,9 +17,9 @@ class Catalogue_Controller extends Template_Controller
     protected function get_to_catalogue()
     {
         $resources = ORM::factory('resource')
-            ->where(array('curator_id'=>$this->user->id,
-            'catalogued'=> NULL,
-            'resource_status_id'=>RS_APPROVED_PUB))
+            ->where(array('curator_id' => $this->user->id,
+            'catalogued' => NULL,
+            'resource_status_id' => RS_APPROVED_PUB))
             ->find_all();
         return $resources;
     }
@@ -33,30 +29,32 @@ class Catalogue_Controller extends Template_Controller
      * @param <type> $action provedena akce (odpovida sloupci v tabulce), povoleno - catalogued
      * @param <type> $resource_id id zdroje, ktereho se uprava tyka
      */
-    public function save ($action, $resource_id)
+    public function save($action, $resource_id)
     {
         $allowed_actions = array('catalogued');
         $resource = ORM::factory('resource', $resource_id);
-        if (isset($_POST['aleph_id']) and $_POST['aleph_id'] != '') {
-                $resource->aleph_id = $_POST['aleph_id'];
-            	if (isset($_POST['conspectus_subcategory_id'])) {
-            		$resource->conspectus_subcategory_id = $_POST['conspectus_subcategory_id']; 
-            	}
-            if (in_array($action, $allowed_actions))
-            {   
+        $aleph_id = $this->input->post('aleph_id');
+        if ($aleph_id) {
+            $resource->aleph_id = $aleph_id;
+            $conspectus_sub_id = $this->input->post('aleph_id');
+            if ($conspectus_sub_id != '') {
+                $resource->conspectus_subcategory_id = $conspectus_sub_id;
+            }
+            if (in_array($action, $allowed_actions)) {
                 $date_format = Kohana::config('wadmin.date_format');
                 $resource->{$action} = date($date_format);
-                $message = 'Informace o zdroji: <i>'.$resource->title.'</i> byla uložena';
+                $message = 'Informace o zdroji: <i>' . $resource->title . '</i> byla uložena';
                 message::set_flash($message);
                 $resource->save();
             } else
             {
                 message::set_flash('Nesprávný parametr');
             }
-            } else {
-                message::set_flash('Není vyplněno Aleph ID.');
-            }
+        } else {
+            message::set_flash('Není vyplněno Aleph ID.');
+        }
         url::redirect('catalogue');
     }
 }
+
 ?>

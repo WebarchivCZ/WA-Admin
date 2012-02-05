@@ -8,9 +8,8 @@ defined('SYSPATH') or die('No direct script access.');
 class Contract_Model extends Table_Model
 {
     protected $primary_val = 'contract_title';
+    protected $has_many = array('addendums');
     protected $sorting = array('year' => 'desc', 'contract_no' => 'desc');
-    protected $has_many = array('contracts');
-    protected $belongs_to = array('contract');
     public $headers = array('contract_title', 'resource', 'publisher');
     public $formo_ignores = array('contract_id', 'addendum');
 
@@ -74,8 +73,8 @@ class Contract_Model extends Table_Model
     {
         if (is_numeric($year) and is_numeric($contract_no)) {
             $contract = ORM::factory('contract')
-                    ->where(array('contract_no' => $contract_no, 'year' => $year))
-                    ->find();
+                ->where(array('contract_no' => $contract_no, 'year' => $year))
+                ->find();
             if ($contract->loaded) {
                 return $contract;
             } else {
@@ -86,14 +85,17 @@ class Contract_Model extends Table_Model
 
     public static function domain_has_blanco($url)
     {
-        $sql = "SELECT COUNT(id) as count FROM contracts WHERE '${url}' REGEXP domain AND blanco_contract = 1";
+        $sql = "SELECT COUNT(id) as count FROM contracts WHERE '${url}' REGEXP domain
+                                                            AND blanco_contract = 1";
         $result = Database::instance()->query($sql)->current();
         return (bool)$result->count;
     }
 
     public static function domain_get_blanco($url)
     {
-        $sql = "SELECT id FROM contracts WHERE '${url}' REGEXP domain AND blanco_contract = 1 ORDER BY date_signed DESC LIMIT 1";
+        $sql = "SELECT id FROM contracts WHERE '${url}' REGEXP domain
+                                        AND blanco_contract = 1
+                                        ORDER BY date_signed DESC LIMIT 1";
         $result = Database::instance()->query($sql)->current();
         return ORM::factory('contract', $result->id)->find();
     }
@@ -133,13 +135,13 @@ class Contract_Model extends Table_Model
         }
         $count = $this->where($conditions)->select('DISTINCT contracts.*')->orlike(
             array('resources.title' => $pattern, 'publishers.name' => $pattern))
-                ->join('resources', 'resources.contract_id = contracts.id')
-                ->join('publishers', 'resources.publisher_id = publishers.id')->find_all()->count();
+            ->join('resources', 'resources.contract_id = contracts.id')
+            ->join('publishers', 'resources.publisher_id = publishers.id')->find_all()->count();
 
         $records = $this->where($conditions)->select('DISTINCT contracts.*')->orlike(
             array('resources.title' => $pattern, 'publishers.name' => $pattern))
-                ->join('resources', 'resources.contract_id = contracts.id')
-                ->join('publishers', 'resources.publisher_id = publishers.id')->find_all($limit, $offset);
+            ->join('resources', 'resources.contract_id = contracts.id')
+            ->join('publishers', 'resources.publisher_id = publishers.id')->find_all($limit, $offset);
 
         return $records;
     }

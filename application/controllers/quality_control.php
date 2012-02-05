@@ -1,10 +1,12 @@
 <?php
 
-class Quality_Control_Controller extends Template_Controller {
+class Quality_Control_Controller extends Template_Controller
+{
 
     protected $title = 'Kontrola kvality';
 
-    public function index() {
+    public function index()
+    {
         $view = new View('quality_control');
 
         $curator_id = $this->user->id;
@@ -22,7 +24,8 @@ class Quality_Control_Controller extends Template_Controller {
         $this->template->content = $view;
     }
 
-    public function add($resource_id = NULL) {
+    public function add($resource_id = NULL)
+    {
         if (is_null($resource_id)) {
             message::set_flash('Není nastaveno id zdroje.');
             url::redirect('quality_control');
@@ -49,7 +52,8 @@ class Quality_Control_Controller extends Template_Controller {
         }
     }
 
-    public function view($qa_check_id) {
+    public function view($qa_check_id)
+    {
         $qa_check = ORM::factory('qa_check', $qa_check_id);
         $this->template->title = 'Zobrazení záznamu';
         $this->view = 'tables/record_qa_view';
@@ -76,7 +80,8 @@ class Quality_Control_Controller extends Template_Controller {
         $this->template->content = $view;
     }
 
-    public function edit($qa_check_id) {
+    public function edit($qa_check_id)
+    {
         $this->template->title = 'Editace záznamu';
 
         $qa_check = ORM::factory('qa_check', $qa_check_id);
@@ -91,13 +96,14 @@ class Quality_Control_Controller extends Template_Controller {
             } else {
                 message::set_flash('Vyskytl se problém a kontrola nebyla uložena.');
             }
-            url::redirect('/quality_control/view/'.$qa_check_id);
+            url::redirect('/quality_control/view/' . $qa_check_id);
         } else {
             $this->template->content = $form;
         }
     }
 
-    public function add_solution($qa_check_id) {
+    public function add_solution($qa_check_id)
+    {
 
         $this->template->content = View::factory('mockup/add_solution');
     }
@@ -105,11 +111,13 @@ class Quality_Control_Controller extends Template_Controller {
     /**
      * nastroje pro QA. Napr: kdy bylo url sklizeno, a zda vubec
      */
-    public function qa_tools() {
+    public function qa_tools()
+    {
 
     }
 
-    private function save_new($form = NULL, $resource_id = NULL) {
+    private function save_new($form = NULL, $resource_id = NULL)
+    {
         $qa_check = ORM::factory('qa_check');
 
         $qa_check->resource_id = $resource_id;
@@ -133,20 +141,21 @@ class Quality_Control_Controller extends Template_Controller {
                 $qa_check_problem->url = $form->{$problem->problem . "_url"}->value;
                 $qa_check_problem->comments = $form->{$problem->problem . "_comments"}->value;
                 $qa_check_problem->save();
-                if ($qa_check_problem->saved == FALSE) {
+                if (!$qa_check_problem->saved) {
                     return FALSE;
                 }
             }
         }
 
-        if ($qa_check->saved == TRUE) {
+        if ($qa_check->saved) {
             return TRUE;
         } else {
             return FALSE;
         }
     }
 
-    private function save_edit($form, $qa_check) {
+    private function save_edit($form, $qa_check)
+    {
         if ($form->validate()) {
             $values = $form->get_values();
             foreach ($values as $key => $value) {
@@ -161,7 +170,8 @@ class Quality_Control_Controller extends Template_Controller {
         }
     }
 
-    private function generate_header_form($resource) {
+    private function generate_header_form($resource)
+    {
         $wayback_url = Kohana::config('wadmin.wayback_url') . $resource->url;
         $resource_url = html::anchor(url::site('/tables/resources/view/' . $resource->id), $resource->title);
 
@@ -172,7 +182,8 @@ class Quality_Control_Controller extends Template_Controller {
         return $form;
     }
 
-    private function generate_add_form($resource, $qa_check = NULL) {
+    private function generate_add_form($resource, $qa_check = NULL)
+    {
         $bool_values = array('TRUE' => 'Ano', 'FALSE' => 'Ne');
         $check_result_values = Qa_Check_Model::get_result_array();
 
@@ -182,73 +193,75 @@ class Quality_Control_Controller extends Template_Controller {
         $problems = ORM::factory('qa_problem')->find_all();
         foreach ($problems as $problem) {
             $form->add_group($problem->problem, $bool_values)
-                    ->label($problem->question)
-                    ->check($problem->problem, 'ano');
+                ->label($problem->question)
+                ->check($problem->problem, 'ano');
             $form->{$problem->problem}->group_open = '<span class="problem">';
 
             $problem_url_input = $problem->problem . '_url';
             $form->add($problem_url_input)
-                    ->label('URL problému');
+                ->label('URL problému');
             $form->{$problem_url_input}->open = '<p class="hidden" id="' . $problem_url_input . '">';
 
             $problem_comments_input = $problem->problem . '_comments';
             $form->add('textarea', $problem_comments_input)
-                    ->label('Komentář problému');
+                ->label('Komentář problému');
             $form->{$problem_comments_input}->open = '<p class="hidden" id="' . $problem_comments_input . '">';
         }
         $form->add_group('proxy_fine', $bool_values)
-                ->label('V proxy je vše v pořádku')
-                ->check('ano');
+            ->label('V proxy je vše v pořádku')
+            ->check('ano');
         $form->add('textarea', 'proxy_problems')
-                ->label('Problémy v proxy')
-                ->set('proxy_problems', 'open', '<p class="hidden" id="proxy_comments">');
+            ->label('Problémy v proxy')
+            ->set('proxy_problems', 'open', '<p class="hidden" id="proxy_comments">');
 
         $form->add_select('result', $check_result_values)
-                ->label('Výsledek kontroly');
+            ->label('Výsledek kontroly');
 
         $form->add('textarea', 'comments')->label('Komentář');
         $form->add('submit', 'save')->value('Uložit');
         return $form;
     }
 
-    private function generate_edit_form($resource, $qa_check = NULL) {
+    private function generate_edit_form($resource, $qa_check = NULL)
+    {
         $solution_values = Qa_Check_Model::get_solution_array();
         $check_result_values = Qa_Check_Model::get_result_array();
         $users = ORM::factory('curator')->select_list('id', 'lastname');
-        $solution = ($qa_check->solution != '') ? $qa_check->solution: -1;
+        $solution = ($qa_check->solution != '') ? $qa_check->solution : -1;
 
         $form = $this->generate_header_form($resource);
         $form->add('date_crawled')
-                ->label('Sklizeno dne')
-                ->value($qa_check->date_crawled);
+            ->label('Sklizeno dne')
+            ->value($qa_check->date_crawled);
         $form->add('ticket_no')
-                ->label('Číslo ticketu')
-                ->value($qa_check->ticket_no);
+            ->label('Číslo ticketu')
+            ->value($qa_check->ticket_no);
         $form->add_select('result', $check_result_values)
-                ->label('Výsledek kontroly')
-                ->value($qa_check->result)
-                ->blank(TRUE);
+            ->label('Výsledek kontroly')
+            ->value($qa_check->result)
+            ->blank(TRUE);
         $form->add_select('solution', $solution_values)
-             ->value($solution)
-             ->label('Řešení')
-             ->blank(TRUE);
+            ->value($solution)
+            ->label('Řešení')
+            ->blank(TRUE);
         $form->add('solution_date')
-             ->label('Datum řešení')
-             ->value($qa_check->solution_date);
+            ->label('Datum řešení')
+            ->value($qa_check->solution_date);
         $form->add_select('solution_user', $users)
-                ->value($qa_check->solution_user)
-                ->label('Vyřešil')
-                ->blank(TRUE);
+            ->value($qa_check->solution_user)
+            ->label('Vyřešil')
+            ->blank(TRUE);
         $form->add('textarea', 'comments')
-             ->label('Komentář')
-             ->value($qa_check->comments);
+            ->label('Komentář')
+            ->value($qa_check->comments);
         $form->add('submit', 'save')
-             ->value('Uložit');
+            ->value('Uložit');
 
         return $form;
     }
 
-    private function generate_edit_subform($form, $qa_check) {
+    private function generate_edit_subform($form, $qa_check)
+    {
         $values = $qa_check->as_array();
         foreach ($values as $column => $value) {
             $form->{$column}->value = $value;
@@ -269,4 +282,5 @@ class Quality_Control_Controller extends Template_Controller {
     }
 
 }
+
 ?>

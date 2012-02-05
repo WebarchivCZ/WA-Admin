@@ -17,7 +17,7 @@ else if (isset($resources) AND $resources->count() > 0) {
     $output .= table::header();
     $output .= "<tr><th class='first'>Zdroj</th><th class='last'>Kurátor</th>";
     foreach ($resources as $resource) {
-        $resource_link = html::anchor(url::site('/tables/resources/view/'.$resource->id), $resource->title);
+        $resource_link = html::anchor(url::site('/tables/resources/view/' . $resource->id), $resource->title);
         $output .= "<tr><td>{$resource_link}</td><td>{$resource->curator}</td></tr>";
     }
     $output .= table::footer();
@@ -32,7 +32,8 @@ else {
     echo form::dropdown('crawl_freq_id', $crawl_freq_array);
     echo form::submit('get_seeds', 'Vygenerovat SEMÍNKA', 'class=send_new_window');
     echo form::submit('send', 'Vygenerovat ZDROJE');
-    echo "<br/>".form::submit('get_archive_it', 'Semínka s frekvenci (archiveIt, 1x a 2x ročně) - za poslední měsíc', 'class=send_new_window');
+    echo "<br/>" . form::submit('get_archive_it', 'Archive-IT',
+        'class=send_new_window title="Seminka s malou frekvecni sklizeni (1x, 2x rocne) a jednorazove za uplynuly mesic"');
     echo form::close();
 }
 ?>

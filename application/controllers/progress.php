@@ -6,10 +6,10 @@ class Progress_Controller extends Template_Controller
     public function index()
     {
         $resources = ORM::factory('resource')
-                ->in('resource_status_id', RS_CONTACTED)
-                ->where('curator_id', $this->user->id)
-                ->orderby('title', 'ASC')
-                ->find_all();
+            ->in('resource_status_id', RS_CONTACTED)
+            ->where('curator_id', $this->user->id)
+            ->orderby('title', 'ASC')
+            ->find_all();
 
         $view = View::factory('progress');
         $view->resources = $resources;
@@ -62,15 +62,15 @@ class Progress_Controller extends Template_Controller
 
             $form = Formo::factory('save_contract');
             $form->add('contract_no')
-                    ->label('Číslo smlouvy')
-                    ->value($new_contract_no)
-                    ->required(TRUE);
+                ->label('Číslo smlouvy')
+                ->value($new_contract_no)
+                ->required(TRUE);
             $form->add('year')
-                    ->label('Rok')
-                    ->value(substr($contract->date_signed, 0, 4))
-                    ->required(TRUE);
+                ->label('Rok')
+                ->value(substr($contract->date_signed, 0, 4))
+                ->required(TRUE);
             $form->add('submit', 'odeslat')
-                    ->value('Uložit smlouvu');
+                ->value('Uložit smlouvu');
 
             if ($form->validate()) {
                 $contract->year = $form->year->value;
@@ -140,11 +140,20 @@ class Progress_Controller extends Template_Controller
             $this->session->set_flash('message', 'Smlouva nebo zdroj neexistuje');
             url::redirect('progress');
         } else {
-            $resource->contract_id = $contract->id;
-            $resource->resource_status_id = RS_APPROVED_PUB;
-            $resource->save();
-            $this->session->set_flash('message', 'Smlouva byla úspěšně přiřazena.');
-            url::redirect('tables/resources/view/' . $resource->id);
+            // TODO zjistit, jestli vytvarime doplnek
+            // tri vetve - assign_contract, assign_addendum, assign_blanko
+            if ($contract->domain_has_blanco($resource->url)) {
+                // todo assign contract
+            } else {
+                $this->template->content = View::factory('tables/contracts/assign_addendum')
+                    ->set('resource', $resource)
+                    ->set('contract', $contract);
+            }
+            //            $resource->contract_id = $contract->id;
+            //            $resource->resource_status_id = RS_APPROVED_PUB;
+            //            $resource->save();
+            //            $this->session->set_flash('message', 'Smlouva byla úspěšně přiřazena.');
+            //            url::redirect('tables/resources/view/' . $resource->id);
         }
     }
 
@@ -168,35 +177,49 @@ class Progress_Controller extends Template_Controller
     {
         $form = Formo::factory('add_contract');
         $form
-                ->add('resource_title')
-                ->label('Název zdroje')
-                ->value($resource_title)
-                ->disabled();
+            ->add('resource_title')
+            ->label('Název zdroje')
+            ->value($resource_title)
+            ->disabled();
         $form
-                ->add('date_signed')
-                ->label('Datum podpisu')
-                ->value(date('Y-m-d'))
-                ->required(TRUE);
+            ->add('date_signed')
+            ->label('Datum podpisu')
+            ->value(date('Y-m-d'))
+            ->required(TRUE);
         $form
-                ->add('checkbox', 'cc')
-                ->label('Creative Commons');
+            ->add('checkbox', 'cc')
+            ->label('Creative Commons');
         $form
-                ->add('checkbox', 'addendum')
-                ->label('Doplněk');
+            ->add('checkbox', 'addendum')
+            ->label('Doplněk');
         $form
-                ->add('checkbox', 'blanco_contract')
-                ->label('Blanco smlouva');
+            ->add('checkbox', 'blanco_contract')
+            ->label('Blanco smlouva');
         $form
-                ->add('domain')
-                ->label('Doména');
+            ->add('domain')
+            ->label('Doména');
         $form
-                ->add('type')
-                ->label('Typ smlouvy');
+            ->add('type')
+            ->label('Typ smlouvy');
         $form
-                ->add('textarea', 'comments')
-                ->label('Komentář');
+            ->add('textarea', 'comments')
+            ->label('Komentář');
         $form->add('submit', 'Odeslat');
         return $form;
+    }
+
+    public function assign_addendum($resource_id, $contract_id)
+    {
+        $addendum = new Addendum_Model(NULL, ORM::factory('contract', $contract_id));
+        $addendum->date_signed = date_helper::mysql_date(
+            $this->input->post('date_signed'));
+        $addendum->save();
+        $resource = new Resource_Model($resource_id);
+        $resource->contract_id = $addendum->id;
+        $resource->resource_status_id = RS_APPROVED_PUB;
+        $resource->save();
+        message::set_flash("Doplněk pro smlouvu {$addendum} byl úspěšně přiřazen.");
+        url::redirect(url::site("/tables/resources/view/{$resource->id}"));
     }
 }
 
