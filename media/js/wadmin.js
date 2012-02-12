@@ -165,6 +165,8 @@ $(document).ready(function () {
 
     // thumbnails in lightbox
     $('a.thumbnail').lightBox();
+
+    $('.accordion').accordion({autoHeight:false});
 });
 
 /* Czech initialisation for the jQuery UI date picker plugin. */

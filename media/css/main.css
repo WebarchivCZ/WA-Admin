@@ -617,8 +617,39 @@ form div.problem div.solution {
     display: none;
 }
 
-img.thumbnail {
+.tab-section {
+    margin: 1em;
+    padding: .4em;
+    background-color: #FCFCFC;
+    border: 1px solid #EEE;
+}
+
+.gallery .img, img.thumbnail {
+    margin: 2px;
     margin-bottom: 5px;
     padding: 3px;
     border: 1px solid #999;
+    height: auto;
+    width: auto;
+    float: left;
+    text-align: center;
+    list-style: none;
+}
+
+.gallery img {
+    display: inline;
+    margin: 3px;
+    border: 1px solid #ffffff;
+}
+
+.gallery a:hover img {
+    border: 1px solid black;
+}
+
+.gallery .desc {
+    text-align: center;
+    font-weight: normal;
+    vertical-align: middle;
+    width: 120px;
+    margin: 2px;
 }

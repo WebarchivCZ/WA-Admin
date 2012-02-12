@@ -1,172 +1,176 @@
 .standardform label {
-	float: left;
-	width: 180px;
-	margin-right: 10px;
-	text-align: right;
+    float: left;
+    width: 180px;
+    margin-right: 10px;
+    text-align: right;
 }
 
 .standardform label.group {
-	float: none;
-	width: auto;
-	margin: 0 5px 0 2px;
+    float: none;
+    width: auto;
+    margin: 0 5px 0 2px;
 }
 
 .standardform p {
-	margin: 1em 0;
-	clear: both;
+    margin: 1em 0;
+    vertical-align: bottom;
+    clear: both;
 }
 
-.standardform .input,input,button {
-	border: 1px solid #ccc;
-	padding: 2px;
+.standardform .input, input, button {
+    border: 1px solid #ccc;
+    padding: 2px;
 }
 
 .standardform .input {
-	width: 200px;
+    width: 200px;
 }
 
 .standardform .errorInput {
-	border: 1px solid red;
+    border: 1px solid red;
 }
 
 .standardform .errorMessage {
-	margin-left: 15px;
-	font-size: 10px;
-	color: red;
+    margin-left: 15px;
+    font-size: 10px;
+    color: red;
 }
 
 .standardform .captcha {
-	float: left;
+    float: left;
 }
 
 .standardform .captcha_challenge {
-	float: left;
+    float: left;
 }
 
 .standardform .captcha input {
-	float: left;
-	clear: left;
+    float: left;
+    clear: left;
 }
 
 .standardform p .clear {
-	display: block;
+    display: block;
 }
 
-.standardform[name="insert_resource"] select,.standardform[name="insert_resource"] input
-	{
-	width: 300px;
+.standardform[name="insert_resource"] select, .standardform[name="insert_resource"] input {
+    width: 300px;
 }
 
-.submit,.button {
-	margin-left: 110px;
+.submit, .button {
+    margin-left: 110px;
 }
 
 .fileLink {
-	border: none;
-	padding: 5px;
-	cursor: pointer;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
 }
 
 .fileLink:hover {
-	background: #fefeee;
+    background: #fefeee;
 }
 
 .comment {
-	font-size: 10px;
-	margin-left: 15px;
-	color: #3e60f5;
+    font-size: 10px;
+    margin-left: 15px;
+    color: #3e60f5;
 }
 
 #menu {
-	float: left;
+    float: left;
 }
 
 .success {
-	color: #496da2;
-	margin-bottom: 1em;
+    color: #496da2;
+    margin-bottom: 1em;
 }
 
 .ajax_validation.error {
-	color: red;
-	margin-left: 12px;
-	font-size: 10px;
+    color: red;
+    margin-left: 12px;
+    font-size: 10px;
 }
 
 .ajax_validation.success {
-	color: green;
-	margin-left: 12px;
-	font-size: 10px;
-	font-weight: bold;
+    color: green;
+    margin-left: 12px;
+    font-size: 10px;
+    font-weight: bold;
 }
 
 /* autocompleter */
 div.autocomplete-w1 {
-	background: url(../img/shadow.png) no-repeat bottom right;
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	margin: 8px 0 0 6px; /* IE6 fix: */
-	_background: none;
-	_margin: 0;
+    background: url(../img/shadow.png) no-repeat bottom right;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    margin: 8px 0 0 6px; /* IE6 fix: */
+    _background: none;
+    _margin: 0;
 }
 
 div.autocomplete {
-	border: 1px solid #999;
-	background: #FFF;
-	cursor: default;
-	text-align: left;
-	max-height: 350px;
-	overflow: auto;
-	margin: -6px 6px 6px -6px; /* IE6 specific: */
-	_height: 350px;
-	_margin: 0;
-	_overflow-x: hidden;
+    border: 1px solid #999;
+    background: #FFF;
+    cursor: default;
+    text-align: left;
+    max-height: 350px;
+    overflow: auto;
+    margin: -6px 6px 6px -6px; /* IE6 specific: */
+    _height: 350px;
+    _margin: 0;
+    _overflow-x: hidden;
 }
 
 div.autocomplete .selected {
-	background: #DDD;
+    background: #DDD;
 }
 
 div.autocomplete div {
-	padding: 2px 5px;
-	white-space: nowrap;
+    padding: 2px 5px;
+    white-space: nowrap;
 }
 
 div.autocomplete strong {
-	font-weight: normal;
-	color: #3399FF;
+    font-weight: normal;
+    color: #3399FF;
 }
 
 a.autocomplete_item {
-	padding: 4px 10px 4px 20px;
-	background: #E5E5E5 url(../img/bullet_toggle_minus.png) 2px 50%
-		no-repeat;
-	border: 1px solid #999;
-	margin-right: 5px;
-	font-size: 10px;
-	color: #000;
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	text-decoration: none;
+    padding: 4px 10px 4px 20px;
+    background: #E5E5E5 url(../img/bullet_toggle_minus.png) 2px 50% no-repeat;
+    border: 1px solid #999;
+    margin-right: 5px;
+    font-size: 10px;
+    color: #000;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    text-decoration: none;
 }
 
 a.autocomplete_item:hover {
-	background-color: #cecece;
-	border-color: #777;
+    background-color: #cecece;
+    border-color: #777;
 }
 
 a.autocomplete_item:active {
-	background-color: #bbb;
-	border-color: #666;
+    background-color: #bbb;
+    border-color: #666;
 }
 
 #login_form {
-	width: 400px;
-	position: relative;
-	background-color: white;
-	left: 200px;
-	margin-top: 50px;
-	padding: 15px;
-	border: 1px solid #ccc;
+    width: 400px;
+    position: relative;
+    background-color: white;
+    left: 200px;
+    margin-top: 50px;
+    padding: 15px;
+    border: 1px solid #ccc;
 }
-button.icon { background: none; border: 0; cursor: pointer;}
+
+button.icon {
+    background: none;
+    border: 0;
+    cursor: pointer;
+}

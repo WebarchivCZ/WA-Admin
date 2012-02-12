@@ -308,8 +308,15 @@ class Resources_Controller extends Table_Controller
         $screenshot_dir = Screenshot_Model::get_screens_dir();
         $new_image_path = $screenshot_dir . $screenshot->get_filename();
 
+        $should_update_screenshot = $this->input->post('update_screenshot', false);
         if (file_exists($new_image_path)) {
-            unlink($new_image_path);
+            if ($should_update_screenshot) {
+                unlink($new_image_path);
+                // TODO update id in database
+            } else {
+                message::set_flash('Screenshot tohot data již existuje.');
+                return;
+            }
         }
 
         if ($file_type == 'image/jpeg') {
@@ -328,10 +335,10 @@ class Resources_Controller extends Table_Controller
 
         if ($is_converted) {
             $this->image = new Image($new_image_path);
-            $this->image->resize(800, 600, IMAGE::WIDTH);
+            $this->image->resize(800, 600, IMAGE::NONE);
             $this->image->save();
 
-            $this->image->resize(120, 80, IMAGE::WIDTH);
+            $this->image->resize(120, 80, IMAGE::NONE);
             $this->image->save($screenshot_dir . $screenshot->get_filename(true));
         }
     }
