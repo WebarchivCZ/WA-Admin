@@ -1,0 +1,2 @@
+-- Add column for picked screenshot date (resource can has more screenshot, but only one is currently displayed in konspekt
+ALTER TABLE `resources` ADD `screenshot_date` VARCHAR( 10 ) NULL DEFAULT NULL AFTER `annotation` ;

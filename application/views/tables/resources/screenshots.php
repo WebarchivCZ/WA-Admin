@@ -41,11 +41,15 @@ $screenshot_array = Screenshot_Model::list_resource_screenshots($resource->id, t
         $select_icon = icon::img('tick', 'Vybrat screenshot');
         echo '<h3><a href="#uploaded-screenshots">Již vložené screenshoty</a></h3><div class="tab-section gallery">';
         foreach ($screenshot_array as $screenshot) {
+            $select_url = "/tables/resources/select_screenshot/{$resource->id}/{$screenshot->get_datetime()}";
+
             echo "<div class='img'>
                 <a href='{$screenshot->get_screenshot()}'  class='thumbnail'>
                     <img src='{$screenshot->get_thumbnail()}' class='thumbnail' alt='{$screenshot->get_datetime()}'/>
                 </a>
-                <div class='desc'>{$select_icon} {$delete_icon}</div>
+                <div class='desc'>" .
+                html::anchor(url::site($select_url), $select_icon)
+                . "</div>
               </div>";
         }
         echo '<div class=\'clear\'></div>

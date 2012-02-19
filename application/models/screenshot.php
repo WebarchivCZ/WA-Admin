@@ -20,7 +20,13 @@ class Screenshot_Model extends Model
         $instance->resource_id = $resource_id;
 
         if ($datetime == null) {
-            $instance->datetime = end(self::list_screenshot_dates($resource_id));
+            $resource = new Resource_Model($resource_id);
+            if ($resource->screenshot_date != '') {
+                $instance->datetime = $resource->screenshot_date;
+            } else
+            {
+                $instance->datetime = end(self::list_screenshot_dates($resource_id));
+            }
         }
 
         return $instance;

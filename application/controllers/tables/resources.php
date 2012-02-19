@@ -342,6 +342,21 @@ class Resources_Controller extends Table_Controller
             $this->image->save($screenshot_dir . $screenshot->get_filename(true));
         }
     }
+
+    public function select_screenshot($resource_id, $screenshot_date)
+    {
+        if ($resource_id == null OR $screenshot_date == null) {
+            throw new WaAdmin_Exception("Nesprávné parametry pro funkci select_screenshot",
+                "Pro funkci select_screenshot nebyly předány správné parametry.");
+        }
+        $resource = new Resource_Model($resource_id);
+        if ($resource->__get('loaded')) {
+            $resource->screenshot_date = $screenshot_date;
+            $resource->save();
+            message::set_flash('Screenshot byl úspěšně zvolen.');
+            url::redirect(url::site('tables/resources/view/' . $resource->id));
+        }
+    }
 }
 
 ?>
