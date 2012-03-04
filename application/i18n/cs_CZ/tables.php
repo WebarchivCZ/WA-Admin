@@ -1,8 +1,8 @@
 <?php
 $lang = array
-    (
+(
     'view' => 'zobrazit',
-    'delete'=> 'smazat',
+    'delete' => 'smazat',
     'add' => 'přidat',
     'index' => 'výpis',
     'search' => 'vyhledat',
@@ -80,5 +80,6 @@ $lang = array
     'icon' => '',
     'important' => 'Významný zdroj',
     'active' => 'Aktivní',
-    )
+    'parent_id' => 'Přísluší k',
+)
 ?>

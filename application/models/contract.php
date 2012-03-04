@@ -11,7 +11,7 @@ class Contract_Model extends Table_Model
     protected $has_many = array('addendums');
     protected $sorting = array('year' => 'desc', 'contract_no' => 'desc');
     public $headers = array('contract_title', 'resource', 'publisher');
-    public $formo_ignores = array('contract_id', 'addendum');
+    public $formo_ignores = array('contract_id', 'addendum', 'parent_id');
 
     public function _construct($id = NULL)
     {
@@ -186,6 +186,16 @@ class Contract_Model extends Table_Model
         } else {
             parent::select_list($key, $val);
         }
+    }
+
+    public function has_addendums()
+    {
+        return (bool)$this->where('parent_id', $this->id)->find_all()->count();
+    }
+
+    public function get_addendums()
+    {
+        return $this->where('parent_id', $this->id)->find_all();
     }
 }
 

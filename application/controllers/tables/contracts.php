@@ -16,6 +16,7 @@ class Contracts_Controller extends Table_Controller
 
         $append_view = View::factory('tables/append_contract');
         $append_view->resources = $resources;
+        $append_view->contract = $contract;
 
         $view = $this->template->content;
         $view->set('append_view', $append_view);
@@ -62,7 +63,7 @@ class Contracts_Controller extends Table_Controller
         {
             message::set_flash('Nenastavené ID zdroje!');
         }
-            url::redirect(url::site('/tables/contracts/view/'.$contract->id));
+        url::redirect(url::site('/tables/contracts/view/' . $contract->id));
     }
 
     public function erase($contract_id = FALSE)

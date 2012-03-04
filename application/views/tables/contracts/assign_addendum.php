@@ -1,7 +1,7 @@
 <h3>Přeješ si vytvořit dodatek smlouvy nebo přiřadit zdroj k existující smlouvě.</h3>
 <button id='assign_addendum_button'>Vytvořit dodatek</button>
 </a>
-<a href="">
+<a href="<?= url::site("progress/assign_existing_contract/{$resource->id}/{$contract->id}/1") ?>">
     <button>Přiřadit ke smlouvě</button>
 </a>
 <div id="assign_addendum_dialog" title="Přiřadit datum podpisu">

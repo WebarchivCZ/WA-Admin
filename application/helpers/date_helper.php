@@ -1,7 +1,8 @@
 <?php
 class date_helper
 {
-    const MYSQL_DATE_FORMAT = 'Y-m-d H:i:s';
+    const MYSQL_DATETIME_FORMAT = 'Y-m-d H:i:s';
+    const MYSQL_DATE_FORMAT = 'Y-m-d';
     const SCREENSHOT_DATE_FORMAT = 'Ymd';
 
     /**
@@ -11,6 +12,11 @@ class date_helper
     static function short_date($long_date)
     {
         return self::get_date_in_format($long_date, Kohana::config('wadmin.short_date_format'));
+    }
+
+    static function mysql_datetime($short_date)
+    {
+        return self::get_date_in_format($short_date, self::MYSQL_DATETIME_FORMAT);
     }
 
     static function mysql_date($short_date)
@@ -25,11 +31,11 @@ class date_helper
 
     static function mysql_date_now()
     {
-        $date_format = self::MYSQL_DATE_FORMAT;
+        $date_format = self::MYSQL_DATETIME_FORMAT;
         return date($date_format);
     }
 
-    private static function get_date_in_format($date, $format)
+    public static function get_date_in_format($date, $format)
     {
         if ($date == '') {
             return '';

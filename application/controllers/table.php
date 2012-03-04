@@ -89,6 +89,7 @@ abstract class Table_Controller extends Template_Controller
         $view = View::factory($this->view);
         $view->bind('values', $values);
         $view->bind('header', $this->header);
+        $view->bind('model', $this->model);
         $view->set('edit_url', $url);
         $this->template->content = $view;
     }

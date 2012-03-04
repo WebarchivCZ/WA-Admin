@@ -54,11 +54,13 @@ class Progress_Controller extends Template_Controller
 
     public function save_contract($resource_id)
     {
-        $contract_val = $this->session->get('contract_val', NULL);
+        $contract_val = $this->session->get('contract_val', date('Y-m-d'));
         if (!is_null($contract_val)) {
+            $contract_val['date_signed'] = date_helper::mysql_date($contract_val['date_signed']);
             $contract = Contract_Model::create($contract_val);
 
             $new_contract_no = Contract_Model::new_contract_no($contract->date_signed);
+            $new_contract_year = substr($contract->date_signed, 0, 4);
 
             $form = Formo::factory('save_contract');
             $form->add('contract_no')
@@ -67,7 +69,7 @@ class Progress_Controller extends Template_Controller
                 ->required(TRUE);
             $form->add('year')
                 ->label('Rok')
-                ->value(substr($contract->date_signed, 0, 4))
+                ->value($new_contract_year)
                 ->required(TRUE);
             $form->add('submit', 'odeslat')
                 ->value('Uložit smlouvu');
@@ -128,7 +130,7 @@ class Progress_Controller extends Template_Controller
         url::redirect('progress');
     }
 
-    public function assign_existing_contract($resource_id = NULL, $contract_id = NULL)
+    public function assign_existing_contract($resource_id = NULL, $contract_id = NULL, $save = false)
     {
         if ($resource_id == NULL or $contract_id == NULL) {
             $this->session->set_flash('message', 'Není nastaveno ID smlouvy');
@@ -140,20 +142,18 @@ class Progress_Controller extends Template_Controller
             $this->session->set_flash('message', 'Smlouva nebo zdroj neexistuje');
             url::redirect('progress');
         } else {
-            // TODO zjistit, jestli vytvarime doplnek
-            // tri vetve - assign_contract, assign_addendum, assign_blanko
-            if ($contract->domain_has_blanco($resource->url)) {
-                // todo assign contract
+            if ($save) {
+                $resource->contract_id = $contract->id;
+                $resource->resource_status_id = RS_APPROVED_PUB;
+                $resource->save();
+                $this->session->set_flash('message', 'Smlouva byla úspěšně přiřazena.');
+                url::redirect('tables/resources/view/' . $resource->id);
             } else {
                 $this->template->content = View::factory('tables/contracts/assign_addendum')
                     ->set('resource', $resource)
                     ->set('contract', $contract);
             }
-            //            $resource->contract_id = $contract->id;
-            //            $resource->resource_status_id = RS_APPROVED_PUB;
-            //            $resource->save();
-            //            $this->session->set_flash('message', 'Smlouva byla úspěšně přiřazena.');
-            //            url::redirect('tables/resources/view/' . $resource->id);
+
         }
     }
 
@@ -173,7 +173,8 @@ class Progress_Controller extends Template_Controller
         }
     }
 
-    private function generate_new_contract_form($resource_title)
+    private
+    function generate_new_contract_form($resource_title)
     {
         $form = Formo::factory('add_contract');
         $form
@@ -184,7 +185,7 @@ class Progress_Controller extends Template_Controller
         $form
             ->add('date_signed')
             ->label('Datum podpisu')
-            ->value(date('Y-m-d'))
+            ->value(date('d.m.Y'))
             ->required(TRUE);
         $form
             ->add('checkbox', 'cc')
@@ -208,10 +209,11 @@ class Progress_Controller extends Template_Controller
         return $form;
     }
 
-    public function assign_addendum($resource_id, $contract_id)
+    public
+    function assign_addendum($resource_id, $contract_id)
     {
         $addendum = new Addendum_Model(NULL, ORM::factory('contract', $contract_id));
-        $addendum->date_signed = date_helper::mysql_date(
+        $addendum->date_signed = date_helper::mysql_datetime(
             $this->input->post('date_signed'));
         $addendum->save();
         $resource = new Resource_Model($resource_id);
@@ -222,5 +224,3 @@ class Progress_Controller extends Template_Controller
         url::redirect(url::site("/tables/resources/view/{$resource->id}"));
     }
 }
-
-?>

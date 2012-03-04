@@ -26,7 +26,7 @@ $config['debug_mode'] = TRUE;
 
 $config['version'] = '2.31';
 
-$config['build'] = '1';
+$config['build'] = 4;
 
 $config['ticket_url'] = 'https://github.com/WebArchivCZ/WA-Admin/issues/new';
 
