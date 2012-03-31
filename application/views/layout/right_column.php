@@ -5,25 +5,37 @@
         <p><?= $help_box ?></p>
     </div>
     <? } ?>
-    
+
     <strong class="h">Informace</strong>
+
     <div class="box">
+        <?php
+        if (Kohana::config("wadmin.debug_mode") == true) {
+            echo "<p></p><b>TESTOVACÍ VERZE</b></p>";
+        }
+        ?>
         <p><?= date('H:i - d.m.Y'); ?></p>
         <?php if (Auth::instance()->logged_in()) { ?>
-        <p>přihlášen: <?= Auth::instance()->get_user()->username ?><br /></p>
+        <p>přihlášen: <?= Auth::instance()->get_user()->username ?><br/></p>
         <p><a href="<?= url::site('home') ?>/logout">Odhlásit</a></p>
-        <? } else {
-            echo '<p>Nepřihlášen</p>';
-        } ?>
+        <?
+    } else {
+        echo '<p>Nepřihlášen</p>';
+    } ?>
     </div>
-    
+
     <strong class="h">VÝVOJ</strong>
+
     <div class="box">
         <p><a href="<?= Kohana::config('wadmin.ticket_url') ?>" target="_blank">Vytvořit ticket</a></p>
+
         <p>WA Admin <?= Kohana::config('wadmin.version') ?>.<?= Kohana::config('wadmin.build') ?></p>
-        <p><a href="http://raptor.webarchiv.cz:8000/trac/milestone/WA%20Admin%20v2.2" target="_blank">Stav nové verze</a></p>
+
+        <p><a href="http://raptor.webarchiv.cz:8000/trac/milestone/WA%20Admin%20v2.2" target="_blank">Stav nové
+            verze</a></p>
     </div>
     <strong class="h">Nástroje</strong>
+
     <div class="box">
         <p><?= html::anchor(url::site('/tables/seeds/generate_list'), 'Semínkáč')?></p>
     </div>
