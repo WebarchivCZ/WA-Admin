@@ -157,24 +157,7 @@ class Progress_Controller extends Template_Controller
         }
     }
 
-    private function process_form($form, $resource)
-    {
-        $contract = ORM::factory('contract');
-
-        $form->remove('resource_title');
-        $values = $form->get_values();
-
-        foreach ($values as $name => $value) {
-            if ($value != '') {
-                $contract->__set($name, $value);
-            }
-
-
-        }
-    }
-
-    private
-    function generate_new_contract_form($resource_title)
+    private function generate_new_contract_form($resource_title)
     {
         $form = Formo::factory('add_contract');
         $form
@@ -209,12 +192,12 @@ class Progress_Controller extends Template_Controller
         return $form;
     }
 
-    public
-    function assign_addendum($resource_id, $contract_id)
+    public function assign_addendum($resource_id, $contract_id)
     {
         $addendum = new Addendum_Model(NULL, ORM::factory('contract', $contract_id));
-        $addendum->date_signed = date_helper::mysql_datetime(
-            $this->input->post('date_signed'));
+        $addendum->date_signed = date_helper::mysql_datetime($this->input->post('date_signed'));
+        $addendum->year = date('Y');
+        $addendum->contract_no = Contract_Model::new_contract_no($addendum->date_signed);
         $addendum->save();
         $resource = new Resource_Model($resource_id);
         $resource->contract_id = $addendum->id;
