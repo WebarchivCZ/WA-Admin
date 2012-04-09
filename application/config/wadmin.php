@@ -24,9 +24,9 @@ $config['wayback_url'] = 'http://har.webarchiv.cz:8080/AP1/query?type=urlquery&a
  */
 $config['debug_mode'] = TRUE;
 
-$config['version'] = '2.31';
+$config['version'] = '2.32';
 
-$config['build'] = 4;
+$config['build'] = 1;
 
 $config['ticket_url'] = 'https://github.com/WebArchivCZ/WA-Admin/issues/new';
 
