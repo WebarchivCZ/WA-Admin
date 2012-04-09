@@ -512,15 +512,30 @@ class Resource_Model extends Table_Model
         return ORM::factory('rating')->where(array('resource_id' => $this->id, 'comments !=' => ''))->find_all();
     }
 
+    public function create_addendum($contract_id, $date_signed)
+    {
+        $addendum = new Addendum_Model(NULL, ORM::factory('contract', $contract_id));
+        $addendum->date_signed = date_helper::mysql_datetime($date_signed);
+        $addendum->year = date_helper::get_year($date_signed);
+        $addendum->contract_no = Contract_Model::new_contract_no($addendum->date_signed);
+        $addendum->save();
+
+        $this->contract_id = $addendum->id;
+        $this->resource_status_id = RS_APPROVED_PUB;
+        $this->save();
+
+        return $addendum;
+    }
+
     /**
      * Maze zdroj a prislusne zaznamy
-     *zdroj
-     * vydavatel (pokud ma jen tento zdroj) LiCo?: OK
-     * smlouva (pokud ma jen tento zdroj) LiCo?: OK
-     * kontakt (viz vyse - pozn. o funkcionalite) - LiCo?: v soucasne verzi ano, pokud by se v pristi verzi upravovala funcionalita, bylo by treba upravit stejne jako u vydavatele a smlouvy
-     * hodnoceni (vsechna) LiCo?: OK
-     * seminka (vsechna) LiCo?: OK
-     * osloveni (vsechna) LiCo?: OK
+     * zdroj
+     * vydavatel (pokud ma jen tento zdroj)
+     * smlouva (pokud ma jen tento zdroj)
+     * kontakt (viz vyse - pozn. o funkcionalite)
+     * hodnoceni (vsechna)
+     * seminka (vsechna)
+     * osloveni (vsechna)
      * nominace
      */
     public function delete_record()

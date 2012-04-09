@@ -4,29 +4,35 @@ class date_helper
     const MYSQL_DATETIME_FORMAT = 'Y-m-d H:i:s';
     const MYSQL_DATE_FORMAT = 'Y-m-d';
     const SCREENSHOT_DATE_FORMAT = 'Ymd';
+    const GET_ONLY_YEAR = 'Y';
 
     /**
      * Formatting according set format in wadmin config
-     * @param DATETIME $long_date
+     * @param DATETIME $date
      */
-    static function short_date($long_date)
+    static function short_date($date)
     {
-        return self::get_date_in_format($long_date, Kohana::config('wadmin.short_date_format'));
+        return self::get_date_in_format($date, Kohana::config('wadmin.short_date_format'));
     }
 
-    static function mysql_datetime($short_date)
+    static function mysql_datetime($date)
     {
-        return self::get_date_in_format($short_date, self::MYSQL_DATETIME_FORMAT);
+        return self::get_date_in_format($date, self::MYSQL_DATETIME_FORMAT);
     }
 
-    static function mysql_date($short_date)
+    static function mysql_date($date)
     {
-        return self::get_date_in_format($short_date, self::MYSQL_DATE_FORMAT);
+        return self::get_date_in_format($date, self::MYSQL_DATE_FORMAT);
     }
 
-    static function screenshot_date($short_date)
+    static function screenshot_date($date)
     {
-        return self::get_date_in_format($short_date, self::SCREENSHOT_DATE_FORMAT);
+        return self::get_date_in_format($date, self::SCREENSHOT_DATE_FORMAT);
+    }
+
+    static function get_year($date)
+    {
+        return self::get_date_in_format($date, self::GET_ONLY_YEAR);
     }
 
     static function mysql_date_now()

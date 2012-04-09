@@ -119,8 +119,7 @@ class Contract_Model extends Table_Model
         }
 
         $sql = 'select MAX(`contract_no`) AS `last_contract` FROM contracts WHERE year = YEAR("' . $date_signed . '")';
-        $db = Database::instance();
-        $result = $db->query($sql)->current();
+        $result = Database::instance()->query($sql)->current();
         return $result->last_contract + 1;
     }
 

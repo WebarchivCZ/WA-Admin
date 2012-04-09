@@ -60,7 +60,7 @@ class Progress_Controller extends Template_Controller
             $contract = Contract_Model::create($contract_val);
 
             $new_contract_no = Contract_Model::new_contract_no($contract->date_signed);
-            $new_contract_year = substr($contract->date_signed, 0, 4);
+            $new_contract_year = date_helper::get_year($contract->date_signed);
 
             $form = Formo::factory('save_contract');
             $form->add('contract_no')
@@ -194,16 +194,9 @@ class Progress_Controller extends Template_Controller
 
     public function assign_addendum($resource_id, $contract_id)
     {
-        $addendum = new Addendum_Model(NULL, ORM::factory('contract', $contract_id));
-        $addendum->date_signed = date_helper::mysql_datetime($this->input->post('date_signed'));
-        $addendum->year = date('Y');
-        $addendum->contract_no = Contract_Model::new_contract_no($addendum->date_signed);
-        $addendum->save();
         $resource = new Resource_Model($resource_id);
-        $resource->contract_id = $addendum->id;
-        $resource->resource_status_id = RS_APPROVED_PUB;
-        $resource->save();
+        $addendum = $resource->create_addendum($contract_id, $this->input->post('date_signed'));
         message::set_flash("Doplněk pro smlouvu {$addendum} byl úspěšně přiřazen.");
-        url::redirect(url::site("/tables/resources/view/{$resource->id}"));
+        url::redirect(url::site("/tables/resources/view/{$resource_id}"));
     }
 }

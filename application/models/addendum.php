@@ -26,10 +26,8 @@ class Addendum_Model extends Contract_Model
             if ($parent_contract instanceof Contract_Model) {
                 $this->parent_id = $parent_contract->id;
                 $this->addendum = TRUE;
-                $this->year = $parent_contract->year;
-                $this->contract_no = $parent_contract->contract_no;
                 $this->active = TRUE;
-                $this->comments .= "Doplňek pro smlouvu {$parent_contract}.";
+                $this->comments .= "Doplňek pro smlouvu {$parent_contract}. ";
             } else {
                 throw new WaAdmin_Exception('Nespravny argument',
                     'Doplnek smlouvy musi mit pri svem vytvoreni zadanu rodicovskou smlouvu');
