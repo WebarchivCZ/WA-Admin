@@ -95,7 +95,6 @@ class Progress_Controller extends Template_Controller
 
                 url::redirect('tables/resources/view/' . $resource->id);
             } else {
-
                 $view = View::factory('new_contract');
 
                 $view->resource_id = $resource_id;
