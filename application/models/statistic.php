@@ -61,7 +61,7 @@ class Statistic_Model extends Model
         $date_conditions = self::create_date_conditions('last_date', $year, $month);
         $where = self::combine_conditions($date_conditions, 'HAVING');
 
-        $sql = "SELECT id, MAX(date) AS last_date FROM ratings GROUP BY resource_id, round {$where}";
+        $sql = "SELECT id, MIN(date) AS last_date FROM ratings GROUP BY resource_id, round {$where}";
         return self::evaluate_sql($sql);
     }
 
