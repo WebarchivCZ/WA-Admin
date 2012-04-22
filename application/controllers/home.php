@@ -12,10 +12,11 @@ class Home_Controller extends Template_Controller
         $dashboard->fill_dashboard($this->user);
         $view->dashboard = $dashboard;
         $content->dashboard = $view;
-		$content->stats = View::factory('mockup/statistics');
-        
+        $content->stats = View::factory('fragments/statistics');
+
         $this->template->content = $content;
     }
 
 }
+
 ?>
