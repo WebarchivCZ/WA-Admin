@@ -142,9 +142,18 @@ class Progress_Controller extends Template_Controller
             url::redirect('progress');
         } else {
             if ($save) {
+                $old_contract = ORM::factory('contract', $resource->contract_id);
                 $resource->contract_id = $contract->id;
                 $resource->resource_status_id = RS_APPROVED_PUB;
                 $resource->save();
+
+                $today_date = date('d.m.Y');
+                $additional_space = ($old_contract->comments == '') ? '' : ' ';
+                $old_contract->comments .= "{$additional_space}Smlouva byla pro zdroj '{$resource->title}'
+                                                nahrazena dne {$today_date}
+                                                smlouvou {$contract->contract_no}/{$contract->year}";
+                $old_contract->save();
+
                 $this->session->set_flash('message', 'Smlouva byla úspěšně přiřazena.');
                 url::redirect('tables/resources/view/' . $resource->id);
             } else {
