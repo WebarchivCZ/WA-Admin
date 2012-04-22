@@ -11,6 +11,7 @@
  *
  * Group Options:
  *  benchmark     - Enable or disable database benchmarking
+ *  logging       - Enable query logging
  *  persistent    - Enable or disable a persistent connection
  *  connection    - Array of connection specific parameters; alternatively,
  *                  you can use a DSN though it is not as fast and certain
@@ -26,6 +27,7 @@
 $config['default'] = array
 (
 	'benchmark'     => TRUE,
+    'logging'       => FALSE,
 	'persistent'    => FALSE,
 	'connection'    => array
 	(
