@@ -21,6 +21,7 @@ class Database_Core {
 	protected $config = array
 	(
 		'benchmark'     => TRUE,
+        'logging'       => FALSE,
 		'persistent'    => FALSE,
 		'connection'    => '',
 		'character_set' => 'utf8',
@@ -261,11 +262,19 @@ class Database_Core {
 		// Stop the benchmark
 		$stop = microtime(TRUE);
 
+        $rows = count($result);
+        $execution_time = $stop - $start;
+
 		if ($this->config['benchmark'] == TRUE)
 		{
 			// Benchmark the query
-			self::$benchmarks[] = array('query' => $sql, 'time' => $stop - $start, 'rows' => count($result));
+			self::$benchmarks[] = array('query' => $sql, 'time' => $execution_time, 'rows' => $rows);
 		}
+
+        if ($this->config['logging'] == TRUE) {
+            $debug_message = "SQL\n {$sql}\n time: {$execution_time} | rows: {$rows}";
+            Kohana::log('debug', $debug_message);
+        }
 
 		return $result;
 	}
