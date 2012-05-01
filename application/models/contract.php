@@ -97,7 +97,8 @@ class Contract_Model extends Table_Model
                                         AND blanco_contract = 1
                                         ORDER BY date_signed DESC LIMIT 1";
         $result = Database::instance()->query($sql)->current();
-        return ORM::factory('contract', $result->id)->find();
+        $blanco_contract = ORM::factory('contract', $result->id);
+        return $blanco_contract;
     }
 
     public static function is_already_inserted($year, $contract_no)

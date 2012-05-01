@@ -31,7 +31,7 @@ class Progress_Controller extends Template_Controller
         if (!$form->validate()) {
             $view = View::factory('new_contract');
 
-            if (Contract_Model::domain_has_blanco($resource->url)) {
+            if (Contract_Model::domain_has_blanco($resource->url) === TRUE) {
                 $view->blanko_contract = Contract_Model::domain_get_blanco($resource->url);
             } else {
                 $view->contracts = $publisher->get_contracts();
@@ -137,11 +137,12 @@ class Progress_Controller extends Template_Controller
         }
         $resource = ORM::factory('resource', $resource_id);
         $contract = ORM::factory('contract', $contract_id);
+        $is_addendum = (bool)$contract->addendum;
         if (!$resource->__isset('title') or  !$contract->__isset('contract_no')) {
             $this->session->set_flash('message', 'Smlouva nebo zdroj neexistuje');
             url::redirect('progress');
         } else {
-            if ($save) {
+            if ($save OR $is_addendum) {
                 $old_contract = ORM::factory('contract', $resource->contract_id);
                 $resource->contract_id = $contract->id;
                 $resource->resource_status_id = RS_APPROVED_PUB;
