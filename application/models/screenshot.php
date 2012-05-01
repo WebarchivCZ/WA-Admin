@@ -23,8 +23,7 @@ class Screenshot_Model extends Model
             $resource = new Resource_Model($resource_id);
             if ($resource->screenshot_date != '') {
                 $instance->datetime = $resource->screenshot_date;
-            } else
-            {
+            } else {
                 $instance->datetime = end(self::list_screenshot_dates($resource_id));
             }
         }
@@ -104,7 +103,11 @@ class Screenshot_Model extends Model
 
     public function exists()
     {
-        return file_exists(Kohana::config('wadmin.screenshots_dir') . $this->get_filename());
+        $is_screenshot_existing = file_exists(Kohana::config('wadmin.screenshots_dir') . $this->get_filename());
+        if (!$is_screenshot_existing) {
+            Kohana::log('alert', "Screenshot {$this->get_filename()} doesn't exit");
+        }
+        return $is_screenshot_existing;
     }
 
     public function set_datetime($datetime)
