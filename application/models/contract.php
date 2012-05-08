@@ -58,7 +58,7 @@ class Contract_Model extends Table_Model
 
     public static function create($values)
     {
-        if (is_array($values)) {
+        if (is_array($values) === TRUE) {
             $contract = ORM::factory('contract');
             foreach ($values as $key => $value) {
                 if (in_array($key, array_keys($contract->table_columns))) {

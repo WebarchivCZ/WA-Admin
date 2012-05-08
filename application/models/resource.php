@@ -64,7 +64,6 @@ class Resource_Model extends Table_Model
     private function set_contract($contract_id)
     {
         $new_contract = new Contract_Model($contract_id);
-        // TODO pridat poznamku do komentaru
         parent::__set('contract_id', $new_contract->id);
     }
 
@@ -184,7 +183,7 @@ class Resource_Model extends Table_Model
 
     public function is_related($column)
     {
-        return in_array($column, $this->belongs_to) or $column == 'creator';
+        return (bool)parent::is_related($column) OR $column == 'creator';
     }
 
     /**
@@ -194,7 +193,7 @@ class Resource_Model extends Table_Model
      */
     public function is_curated_by($curator)
     {
-        if ($curator instanceof Curator_Model and $curator->__isset('id')) {
+        if ($curator instanceof Curator_Model AND $curator->__isset('id')) {
             if ($this->curator_id == $curator->id) {
                 return TRUE;
             } else {
@@ -512,9 +511,9 @@ class Resource_Model extends Table_Model
         return ORM::factory('rating')->where(array('resource_id' => $this->id, 'comments !=' => ''))->find_all();
     }
 
-    public function create_addendum($contract_id, $date_signed)
+    public function create_addendum($parent_contract_id, $date_signed)
     {
-        $addendum = new Addendum_Model(NULL, ORM::factory('contract', $contract_id));
+        $addendum = new Addendum_Model(NULL, ORM::factory('contract', $parent_contract_id));
         $addendum->date_signed = date_helper::mysql_datetime($date_signed);
         $addendum->year = date_helper::get_year($date_signed);
         $addendum->contract_no = Contract_Model::new_contract_no($addendum->date_signed);
