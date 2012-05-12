@@ -526,6 +526,16 @@ class Resource_Model extends Table_Model
         return $addendum;
     }
 
+    public function replace_contract($new_contract)
+    {
+        $old_contract = ORM::factory('contract', $this->contract_id);
+        $old_contract->parent_id = $new_contract->id;
+        $old_contract->save();
+
+        $this->contract_id = $new_contract->id;
+        $this->save();
+    }
+
     /**
      * Maze zdroj a prislusne zaznamy
      * zdroj
@@ -589,20 +599,42 @@ class Resource_Model extends Table_Model
         }
     }
 
+    public function has_more_contracts()
+    {
+        $sql = "SELECT c.id FROM contracts c, contracts p WHERE c.id = p.parent_id AND p.id = {$this->contract_id}";
+        return $this->has_count_larger_then_zero($sql);
+    }
+
     public function has_nomination()
     {
         $sql = "SELECT resource_id FROM nominations WHERE resource_id = {$this->id}";
+        return $this->has_count_larger_then_zero($sql);
+    }
+
+    public function get_screenshot()
+    {
+        return Screenshot_Model::get_screen_for_resource($this->id);
+    }
+
+    public function get_inactive_contracts()
+    {
+        $sql = "SELECT c.id as id FROM contracts c, contracts p WHERE c.id = p.parent_id AND p.id = {$this->contract_id}";
+        $contracts = array();
+        $result = Database::instance()->query($sql);
+        foreach ($result as $record) {
+            $contracts[] = ORM::factory('contract', $record->id);
+        }
+        return $contracts;
+    }
+
+    private function has_count_larger_then_zero($sql)
+    {
         $count = Database::instance()->query($sql)->count();
         if ($count > 0) {
             return true;
         } else {
             return false;
         }
-    }
-
-    public function get_screenshot()
-    {
-        return Screenshot_Model::get_screen_for_resource($this->id);
     }
 }
 

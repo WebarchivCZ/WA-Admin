@@ -87,6 +87,10 @@ class Progress_Controller extends Template_Controller
 
                 $resource = ORM::factory('resource', $resource_id);
                 $resource->resource_status_id = RS_APPROVED_PUB;
+                if ($resource->contract_id != null) {
+                    $contract->parent_id = $resource->contract_id;
+                    $contract->save();
+                }
                 $resource->contract_id = $contract->id;
                 $resource->save();
                 $message = "Zdroj <em>{$resource->title}</em> - smlouva {$contract} uložena.";
@@ -135,25 +139,17 @@ class Progress_Controller extends Template_Controller
             $this->session->set_flash('message', 'Není nastaveno ID smlouvy');
             url::redirect('progress');
         }
-        $resource = ORM::factory('resource', $resource_id);
-        $contract = ORM::factory('contract', $contract_id);
+        $resource = new Resource_Model($resource_id);
+        $contract = new Contract_Model($contract_id);
         $is_addendum = (bool)$contract->addendum;
         if (!$resource->__isset('title') or  !$contract->__isset('contract_no')) {
             $this->session->set_flash('message', 'Smlouva nebo zdroj neexistuje');
             url::redirect('progress');
         } else {
-            if ($save OR $is_addendum) {
-                $old_contract = ORM::factory('contract', $resource->contract_id);
+            if ($save or $is_addendum) {
                 $resource->contract_id = $contract->id;
                 $resource->resource_status_id = RS_APPROVED_PUB;
                 $resource->save();
-
-                $today_date = date('d.m.Y');
-                $additional_space = ($old_contract->comments == '') ? '' : ' ';
-                $old_contract->comments .= "{$additional_space}Smlouva byla pro zdroj '{$resource->title}'
-                                                nahrazena dne {$today_date}
-                                                smlouvou {$contract->contract_no}/{$contract->year}";
-                $old_contract->save();
 
                 $this->session->set_flash('message', 'Smlouva byla úspěšně přiřazena.');
                 url::redirect('tables/resources/view/' . $resource->id);
@@ -203,8 +199,9 @@ class Progress_Controller extends Template_Controller
 
     public function assign_addendum($resource_id, $contract_id)
     {
+        $default_date_signed = date(date_helper::MYSQL_DATE_FORMAT);
         $resource = new Resource_Model($resource_id);
-        $addendum = $resource->create_addendum($contract_id, $this->input->post('date_signed'));
+        $addendum = $resource->create_addendum($contract_id, $this->input->post('date_signed', $default_date_signed));
         message::set_flash("Doplněk pro smlouvu {$addendum} byl úspěšně přiřazen.");
         url::redirect(url::site("/tables/resources/view/{$resource_id}"));
     }
