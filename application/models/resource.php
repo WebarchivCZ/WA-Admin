@@ -601,6 +601,9 @@ class Resource_Model extends Table_Model
 
     public function has_more_contracts()
     {
+        if ($this->contract_id == '') {
+            return false;
+        }
         $sql = "SELECT c.id FROM contracts c, contracts p WHERE c.id = p.parent_id AND p.id = {$this->contract_id}";
         return $this->has_count_larger_then_zero($sql);
     }
