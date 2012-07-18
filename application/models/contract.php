@@ -83,20 +83,35 @@ class Contract_Model extends Table_Model
         }
     }
 
+    /**
+     * If blanco contract for domain exists - returns true.
+     * @static
+     * @param $url full domain like http://www.apavcas.cz
+     * @return bool true if domain has signed blanco contract
+     */
     public static function domain_has_blanco($url)
     {
-        $sql = "SELECT COUNT(id) as count FROM contracts WHERE '${url}' REGEXP domain
-                                                            AND blanco_contract = 1";
-        $result = Database::instance()->query($sql)->current();
-        return (bool)$result->count;
+        // we need to ensure that domain is starting with dot (.)
+        $sql = "SELECT COUNT(id) as has_contract FROM contracts
+                                          WHERE '${url}' REGEXP CONCAT('\\\.',domain)
+                                          AND blanco_contract = TRUE";
+        $result = sql::get_first_result($sql);
+        return (bool)$result->has_contract;
     }
 
+    /**
+     * Return first blanco contract that could be assigned for domain.
+     * @static
+     * @param $url full domain like http://www.apavcas.cz
+     * @return Contract_Model blanco contract for domain
+     */
     public static function domain_get_blanco($url)
     {
-        $sql = "SELECT id FROM contracts WHERE '${url}' REGEXP domain
-                                        AND blanco_contract = 1
+        // we need to ensure that domain is starting with dot (.)
+        $sql = "SELECT id FROM contracts WHERE '${url}' REGEXP CONCAT('\\\.',domain)
+                                        AND blanco_contract = TRUE
                                         ORDER BY date_signed DESC LIMIT 1";
-        $result = Database::instance()->query($sql)->current();
+        $result = sql::get_first_result($sql);
         $blanco_contract = ORM::factory('contract', $result->id);
         return $blanco_contract;
     }
@@ -120,7 +135,7 @@ class Contract_Model extends Table_Model
         }
 
         $sql = 'select MAX(`contract_no`) AS `last_contract` FROM contracts WHERE year = YEAR("' . $date_signed . '")';
-        $result = Database::instance()->query($sql)->current();
+        $result = sql::get_first_result($sql);
         return $result->last_contract + 1;
     }
 

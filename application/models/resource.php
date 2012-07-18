@@ -272,9 +272,9 @@ class Resource_Model extends Table_Model
      */
     public function get_last_rating_round()
     {
-        $sql = "SELECT MAX(round) as round FROM ratings WHERE resource_id = {$this->id}";
-        $result = Database::instance()->query($sql);
-        $round = $result->current()->round;
+        $sql = "SELECT MAX(round) as rating_round FROM ratings WHERE resource_id = {$this->id}";
+        $result = sql::get_first_result($sql);
+        $round = $result->rating_round;
         return $round;
     }
 
@@ -395,10 +395,8 @@ class Resource_Model extends Table_Model
 
     public function get_round_count()
     {
-        $sql = "SELECT MAX(round) as round FROM ratings WHERE resource_id = {$this->id}";
-        $result = Database::instance()->query($sql);
-        return $result->current()->round;
-
+        $sql = "SELECT MAX(round) as last_round FROM ratings WHERE resource_id = {$this->id}";
+        return sql::get_first_result($sql)->last_round;
     }
 
     public function get_reevaluate_date_plain()
@@ -431,15 +429,16 @@ class Resource_Model extends Table_Model
      */
     public function get_ratings_date($round = 1)
     {
-        $sql = "SELECT MAX(date) as datum FROM ratings WHERE resource_id = {$this->id} AND round = {$round}";
-        $result = Database::instance()->query($sql);
-        $date = $result->current()->datum;
-        if (!is_null($date)) {
-            $date = date("d.m.Y", strtotime($date));
+        $sql = "SELECT MAX(date) as rating_date FROM ratings
+                                                WHERE resource_id = {$this->id}
+                                                AND round = {$round}";
+        $rating_date = sql::get_first_result($sql)->rating_date;
+        if (!is_null($rating_date)) {
+            $rating_date = date("d.m.Y", strtotime($rating_date));
         } else {
-            $date = 'nehodnocen';
+            $rating_date = 'nehodnocen';
         }
-        return $date;
+        return $rating_date;
     }
 
     public function save_final_rating($rating = NULL)

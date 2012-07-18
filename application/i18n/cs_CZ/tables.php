@@ -80,6 +80,6 @@ $lang = array
     'icon' => '',
     'important' => 'Významný zdroj',
     'active' => 'Aktivní',
-    'parent_id' => 'Přísluší k',
+    'parent_id' => 'Původní smlouva',
 )
 ?>

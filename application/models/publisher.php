@@ -8,17 +8,20 @@ defined('SYSPATH') or die('No direct script access.');
  * - name
  */
 
-class Publisher_Model extends Table_Model {
+class Publisher_Model extends Table_Model
+{
     public $headers = array('name');
     protected $primary_val = 'name';
     protected $sorting = array('name' => 'asc');
     protected $has_many = array('contact', 'resource');
 
-    public function __construct($id = NULL) {
+    public function __construct($id = NULL)
+    {
         parent::__construct($id);
     }
 
-    public function __get($column) {
+    public function __get($column)
+    {
         if ($column == 'short_name') {
             $value = parent::__get('name');
             $length = Kohana::config('wadmin.title_length');
@@ -28,7 +31,8 @@ class Publisher_Model extends Table_Model {
         return $value;
     }
 
-    public function delete_record() {
+    public function delete_record()
+    {
         $resources = $this->get_resources();
         foreach ($resources as $resource) {
             $resource->publisher_id = NULL;
@@ -44,14 +48,14 @@ class Publisher_Model extends Table_Model {
      * Zjisti, jestli ma vydavatel jiz podepsanou smlouvu
      * @return bool TRUE, pokud vydavatel ma jiz sepsanou nejakou smlouvu
      */
-    public function has_contract() {
-        $sql = "SELECT COUNT(c.id) as 'count' FROM contracts c, resources r WHERE
+    public function has_contract()
+    {
+        $sql = "SELECT COUNT(c.id) as 'contract_count' FROM contracts c, resources r WHERE
                                    r.publisher_id = {$this->id} AND
                                    r.contract_id = c.id";
 
-        $db = Database::instance();
-        $count = $db->query($sql)->current();
-        if ($count->count > 0) {
+        $contract_count = sql::get_first_result($sql)->contract_count;
+        if ($contract_count > 0) {
             return TRUE;
         } else {
             return FALSE;
@@ -62,12 +66,13 @@ class Publisher_Model extends Table_Model {
      * Vraci vsechny smlouvy, ktere ma vydavatel podepsane
      * @return ORM_Iterator smlouvy
      */
-    public function get_contracts() {
+    public function get_contracts()
+    {
         $contracts = ORM::factory('contract')
-                ->select('DISTINCT contracts.id')
-                ->join('resources', 'resources.contract_id', 'contracts.id')
-                ->where('resources.publisher_id', $this->id)
-                ->find_all();
+            ->select('DISTINCT contracts.id')
+            ->join('resources', 'resources.contract_id', 'contracts.id')
+            ->where('resources.publisher_id', $this->id)
+            ->find_all();
         return $contracts;
     }
 
@@ -75,7 +80,8 @@ class Publisher_Model extends Table_Model {
      * Vraci vsechny zdroje, ktere patri k danemu vydavateli
      * @return Resource_Model zdroje nalezici danemu vydavateli
      */
-    public function get_resources() {
+    public function get_resources()
+    {
         $resources = ORM::factory('resource')->where('publisher_id', $this->id)->find_all();
         return $resources;
     }
@@ -85,7 +91,8 @@ class Publisher_Model extends Table_Model {
      * aby mohli byt osloveni najednou a ne po castech
      * @return bool TRUE pokud ma vydavatel vice zdroju k osloveni
      */
-    public function has_many_to_address() {
+    public function has_many_to_address()
+    {
         // stavy schvalen wa a osloven v zavorkach, pouziti v SQL IN
         $statuses = RS_NEW . ',' . RS_APPROVED_WA;
         $sql = "SELECT r.id FROM publishers p, resources r
