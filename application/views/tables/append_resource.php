@@ -38,10 +38,15 @@ echo "<h3 class='record-information' style='clear:left;'>Vydavatel: {$publisher}
 echo "<h3 class='record-information' style='clear:left;'>Kontakt: {$contact}</h3>";
 echo "<h3 class='record-information' style='clear:left;'>Smlouva: {$contract}";
 if ($resource->has_more_contracts()) {
-    echo " - starší smlouvy ";
     foreach ($resource->get_inactive_contracts() as $contract) {
+        if ($contract->is_blanco()) {
+            $contract_message = "blanco smlouva ";
+        } else {
+            $contract_message = "původní smlouva ";
+        }
+        echo " || <i>{$contract_message} ";
         $c_url = url::site("tables/contracts/view/" . $contract->id);
-        echo " :: <i><a href='{$c_url}'>{$contract}</a></i>";
+        echo " : <a href='{$c_url}'>{$contract}</a></i>";
     }
 }
 echo "</h3>";

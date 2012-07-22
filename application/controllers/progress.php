@@ -18,8 +18,8 @@ class Progress_Controller extends Template_Controller
     }
 
     /**
-     * Zobrazí formulář pro přiřazení nové smlouvy ke zdroji s daným ID.
-     * @param int $id
+     * Show for contract assignment of resource identified by ID.
+     * @param int $id ID of resource
      */
     public function new_contract($resource_id)
     {
@@ -54,7 +54,7 @@ class Progress_Controller extends Template_Controller
 
     public function save_contract($resource_id)
     {
-        $contract_val = $this->session->get('contract_val', date('Y-m-d'));
+        $contract_val = $this->session->get('contract_val', date(date_helper::MYSQL_DATE_FORMAT));
         if (!is_null($contract_val)) {
             $contract_val['date_signed'] = date_helper::mysql_date($contract_val['date_signed']);
             $contract = Contract_Model::create($contract_val);
@@ -143,23 +143,27 @@ class Progress_Controller extends Template_Controller
         $contract = new Contract_Model($contract_id);
         $is_addendum = (bool)$contract->addendum;
         if (!$resource->__isset('title') or  !$contract->__isset('contract_no')) {
-            $this->session->set_flash('message', 'Smlouva nebo zdroj neexistuje');
+            $this->session->set_flash('message', 'Smlouva nebo zdroj neexistuje.');
             url::redirect('progress');
-        } else {
-            if ($save or $is_addendum) {
-                $resource->contract_id = $contract->id;
-                $resource->resource_status_id = RS_APPROVED_PUB;
-                $resource->save();
-
-                $this->session->set_flash('message', 'Smlouva byla úspěšně přiřazena.');
-                url::redirect('tables/resources/view/' . $resource->id);
-            } else {
-                $this->template->content = View::factory('tables/contracts/assign_addendum')
-                    ->set('resource', $resource)
-                    ->set('contract', $contract);
-            }
-
         }
+
+        // if addendum save as well because addendums can't have hierarchy
+        if ($save OR $is_addendum) {
+            $resource->contract_id = $contract->id;
+            $resource->resource_status_id = RS_APPROVED_PUB;
+            $resource->save();
+
+            $this->session->set_flash('message', 'Smlouva byla úspěšně přiřazena.');
+            url::redirect('tables/resources/view/' . $resource->id);
+        }
+        else {
+            $assignment_view = ($contract->is_blanco()) ? 'assign_blanco_contract' : 'assign_addendum';
+            $this->template->content = View::factory("tables/contracts/{$assignment_view}")
+                ->set('resource', $resource)
+                ->set('contract', $contract);
+        }
+
+
     }
 
     private function generate_new_contract_form($resource_title)
@@ -200,9 +204,17 @@ class Progress_Controller extends Template_Controller
     public function assign_addendum($resource_id, $contract_id)
     {
         $default_date_signed = date(date_helper::MYSQL_DATE_FORMAT);
+        $date_signed = $this->input->post('date_signed', $default_date_signed);
+
         $resource = new Resource_Model($resource_id);
-        $addendum = $resource->create_addendum($contract_id, $this->input->post('date_signed', $default_date_signed));
-        message::set_flash("Doplněk pro smlouvu {$addendum} byl úspěšně přiřazen.");
+        $contract = new Contract_Model($contract_id);
+        $addendum = $resource->create_addendum($contract_id, $date_signed);
+
+        if ($contract->is_blanco()) {
+            message::set_flash("Smlouva patřící k blanco smlouvě {$addendum} byla úspěšně přiřazena.");
+        } else {
+            message::set_flash("Doplněk pro smlouvu {$addendum} byl úspěšně přiřazen.");
+        }
         url::redirect(url::site("/tables/resources/view/{$resource_id}"));
     }
 }

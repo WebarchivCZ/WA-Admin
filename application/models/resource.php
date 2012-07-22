@@ -2,7 +2,6 @@
 defined('SYSPATH') or die('No direct script access.');
 /**
  * Model representing resource
- *
  */
 class Resource_Model extends Table_Model
 {
@@ -15,7 +14,7 @@ class Resource_Model extends Table_Model
     protected $has_many = array('seeds', 'ratings', 'correspondence', 'qa_checks', 'screenshots');
 
     public $headers = array('short_title', 'icon', 'url', 'publisher');
-    // to speed up loading of forms
+    // disable foreign keys to speed up forms loading (via Formo)
     public $formo_ignores = array('contact_id', 'publisher_id', 'contract_id');
 
     public function __construct($id = NULL)
@@ -206,7 +205,7 @@ class Resource_Model extends Table_Model
 
     public function is_ratable()
     {
-        $today = strtotime(date('Y-m-d'));
+        $today = strtotime(date(date_helper::MYSQL_DATE_FORMAT));
         $reevaluate_date = strtotime($this->get_reevaluate_date_plain());
         if ($this->resource_status_id == RS_NEW) {
             return true;
@@ -512,7 +511,9 @@ class Resource_Model extends Table_Model
 
     public function create_addendum($parent_contract_id, $date_signed)
     {
-        $addendum = new Addendum_Model(NULL, ORM::factory('contract', $parent_contract_id));
+        $contract = ORM::factory('contract', $parent_contract_id);
+
+        $addendum = new Addendum_Model(NULL, $contract);
         $addendum->date_signed = date_helper::mysql_datetime($date_signed);
         $addendum->year = date_helper::get_year($date_signed);
         $addendum->contract_no = Contract_Model::new_contract_no($addendum->date_signed);

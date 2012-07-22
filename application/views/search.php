@@ -1,17 +1,14 @@
 <h2>Výsledek vyhledávání dotazu: <em><?= $pattern ?></em></h2>
 <h3>Zdroje</h3>
 <?php if (count($resources) != 0) {
-    echo table::header();
-    ?>
-
+    echo table::header(); ?>
 <tr>
     <th class="first">Název</th>
     <th>&nbsp;</th>
     <th>URL</th>
     <th class="last">Vydavatel</th>
 </tr>
-<?php    foreach ($resources as $resource) {
-        ?>
+<?php foreach ($resources as $resource) { ?>
     <tr>
         <td class="first">
             <?= html::anchor('tables/resources/view/' . $resource->id, $resource->title) ?>
@@ -29,9 +26,7 @@
 </div>
 <?
 } else {
-    ?>
-<p>Nebyl nalezen žádný zdroj odpovídající hledanému řetězci</p>
-<?
-}?>
 
-<hr/><p>Poznámka: výraz je hledán v URL a názvu zdroje a jména vydavatele.</p>
+    echo '<p>Nebyl nalezen žádný zdroj odpovídající hledanému řetězci</p>';
+}
+echo '<hr/><p>Poznámka: výraz je hledán v URL a názvu zdroje a jména vydavatele.</p>';

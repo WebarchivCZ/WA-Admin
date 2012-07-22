@@ -212,6 +212,11 @@ class Contract_Model extends Table_Model
     {
         return $this->where('parent_id', $this->id)->find_all();
     }
+
+    public function is_blanco()
+    {
+        return (bool)$this->blanco_contract;
+    }
 }
 
 ?>

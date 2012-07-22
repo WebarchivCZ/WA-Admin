@@ -7,7 +7,7 @@
 
 <tr>
     <td class="first contract-name">
-        <?= html::anchor("progress/assign_existing_contract/{$resource_id}/{$contract->id}/1",
+        <?= html::anchor("progress/assign_existing_contract/{$resource_id}/{$contract->id}",
         $contract) ?>
     </td>
     <td class="last">

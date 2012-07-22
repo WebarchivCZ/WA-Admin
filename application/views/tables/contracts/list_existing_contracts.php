@@ -5,8 +5,7 @@
     <th class>Vydavatel</th>
     <th class="last">Komentář</th>
 </tr>
-<?php foreach ($contracts as $contract)
-{
+<?php foreach ($contracts as $contract) {
     $contract = new Contract_Model($contract->id);
     ?>
 <tr>
