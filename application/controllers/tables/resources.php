@@ -151,6 +151,7 @@ class Resources_Controller extends Table_Controller
     public function search_by_conspectus($conspectus_id = NULL)
     {
         if (!is_null($conspectus_id)) {
+            // TODO - delete dead code
             $search_string = $this->input->post('search_string');
 
             $model = ORM::factory($this->model);
