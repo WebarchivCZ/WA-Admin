@@ -14,9 +14,10 @@
  *
  *
  */
-class Dashboard_Model extends Model {
+class Dashboard_Model extends Model
+{
     protected $user;
-    
+
     public $to_rate;
     public $re_rate;
     public $new_rated;
@@ -25,10 +26,11 @@ class Dashboard_Model extends Model {
     public $to_address;
     public $to_qa;
     public $no_response;
-    
-    public function fill_dashboard($user) {
+
+    public function fill_dashboard($user)
+    {
         $this->user = $user;
-        
+
         $this->to_rate = count(Rating_Model::find_resources($user->id, RS_NEW, FALSE));
         $this->re_rate = count(Rating_Model::find_resources($user->id, RS_RE_EVALUATE, FALSE));
         $this->new_rated = count(Rating_Model::find_resources($user->id, RS_NEW, TRUE));
@@ -38,55 +40,48 @@ class Dashboard_Model extends Model {
         $this->to_qa = Resource_Model::get_to_checkQA($user->id)->count();
         $this->in_progress = $this->count_in_progress();
         $this->nominated = Nomination_Model::get_new($this->user->id)->count();
-    
-    }
-    
-    private function count_in_progress() {
-    	return ORM::factory('resource')
-                ->in('resource_status_id', RS_CONTACTED)
-                ->where('curator_id', $this->user->id)
-                ->orderby('title', 'ASC')
-                ->find_all()->count();
-    }
-    
-    private function count_to_catalogue() {
-        return ORM::factory('resource')->where(array ('curator_id' => $this->user->id, 'catalogued' => NULL, 'resource_status_id' => RS_APPROVED_PUB))->count_all();
-    }
-    
-    private function count_to_addressing() {
-        $rs_approved_status = RS_APPROVED_WA;
-        $rs_contacted_status = RS_CONTACTED;
-        
-        $sql = "(
-                SELECT r.id, r.date AS created, '', 0 as count
-                FROM `resources` r
-                WHERE resource_status_id = {$rs_approved_status}
-                AND r.curator_id = {$this->user->id}
-                )
-                UNION (
 
-                SELECT r.id, r.date AS created, date_add( MAX( c.date ) , INTERVAL 1
-                MONTH ) AS `new_one`, count(c.resource_id) as count
-                FROM `resources` r, correspondence c
-                WHERE resource_status_id = {$rs_contacted_status}
-                AND c.resource_id = r.id
-                AND r.curator_id = {$this->user->id}
-                GROUP BY c.resource_id
-                HAVING new_one <= NOW( )
+    }
+
+    private function count_in_progress()
+    {
+        return ORM::factory('resource')
+            ->in('resource_status_id', RS_CONTACTED)
+            ->where('curator_id', $this->user->id)
+            ->orderby('title', 'ASC')
+            ->find_all()->count();
+    }
+
+    private function count_to_catalogue()
+    {
+        $conditions = array('curator_id' => $this->user->id, 'catalogued' => NULL, 'resource_status_id' => RS_APPROVED_PUB);
+        return ORM::factory('resource')->where($conditions)->find_all()->count();
+    }
+
+    private function count_to_addressing()
+    {
+        $sql = "(
+                    SELECT r.id, r.date AS created, '', 0 as count
+                    FROM `resources` r
+                    WHERE resource_status_id = " . RS_APPROVED_WA . "
+                    AND r.curator_id = {$this->user->id}
+                )
+                UNION
+                (
+                    SELECT r.id, r.date AS created, date_add( MAX( c.date ) , INTERVAL 1
+                    MONTH ) AS `new_one`, count(c.resource_id) as count
+                    FROM `resources` r, correspondence c
+                    WHERE resource_status_id = " . RS_CONTACTED . "
+                    AND c.resource_id = r.id
+                    AND r.curator_id = {$this->user->id}
+                    GROUP BY c.resource_id
+                    HAVING new_one <= NOW( )
                 )
                 ORDER BY count";
-        
-        $result = Database::instance()->query($sql);
-        $id_array = array ();
-        
-        foreach($result->result_array(FALSE) as $row) {
-            array_push($id_array, $row ['id']);
-        }
+
+        $id_array = sql::get_id_array($sql);
         return count($id_array);
     }
-    
-    public function count_no_response() {
-    
-    }
 }
+
 ?>

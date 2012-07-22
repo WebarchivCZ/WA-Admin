@@ -67,13 +67,7 @@ class Addressing_Controller extends Template_Controller {
                 ORDER BY count";
 
 
-        $result = Database::instance()->query($sql);
-        $id_array = array();
-
-        foreach($result->result_array(FALSE) as $row) {
-            array_push($id_array, $row['id']);
-        }
-        return $id_array;
+        return sql::get_id_array($sql);
     }
 
     public function count_to_addressing () {
