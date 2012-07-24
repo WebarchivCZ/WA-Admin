@@ -1,4 +1,8 @@
 <?php
+// Application version info
+$config['version'] = '2.34';
+$config['build'] = 1;
+
 $config = array(
     'top_menu' => array(
         'home',
@@ -16,24 +20,25 @@ $config = array(
 
     'title_length' => 35);
 
-$config['wayback_url'] = 'http://har.webarchiv.cz:8080/AP1/query?type=urlquery&amp;Submit=Take+Me+Back&amp;url=';
-
 /**
  * Enable debug mode. Display errors and profiler info.
  * Error messages can be set by variable $this->template->debug
  */
 $config['debug_mode'] = TRUE;
+// This prevents accidental change on production in test mode
+$config['production_db_name'] = 'PRODUCTION_DB';
 
-$config['version'] = '2.34';
-
-$config['build'] = 1;
-
+// URL for external systems
 $config['ticket_url'] = 'https://github.com/WebArchivCZ/WA-Admin/issues/new';
+$config['wayback_url'] = 'http://har.webarchiv.cz:8080/AP1/query?type=urlquery&amp;Submit=Take+Me+Back&amp;url=';
 
+// Screenshot variables
+//  url to screenshot dir on server
 $config['url_path_screenshots'] = "/media/screenshots/";
+//  absolute path
 $config['screenshots_dir'] = "D:\\xampplite\\htdocs\\wadmin\\media\\screenshots\\";
 
-// Screenshot constants
+//  prefix for full screenshots
 $config['full_screenshot_prefix'] = 'big_';
+//  prefix for thumbnails
 $config['thumbnail_screenshot_prefix'] = 'small_';
-?>
