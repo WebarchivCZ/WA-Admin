@@ -1,6 +1,6 @@
 <?php
 if (isset($resources) AND $resources->count() != 0) {
-    table::header();
+    echo table::header();
     ?>
 <tr>
     <th class="first">Název</th>
@@ -39,7 +39,7 @@ if (isset($resources) AND $resources->count() != 0) {
 
     <?
     }
-    table::footer();
+    echo table::footer();
 } else {
     echo '<p>Nebyly nalezeny žádné zdroje v jednání.</p>';
 } ?>
