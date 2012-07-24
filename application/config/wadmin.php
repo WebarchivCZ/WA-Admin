@@ -1,8 +1,4 @@
 <?php
-// Application version info
-$config['version'] = '2.34';
-$config['build'] = 1;
-
 $config = array(
     'top_menu' => array(
         'home',
@@ -20,14 +16,18 @@ $config = array(
 
     'title_length' => 35);
 
+// Application version info
+$config['version'] = '2.34';
+$config['build'] = 1;
+
 /**
  * Enable debug mode. Display errors and profiler info.
  * Error messages can be set by variable $this->template->debug
  */
 $config['debug_mode'] = TRUE;
 // This prevents accidental change on production in test mode
-$config['production_db_name'] = 'PRODUCTION_DB';
-$config['administrator_email'] = 'ADMIN@ADMIN.COM';
+$config['production_db_name'] = 'wadmin';
+$config['administrator_email'] = 'brokes@webarchiv.cz';
 
 // URL for external systems
 $config['ticket_url'] = 'https://github.com/WebArchivCZ/WA-Admin/issues/new';
