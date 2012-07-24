@@ -27,6 +27,7 @@ $config = array(
 $config['debug_mode'] = TRUE;
 // This prevents accidental change on production in test mode
 $config['production_db_name'] = 'PRODUCTION_DB';
+$config['administrator_email'] = 'ADMIN@ADMIN.COM';
 
 // URL for external systems
 $config['ticket_url'] = 'https://github.com/WebArchivCZ/WA-Admin/issues/new';
