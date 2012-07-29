@@ -11,7 +11,8 @@
     <div class="box">
         <?php
         if (Kohana::config("wadmin.debug_mode") == TRUE) {
-            echo "<p></p><b>TESTOVACÍ VERZE</b></p>";
+            echo "<p></p><b>TESTOVACÍ VERZE</b><br/>";
+            echo 'DB: ' . Kohana::config("database.default.connection.database") . '</p>';
         }
         ?>
         <p><?= date('H:i - d.m.Y'); ?></p>
