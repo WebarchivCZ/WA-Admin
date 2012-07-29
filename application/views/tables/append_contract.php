@@ -14,7 +14,11 @@ if ($addendums->count() > 0) {
         $addendum_message = 'K této smlouvě přísluší tyto dodatky:';
     }
     echo "<h3 class='record-information'>{$addendum_message}</h3>";
+    $resources = array();
     foreach ($addendums as $addendum) {
-        View::factory('tables/contracts/list_resources')->bind('resources', $addendum->get_resources())->render(TRUE);
+        foreach ($addendum->get_resources() as $resource) {
+            $resources[] = $resource;
+        }
     }
+    View::factory('tables/contracts/list_resources')->bind('resources', $resources)->render(TRUE);
 }

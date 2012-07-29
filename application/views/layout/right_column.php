@@ -10,7 +10,7 @@
 
     <div class="box">
         <?php
-        if (Kohana::config("wadmin.debug_mode") == true) {
+        if (Kohana::config("wadmin.debug_mode") == TRUE) {
             echo "<p></p><b>TESTOVACÍ VERZE</b></p>";
         }
         ?>

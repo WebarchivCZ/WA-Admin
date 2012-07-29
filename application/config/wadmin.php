@@ -17,7 +17,7 @@ $config = array(
     'title_length' => 35);
 
 // Application version info
-$config['version'] = '2.34';
+$config['version'] = '2.35';
 $config['build'] = 1;
 
 /**

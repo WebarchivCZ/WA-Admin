@@ -8,4 +8,5 @@
 View::factory('tables/contracts/form_assign_date_signed')
     ->set('resource_id', $resource->id)
     ->set('contract_id', $contract->id)
+    ->set('is_blanco', TRUE)
     ->render(TRUE) ?>

@@ -1,4 +1,7 @@
 <?php
+/**
+ * This code ensure that current database is not production database in case that we are in debug mode.
+ */
 $is_debug_mode = Kohana::config("wadmin.debug_mode");
 
 $db_name = Kohana::config('database.default.connection.database');

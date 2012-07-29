@@ -1,5 +1,5 @@
 <?php
-class Progress_Controller extends Template_Controller
+class  Progress_Controller extends Template_Controller
 {
     protected $title = 'Zdroje v jednání';
 
@@ -19,7 +19,8 @@ class Progress_Controller extends Template_Controller
 
     /**
      * Show for contract assignment of resource identified by ID.
-     * @param int $id ID of resource
+     * @param int $resource_id
+     * @internal param int $id ID of resource
      */
     public function new_contract($resource_id)
     {
@@ -87,7 +88,7 @@ class Progress_Controller extends Template_Controller
 
                 $resource = ORM::factory('resource', $resource_id);
                 $resource->resource_status_id = RS_APPROVED_PUB;
-                if ($resource->contract_id != null) {
+                if ($resource->contract_id != NULL) {
                     $contract->parent_id = $resource->contract_id;
                     $contract->save();
                 }
@@ -133,21 +134,21 @@ class Progress_Controller extends Template_Controller
         url::redirect('progress');
     }
 
-    public function assign_existing_contract($resource_id = NULL, $contract_id = NULL, $save = false)
+    public function assign_existing_contract($resource_id = NULL, $contract_id = NULL, $save = FALSE)
     {
-        if ($resource_id == NULL or $contract_id == NULL) {
+        if ($resource_id == NULL OR $contract_id == NULL) {
             $this->session->set_flash('message', 'Není nastaveno ID smlouvy');
             url::redirect('progress');
         }
         $resource = new Resource_Model($resource_id);
         $contract = new Contract_Model($contract_id);
         $is_addendum = (bool)$contract->addendum;
-        if (!$resource->__isset('title') or  !$contract->__isset('contract_no')) {
+        if (!$resource->__isset('title') OR !$contract->__isset('contract_no')) {
             $this->session->set_flash('message', 'Smlouva nebo zdroj neexistuje.');
             url::redirect('progress');
         }
 
-        // if addendum save as well because addendums can't have hierarchy
+        // if contract is addendum save as well because addendums can't have hierarchy
         if ($save OR $is_addendum) {
             $resource->contract_id = $contract->id;
             $resource->resource_status_id = RS_APPROVED_PUB;

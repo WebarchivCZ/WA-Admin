@@ -1,12 +1,14 @@
 <?php
-class Addressing_Controller extends Template_Controller {
+class Addressing_Controller extends Template_Controller
+{
     protected $title = 'Oslovování';
     protected $page_header = 'Oslovování vydavatelů';
 
-    public function index() {
+    public function index()
+    {
         $id_array = $this->get_to_addressing();
 
-        if (count ($id_array) > 0) {
+        if (count($id_array) > 0) {
             $resources = ORM::factory('resource')->in('id', $id_array)->orderby('date', 'ASC')->find_all();
         } else {
             $resources = NULL;
@@ -18,9 +20,10 @@ class Addressing_Controller extends Template_Controller {
         $this->template->content = $view;
     }
 
-    public function send($resource_id, $correspondence_type_id) {
+    public function send($resource_id, $correspondence_type_id)
+    {
         $date_format = Kohana::config('wadmin.date_format');
-     
+
         $correspondence = ORM::factory('correspondence');
         $correspondence->resource_id = $resource_id;
         $correspondence->correspondence_type_id = $correspondence_type_id;
@@ -41,7 +44,8 @@ class Addressing_Controller extends Template_Controller {
      * it the last correspondence was sent more than month ago and the status is contacted
      * @return array ids of the resources to addressing
      */
-    protected function get_to_addressing () {
+    protected function get_to_addressing()
+    {
         $curator_id = $this->user->id;
 
         $rs_approved_status = RS_APPROVED_WA;
@@ -70,9 +74,11 @@ class Addressing_Controller extends Template_Controller {
         return sql::get_id_array($sql);
     }
 
-    public function count_to_addressing () {
-        $count = count ($this->get_to_addressing());
+    public function count_to_addressing()
+    {
+        $count = count($this->get_to_addressing());
         return $count;
     }
 }
+
 ?>

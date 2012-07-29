@@ -139,27 +139,28 @@ $(document).ready(function () {
     });
 
 
-    $("#assign_addendum_button")
-        .click(function () {
-            $("#assign_addendum_dialog").dialog("open");
-        });
+    $('#assign_addendum_button').click(function () {
+        $('.assign_contract_dialog').dialog("open");
+    });
+
+    $('.assign_contract_dialog').dialog({
+        autoOpen:false,
+        height:150,
+        width:350,
+        modal:true,
+        Cancel:function () {
+            $(this).dialog("close");
+        }});
 
     $('#assign_addendum_dialog').dialog(
-        {
-            autoOpen:false,
-            height:150,
-            width:350,
-            modal:true,
-            buttons:{
-                "Přiřadit dodatek":function () {
-                    $("#addendum_form").submit();
-                }
-            },
-            Cancel:function () {
-                $(this).dialog("close");
-            }
-        }
-    )
+        "option", "buttons", { "Přiřadit dodatek":function () {
+            $("#addendum_form").submit();
+        }});
+
+    $('#assign_blanco_dialog').dialog(
+        "option", "buttons", { "Přiřadit blanco smlouvu":function () {
+            $("#addendum_form").submit();
+        }});
 
     $('#date_signed').datepicker();
 

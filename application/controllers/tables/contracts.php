@@ -32,20 +32,18 @@ class Contracts_Controller extends Table_Controller
                 $view->contract = $contract;
                 $view->resources = $resources;
                 $this->template->content = $view;
-            } else
-            {
+            } else {
                 message::set_flash('Není vyplněno ID smlouvy.');
                 url::redirect(url::site("tables/{$this->table}"));
             }
-        } else
-        {
+        } else {
             message::set_flash('Nemáte právo mazání.');
         }
     }
 
     /**
      * Metoda odstranuje prirazeni daneho zdroje od smlouvy
-     * @param int $resource_id
+     * @param bool|int $resource_id
      */
     public function remove_from_resource($resource_id = FALSE)
     {
@@ -55,12 +53,10 @@ class Contracts_Controller extends Table_Controller
             // odstranime smlouvu od zdroje
             if ($resource->unset_contract()) {
                 message::set_flash("Zdroj {$resource->title} byl úspěšně odstraněn od smlouvy {$contract}");
-            } else
-            {
+            } else {
                 message::set_flash("Při odstraňování propojení smlouvy u {$resource->title} došlo k chybě!");
             }
-        } else
-        {
+        } else {
             message::set_flash('Nenastavené ID zdroje!');
         }
         url::redirect(url::site('/tables/contracts/view/' . $contract->id));
@@ -74,8 +70,7 @@ class Contracts_Controller extends Table_Controller
 
             $contract->delete_record();
             message::set_flash('Smlouva byla úspěšně smazána.');
-        } else
-        {
+        } else {
             message::set_flash('Není nastavené ID smlouvy.');
         }
         url::redirect(url::site('/tables/contracts/'));

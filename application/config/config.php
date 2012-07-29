@@ -18,7 +18,6 @@ $config['site_protocol'] = '';
  *
  * This can be removed by using URL rewriting.
  */
-// TODO - possible further consequences
 $config['index_page'] = '';
 
 /**
