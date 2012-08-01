@@ -12,10 +12,12 @@ class valid_Extend extends valid_Core {
 		$parts = split('/', $str, 2);
 		$contract_no = $parts[0];
 		$year = $parts[1];
-		if (valid::digit($contract_no) AND valid::digit($year) AND strlen($year) == 4) {
-			return true;
-		} else {
-			return false;
+		if (valid::digit($contract_no) AND valid::digit($year) AND strlen($year) == 4)
+		{
+			return TRUE;
+		} else
+		{
+			return FALSE;
 		}
 	}
 

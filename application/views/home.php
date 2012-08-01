@@ -1,3 +1,3 @@
-<?=$dashboard?>
+<?= $dashboard ?>
 
-<?=$stats?>
+<?= $stats ?>

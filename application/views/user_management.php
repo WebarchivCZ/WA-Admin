@@ -1,16 +1,17 @@
 <div class="top-bar">
-<h1>Vložení nového uživatele</h1>
+	<h1>Vložení nového uživatele</h1>
 </div>
-<br />
+<br/>
 <div class="select-bar">
-<form action="<?=url::base() . url::current()?>/search/"><label> <input
-	type="text" name="search_string" /> </label> <label> <input
-	type="submit" name="Submit"
-	value="<?=Kohana::lang('tables.search');?>" /> </label></form>
+	<form action="<?=url::base().url::current()?>/search/"><label> <input
+		type="text" name="search_string"/> </label> <label> <input
+		type="submit" name="Submit"
+		value="<?=Kohana::lang('tables.search');?>"/> </label></form>
 </div>
 <?php
 
-if (isset($resource_id)) {
+if (isset($resource_id))
+{
 	$resource = ORM::factory('resource', $resource_id);
 	$ratings_array = Rating_Model::get_result_array();
 	echo '<h2>Zdroj byl uspesne vlozen</h2>';
@@ -96,30 +97,37 @@ if (isset($resource_id)) {
 </table>
 
 <?php
-} else {
-	
-	if (isset($content)) {
+} else
+{
+
+	if (isset($content))
+	{
 		echo $content;
 	}
-	if (isset($message)) {
+	if (isset($message))
+	{
 		echo "<h3>$message</h3>";
 	}
-	if (isset($match_publishers) AND $match_publishers->count() != 0) {
+	if (isset($match_publishers) AND $match_publishers->count() != 0)
+	{
 		echo '<h4>Vydavatelé</h4>
 				<table class="listing">
 				<th>Jméno</th>';
-		foreach ($match_publishers as $publisher) {
+		foreach ($match_publishers as $publisher)
+		{
 			echo "<tr><td>$publisher->name</td></tr>";
 		}
 		echo '</table>';
 	}
-	
-	if (isset($match_resources) AND $match_resources->count() != 0) {
+
+	if (isset($match_resources) AND $match_resources->count() != 0)
+	{
 		echo '<h4>Zdroje</h4>
 				<table class="listing">
 				<th>Název</th><th>URL</th>
 				';
-		foreach ($match_resources as $resource) {
+		foreach ($match_resources as $resource)
+		{
 			echo "<tr>
 					<td>$resource->title</td>
 					<td>$resource->url</td>
@@ -127,12 +135,13 @@ if (isset($resource_id)) {
 		}
 		echo '</table>';
 	}
-	
-	if (isset($form)) {
+
+	if (isset($form))
+	{
 		echo '<h2>Vložit zdroj</h2>';
 		echo $form;
 	}
-?>
+	?>
 <?php
 }
 ?>

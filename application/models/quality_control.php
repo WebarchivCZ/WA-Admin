@@ -3,14 +3,13 @@ defined('SYSPATH') or die('No direct script access.');
 /**
  * Model representing Contacts
  */
-class Quality_Control_Model extends Table_Model
-{
+class Quality_Control_Model extends Table_Model {
 
 	public $headers = array(
-		'id' , 
-		'resource' , 
-		'date' , 
-		'result' , 
+		'id',
+		'resource',
+		'date',
+		'result',
 		'comments');
 
 	protected $primary_val = 'proposer';
@@ -19,15 +18,15 @@ class Quality_Control_Model extends Table_Model
 		'resources');
 
 	protected $result_array = array(
-		0 => 'vyhovujici' , 
+		0 => 'vyhovujici',
 		1 => 'nevyhovujici');
 
-	public function __construct ($id = NULL)
+	public function __construct($id = NULL)
 	{
 		parent::__construct($id);
 	}
 
-	public function add_resource ($resource)
+	public function add_resource($resource)
 	{
 		if ($resource instanceof Resource_Model)
 		{
@@ -38,4 +37,5 @@ class Quality_Control_Model extends Table_Model
 		}
 	}
 }
+
 ?>

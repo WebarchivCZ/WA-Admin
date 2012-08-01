@@ -1,6 +1,5 @@
 <?php
-class Column_Item
-{
+class Column_Item {
 	public $render = TRUE;
 	public $foreign_key = '';
 	public $name = '';
@@ -22,13 +21,15 @@ class Column_Item
 		$this->foreign_key = $foreign_key;
 	}
 
-	public function isLink() {
+	public function isLink()
+	{
 		return $this->link;
 	}
-	
+
 	public function __toString()
 	{
 		return $this->name;
 	}
 }
+
 ?>

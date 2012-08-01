@@ -1,20 +1,20 @@
 <?php
 $config = array(
-    'top_menu' => array(
-        'home',
-        'suggest',
-        'rate',
-        'addressing',
-        'progress',
-        'catalogue',
-        'quality_control',
-        'conspectus'),
+	'top_menu'          => array(
+		'home',
+		'suggest',
+		'rate',
+		'addressing',
+		'progress',
+		'catalogue',
+		'quality_control',
+		'conspectus'),
 
-    'date_format' => 'Y-m-d H:i:s',
+	'date_format'       => 'Y-m-d H:i:s',
 
-    'short_date_format' => 'd.m.Y',
+	'short_date_format' => 'd.m.Y',
 
-    'title_length' => 35);
+	'title_length'      => 35);
 
 // Application version info
 $config['version'] = '2.35';

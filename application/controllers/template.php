@@ -18,121 +18,137 @@ defined('SYSPATH') or die('No direct script access.');
 abstract class Template_Controller extends Controller {
 
 // Template view name
-    public $template = 'template';
+	public $template = 'template';
 
-    // Default to do auto-rendering
-    public $auto_render = TRUE;
+	// Default to do auto-rendering
+	public $auto_render = TRUE;
 
-    protected $profiler;
-    
-    protected $need_auth = TRUE;
+	protected $profiler;
 
-    protected $session;
+	protected $need_auth = TRUE;
 
-    protected $log = '';
+	protected $session;
 
-    /**
-     * Template loading and setup routine.
-     */
-    public function __construct () {
-        $this->session = Session::instance();
-        
-        parent::__construct();
+	protected $log = '';
 
-        // load constants from config/constants.php file
-        Kohana::config_load('constants');
+	/**
+	 * Template loading and setup routine.
+	 */
+	public function __construct()
+	{
+		$this->session = Session::instance();
 
-        // Load the template
-        $this->template = new View($this->template);
+		parent::__construct();
 
-        if ($this->auto_render == TRUE) {
-            // Render the template immediately after the controller method
-            Event::add('system.post_controller', array(
-                    $this ,
-                    '_render'));
-        }
+		// load constants from config/constants.php file
+		Kohana::config_load('constants');
 
-        if (! empty($this->title)) {
-            $this->template->title = $this->title;
-        } else {
-            $this->template->title = " | ";
-        }
+		// Load the template
+		$this->template = new View($this->template);
 
-        $this->template->message = $this->session->get_once('message');
-        $this->template->content = View::factory("layout/center");
-        $this->template->top_nav = View::factory("layout/top_nav");
-        $this->template->left_nav = View::factory("layout/left_nav");
-        $this->template->right_column = View::factory('layout/right_column')
-                ->bind('help_box', $this->help_box);
+		if ($this->auto_render == TRUE)
+		{
+			// Render the template immediately after the controller method
+			Event::add('system.post_controller', array(
+				$this,
+				'_render'));
+		}
 
-        $footer = new View("layout/footer");
-        $footer->bind('log', $this->log);
-        $this->template->footer = $footer;
+		if (! empty($this->title))
+		{
+			$this->template->title = $this->title;
+		} else
+		{
+			$this->template->title = " | ";
+		}
 
-        $this->login();
+		$this->template->message = $this->session->get_once('message');
+		$this->template->content = View::factory("layout/center");
+		$this->template->top_nav = View::factory("layout/top_nav");
+		$this->template->left_nav = View::factory("layout/left_nav");
+		$this->template->right_column = View::factory('layout/right_column')
+			->bind('help_box', $this->help_box);
 
-        /**
-         * Display errors and profiler info. Can be set in config wadmin.debug_mode
-         * Error messages can be set by variable $this->template->debug
-         */
+		$footer = new View("layout/footer");
+		$footer->bind('log', $this->log);
+		$this->template->footer = $footer;
 
-        if (Kohana::config('wadmin.debug_mode')) {
-            $this->profiler = new Profiler();
-        }
-    }
+		$this->login();
+
+		/**
+		 * Display errors and profiler info. Can be set in config wadmin.debug_mode
+		 * Error messages can be set by variable $this->template->debug
+		 */
+
+		if (Kohana::config('wadmin.debug_mode'))
+		{
+			$this->profiler = new Profiler();
+		}
+	}
 
 
-    /**
-     * Render the loaded template.
-     */
-    public function _render () {
-        if ($this->auto_render == TRUE) {
-            // Render the template when the class is destroyed
-            $this->template->render(TRUE);
-        }
-    }
+	/**
+	 * Render the loaded template.
+	 */
+	public function _render()
+	{
+		if ($this->auto_render == TRUE)
+		{
+			// Render the template when the class is destroyed
+			$this->template->render(TRUE);
+		}
+	}
 
-    public function search () {
-        $pattern = $this->input->get('search_string');
-        // strip white space from search string
-        $pattern = trim($pattern);
+	public function search()
+	{
+		$pattern = $this->input->get('search_string');
+		// strip white space from search string
+		$pattern = trim($pattern);
 
-        $resources = ORM::factory('resource')
-                ->join('publishers', 'resources.publisher_id = publishers.id')
-                ->orlike(array('url' => $pattern , 'title' => $pattern, 'publishers.name'=>$pattern))
-                ->find_all();
+		$resources = ORM::factory('resource')
+			->join('publishers', 'resources.publisher_id = publishers.id')
+			->orlike(array('url'            => $pattern,
+						   'title'          => $pattern,
+						   'publishers.name'=> $pattern))
+			->find_all();
 
-        $view = new View('search');
-        $view->pattern = $pattern;
-        $view->resources = $resources;
-        $this->template->content = $view;
-    }
+		$view = new View('search');
+		$view->pattern = $pattern;
+		$view->resources = $resources;
+		$this->template->content = $view;
+	}
 
-    private function login ($role = 'login') {
-        if (! $this->need_auth) {
-            return TRUE;
-        }
-        $this->session = Session::instance();
-        $authentic = new Auth();
-        if (! $authentic->logged_in($role)) {
-            $this->session->set("login_requested_url", "/" . url::current());
-            url::redirect('login');
-        } else {
-            $this->user = $authentic->get_user();
-        }
+	private function login($role = 'login')
+	{
+		if (! $this->need_auth)
+		{
+			return TRUE;
+		}
+		$this->session = Session::instance();
+		$authentic = new Auth();
+		if (! $authentic->logged_in($role))
+		{
+			$this->session->set("login_requested_url", "/".url::current());
+			url::redirect('login');
+		} else
+		{
+			$this->user = $authentic->get_user();
+		}
 
-    }
+	}
 
-    public function logout () {
-        $url = '/' . $this->uri->segment(1);
-        $this->session->set("login_requested_url", $url);
-        Auth::instance()->logout();
-        url::redirect('login');
-    }
+	public function logout()
+	{
+		$url = '/'.$this->uri->segment(1);
+		$this->session->set("login_requested_url", $url);
+		Auth::instance()->logout();
+		url::redirect('login');
+	}
 
-    public function debug($message) {
-        Kohana::log('debug', $message);
-        $this->log .= Kohana::debug($message);
-    }
+	public function debug($message)
+	{
+		Kohana::log('debug', $message);
+		$this->log .= Kohana::debug($message);
+	}
 
 } // End Template_Controller
