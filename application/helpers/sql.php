@@ -43,4 +43,22 @@ class sql {
 		}
 		return $id_array;
 	}
+
+	/**
+	 * Return true if sql query return at least one result.
+	 * @static
+	 * @param $sql
+	 * @return bool true if has query has more than 0 results
+	 */
+	public static function has_result($sql)
+	{
+		$count = Database::instance()->query($sql)->count();
+		if ($count > 0)
+		{
+			return TRUE;
+		} else
+		{
+			return FALSE;
+		}
+	}
 }

@@ -25,13 +25,13 @@ class Addressing_Controller extends Template_Controller {
 	{
 		$date_format = Kohana::config('wadmin.date_format');
 
-		$correspondence = ORM::factory('correspondence');
+		$correspondence = new Correspondence_Model();
 		$correspondence->resource_id = $resource_id;
 		$correspondence->correspondence_type_id = $correspondence_type_id;
 		$correspondence->date = date($date_format);
 		$correspondence->save();
 
-		$resource = ORM::factory('resource', $resource_id);
+		$resource = new Resource_Model($resource_id);
 		$resource->resource_status_id = RS_CONTACTED;
 		$resource->save();
 

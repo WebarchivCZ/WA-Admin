@@ -12,7 +12,7 @@ class Resource_Model extends Table_Model {
 			'curator' => 'curator', 'publisher', 'contract', 'conspectus',
 			'conspectus_subcategory', 'crawl_freq', 'resource_status', 'suggested_by');
 	protected $has_one = array('nomination');
-	protected $has_many = array('seeds', 'ratings', 'correspondence', 'qa_checks', 'screenshots');
+	protected $has_many = array('seeds', 'ratings', 'correspondence', 'qa_checks', 'screenshots', ' rating_rounds');
 
 	public $headers = array('short_title', 'icon', 'url', 'publisher');
 	// disable foreign keys to speed up forms loading (via Formo)
@@ -23,7 +23,7 @@ class Resource_Model extends Table_Model {
 		parent::__construct($id);
 		if (is_null($id))
 		{
-			$this->date = date_helper::mysql_date_now();
+			$this->date = date_helper::mysql_datetime_now();
 		}
 	}
 
@@ -264,7 +264,7 @@ class Resource_Model extends Table_Model {
 			$this->curator_id = $curator->id;
 		} else
 		{
-			throw new InvalidArgumentException();
+			throw new InvalidArgumentException('Invalid object was passed as argument. You need to pass Curator model.');
 		}
 	}
 
@@ -275,7 +275,7 @@ class Resource_Model extends Table_Model {
 			$this->publisher_id = $publisher->id;
 		} else
 		{
-			throw new InvalidArgumentException();
+			throw new InvalidArgumentException('Invalid object was passed as argument. You need to pass Publisher model.');
 		}
 	}
 
@@ -321,10 +321,9 @@ class Resource_Model extends Table_Model {
 	 */
 	public function get_last_rating_round()
 	{
-		$sql = "SELECT MAX(round) as rating_round FROM ratings WHERE resource_id = {$this->id}";
+		$sql = "SELECT MAX(round) as rating_round FROM rating_rounds WHERE resource_id = {$this->id}";
 		$result = sql::get_first_result($sql);
-		$round = $result->rating_round;
-		return $round;
+		return $result->rating_round;
 	}
 
 	public function get_icon()
@@ -391,14 +390,11 @@ class Resource_Model extends Table_Model {
 	public function print_correspondence()
 	{
 		$correspondence = $this->get_correspondence();
-		$last_contact = $this->get_last_contact();
 		$result = '';
 
-		$i = 0;
-		foreach ($correspondence as $corr_object)
+		foreach ($correspondence as $single_correspondence)
 		{
-			$result .= icon::img('email_open', $corr_object->date).' ';
-			$i ++;
+			$result .= icon::img('email_open', $single_correspondence->date).' ';
 		}
 		return $result;
 	}
@@ -410,10 +406,10 @@ class Resource_Model extends Table_Model {
 	 * @param String $return_type
 	 * @return int
 	 */
-	public function compute_rating($round = 1, $return_type = 'string')
+	public function compute_rating($round = 1, $show_as_string = FALSE)
 	{
-		$value = parent::__get('rating_result');
-		if ($value == '')
+		$rating_value = $this->rating_result;
+		if ($rating_value == '')
 		{
 			$ratings = ORM::factory('rating')->where(array('resource_id' => $this->id,
 														   'round'       => $round))->find_all();
@@ -449,9 +445,9 @@ class Resource_Model extends Table_Model {
 			}
 		} else
 		{
-			$final_rating = $value;
+			$final_rating = $rating_value;
 		}
-		if ($return_type == 'string')
+		if ($show_as_string)
 		{
 			$values = Rating_Model::get_final_array();
 			return $values [$final_rating];
@@ -470,7 +466,7 @@ class Resource_Model extends Table_Model {
 
 	public function get_round_count()
 	{
-		$sql = "SELECT MAX(round) as last_round FROM ratings WHERE resource_id = {$this->id}";
+		$sql = "SELECT MAX(round) as last_round FROM rating_rounds WHERE resource_id = {$this->id}";
 		return sql::get_first_result($sql)->last_round;
 	}
 
@@ -506,18 +502,66 @@ class Resource_Model extends Table_Model {
 	 */
 	public function get_ratings_date($round = 1)
 	{
-		$sql = "SELECT MAX(date) as rating_date FROM ratings
+		$rating_round = ORM::factory('rating_round')
+			->where(array('resource_id' => $this->id,
+						  'round'       => $round))
+			->orderby('round', 'desc')->find();
+		if ($rating_round->loaded)
+		{
+			return date_helper::short_date($rating_round->date_closed);
+		}
+		else
+		{
+			$sql = "SELECT MAX(date) as rating_date FROM ratings
                                                 WHERE resource_id = {$this->id}
                                                 AND round = {$round}";
-		$rating_date = sql::get_first_result($sql)->rating_date;
-		if (! is_null($rating_date))
+			$rating_date = sql::get_first_result($sql)->rating_date;
+			if (! is_null($rating_date))
+			{
+				$rating_date = date("d.m.Y", strtotime($rating_date));
+			}
+			else
+			{
+				$rating_date = 'nehodnocen';
+			}
+			return $rating_date;
+		}
+	}
+
+	/**
+	 * Save new curator rating (not final) for resource if curator has not rated yet.
+	 * If there is rating already in place update existing rating with comment.
+	 * @param $rating_value rating value inside range (-2, -1, 0, 1, 2, 4, 'NULL')
+	 * @param $curator_id ID of curator making rating
+	 * @param $round round of the rating
+	 * @param null $comments optional comment to rating
+	 * @return bool TRUE if rating is saved
+	 * @throws WaAdmin_Exception if rating is outside rating values range (-2, -1, 0, 1, 2, 4, 'NULL')
+	 */
+	public function add_rating($rating_value, $curator_id, $round, $comments = NULL)
+	{
+		if (! array_key_exists($rating_value, Rating_Model::get_rating_values()))
 		{
-			$rating_date = date("d.m.Y", strtotime($rating_date));
+			throw new WaAdmin_Exception(Kohana::lang('exceptions.incorrect_rating_value_title'),
+				Kohana::lang('exceptions.incorrect_rating_value_message'));
+		}
+
+		$rating = $this->get_curator_rating((int)$curator_id, $round);
+
+		if ($rating->__get('loaded'))
+		{
+			$rating->rating = $rating_value;
+			$rating->comments = $comments;
 		} else
 		{
-			$rating_date = 'nehodnocen';
+			$rating = Rating_Model::create_instance($this, $curator_id, $rating_value, $comments);
 		}
-		return $rating_date;
+		$rating->save();
+
+		if ($rating->__get('saved'))
+		{
+			return TRUE;
+		}
 	}
 
 	public function save_final_rating($rating = NULL)
@@ -702,13 +746,13 @@ class Resource_Model extends Table_Model {
 			return FALSE;
 		}
 		$sql = "SELECT c.id FROM contracts c, contracts p WHERE c.id = p.parent_id AND p.id = {$this->contract_id}";
-		return $this->has_count_larger_then_zero($sql);
+		return sql::has_result($sql);
 	}
 
 	public function has_nomination()
 	{
 		$sql = "SELECT resource_id FROM nominations WHERE resource_id = {$this->id}";
-		return $this->has_count_larger_then_zero($sql);
+		return sql::has_result($sql);
 	}
 
 	public function get_screenshot()
@@ -726,18 +770,6 @@ class Resource_Model extends Table_Model {
 			$contracts[] = ORM::factory('contract', $record->id);
 		}
 		return $contracts;
-	}
-
-	private function has_count_larger_then_zero($sql)
-	{
-		$count = Database::instance()->query($sql)->count();
-		if ($count > 0)
-		{
-			return TRUE;
-		} else
-		{
-			return FALSE;
-		}
 	}
 }
 

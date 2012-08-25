@@ -17,7 +17,7 @@ class Conspectus_Controller extends Template_Controller {
 	public function filter()
 	{
 		$filter = NULL;
-		if (isset($_POST ['filter']) and $_POST ['filter'] == TRUE and $_POST ['conspectus'] != '')
+		if (isset($_POST ['filter']) AND $_POST ['filter'] == TRUE AND $_POST ['conspectus'] != '')
 		{
 			$selected_conspectus = $_POST ['conspectus'];
 			$selected_conspectus_subcategory = $_POST ['conspectus_subcategory'];
@@ -58,7 +58,7 @@ class Conspectus_Controller extends Template_Controller {
 		}
 
 		$nomination = $resource->nomination;
-		$nomination->date_resolved = date_helper::mysql_date_now();
+		$nomination->date_resolved = date_helper::mysql_datetime_now();
 		$nomination->accepted = $accepted;
 		$nomination->save();
 

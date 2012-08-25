@@ -76,9 +76,9 @@ if ($rounds > 0 || $resource->is_ratable())
 	}
 	if ($show_final_rating == TRUE)
 	{
-		$resource_rating = $resource->compute_rating($resource->rating_last_round + 1, 'int');
+		$resource_rating = $resource->compute_rating($resource->rating_last_round + 1);
 		$rating_options = Rating_Model::get_final_array();
-		$subcategory = ($resource->conspectus_subcategory_id != '') ? $resource->conspectus_subcategory : 'není vyplněno';
+		$subcategory = (empty($resource->conspectus_subcategory_id)) ? 'není vyplněno' : $resource->conspectus_subcategory;
 		$crawl_freq_options[0] = 'Vyplnit!';
 		$crawl_freq_options = array_merge($crawl_freq_options, ORM::factory('crawl_freq')->select_list('id', 'frequency'));
 		?>

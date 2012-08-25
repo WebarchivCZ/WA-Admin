@@ -34,7 +34,7 @@ class date_helper {
 		return self::get_date_in_format($date, self::GET_ONLY_YEAR);
 	}
 
-	static function mysql_date_now()
+	static function mysql_datetime_now()
 	{
 		$date_format = self::MYSQL_DATETIME_FORMAT;
 		return date($date_format);

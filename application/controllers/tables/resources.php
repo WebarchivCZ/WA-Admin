@@ -50,12 +50,11 @@ class Resources_Controller extends Table_Controller {
 				'rating_result', 'reevaluate_date', 'aleph_id', 'issn', 'catalogued', 'important',
 				'tech_problems', 'comments', 'upravit');
 
-			// vyber podkategorii prislusici dane kategorii
+			// select all subcategories belonging to parent category
 			$form->conspectus_subcategory_id->values = ORM::factory('conspectus_subcategory')
 				->where('conspectus_id', $resource->conspectus_id)->orderby('subcategory')
 				->select_list('id', 'title');
 
-			// oznaceni selectu pro javascript menici podkategorie
 			$form->conspectus_id->id = 'category_select';
 			$form->conspectus_subcategory_id->id = 'subcategory_select';
 			$form->conspectus_subcategory_id->blank = TRUE;
@@ -78,7 +77,7 @@ class Resources_Controller extends Table_Controller {
 
 	public function save_final_rating($id, $rating = NULL)
 	{
-		$resource = ORM::factory('resource', $id);
+		$resource = new Resource_Model($id);
 		if ($rating == NULL)
 		{
 			$rating = $this->input->post('final_rating');
@@ -120,62 +119,28 @@ class Resources_Controller extends Table_Controller {
 
 	public function save_rating($resource_id, $curator_id, $round)
 	{
-		$rating = $this->input->post('rating');
-		$comments = $this->input->post('comment');
+		$rating_value = $this->input->post('rating');
+		$comments = $this->input->post('comment', NULL);
 
-		if ($rating != 'NULL')
+		if ($rating_value != 'NULL')
 		{
 			$resource = ORM::factory('resource', $resource_id);
-			$o_rating = $resource->get_curator_rating((int)$curator_id, $round);
-			if ($o_rating->__get('loaded'))
-			{
-				$o_rating->rating = $rating;
-				$o_rating->comments = $comments;
-			} else
-			{
-				$o_rating = ORM::factory('rating');
-				$o_rating->add_curator($this->user);
-				$o_rating->resource_id = $resource->id;
-				if ($rating == 4)
-				{
-					$o_rating->tech_problems = TRUE;
-				}
-				if ($resource->rating_last_round == '')
-				{
-					$round = 1;
-				} else
-				{
-					$round = $resource->rating_last_round + 1;
-				}
-				$o_rating->round = $round;
-				$o_rating->date = date(Kohana::config('wadmin.date_format'));
-				$o_rating->rating = $rating;
 
-				if ($comments != '')
-				{
-					$o_rating->comments = $comments;
-				}
-			}
+			$is_rating_saved = $resource->add_rating($rating_value, $curator_id, $round, $comments);
 
-			$o_rating->save();
-			if ($o_rating->__get('saved'))
+			if ($is_rating_saved)
 			{
 				message::set_flash('Hodnocení bylo úspěšně uloženo.');
 			}
 
 		}
-		url::redirect('/tables/resources/view/'.$resource->id);
+		url::redirect('/tables/resources/view/'.$resource_id);
 	}
 
 	public function search_by_conspectus($conspectus_id = NULL)
 	{
 		if (! is_null($conspectus_id))
 		{
-			// TODO - delete dead code
-			$search_string = $this->input->post('search_string');
-
-			$model = ORM::factory($this->model);
-
 			$per_page = $this->input->get('limit', 20);
 			$page_num = $this->input->get('page', 1);
 			$offset = ($page_num - 1) * $per_page;
@@ -196,7 +161,6 @@ class Resources_Controller extends Table_Controller {
 
 	public function add_publisher($resource_id = NULL, $publisher_id = NULL)
 	{
-		$resource_url = "{$this->view_record_url}/{$resource_id}";
 		if (! is_null($publisher_id))
 		{
 			$this->set_publisher($resource_id, $publisher_id);
@@ -244,8 +208,7 @@ class Resources_Controller extends Table_Controller {
 				$view->redirect_urls = $redirect_urls;
 
 				$view->match_resources = $resources;
-				$this->help_box = 'Kliknutím na konkrétního vydavatele
-                přiřadíte již existujícího vydavatele';
+				$this->help_box = 'Kliknutím na konkrétního vydavatele přiřadíte již existujícího vydavatele';
 			}
 		} else
 		{
@@ -257,7 +220,7 @@ class Resources_Controller extends Table_Controller {
 
 	public function insert_publisher($resource_id)
 	{
-		$publisher_name = $_POST ['publisher'];
+		$publisher_name = $this->input->post('publisher');
 		$publisher = ORM::factory('publisher');
 		$publisher->name = $publisher_name;
 		$publisher->save();
@@ -304,7 +267,6 @@ class Resources_Controller extends Table_Controller {
 	{
 		$resources = ORM::factory('resource')->join('publishers', 'resources.publisher_id = publishers.id')->orlike(
 			array('publishers.name' => $publisher_name))->find_all();
-
 		return $resources;
 	}
 
@@ -333,6 +295,7 @@ class Resources_Controller extends Table_Controller {
 		url::redirect($redirect_url);
 	}
 
+	// TODO move this function
 	public function convert_screenshot($screenshot_file, $screenshot)
 	{
 		$is_converted = FALSE;

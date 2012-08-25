@@ -31,7 +31,7 @@ class Catalogue_Controller extends Template_Controller {
 	public function save($action, $resource_id)
 	{
 		$allowed_actions = array('catalogued');
-		$resource = ORM::factory('resource', $resource_id);
+		$resource = new Resource_Model($resource_id);
 		$aleph_id = $this->input->post('aleph_id');
 		if ($aleph_id)
 		{

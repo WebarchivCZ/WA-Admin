@@ -24,11 +24,31 @@ class Rating_Model extends Table_Model {
 	protected $primary_val = 'rating';
 	protected $sorting = array('date' => 'asc');
 
-	protected $belongs_to = array('publisher', 'resource', 'curator');
+	protected $belongs_to = array('publisher', 'resource', 'curator', 'rating_round');
 
-	public function __construct($id = NULL)
+	public static function create_instance($resource, $curator_id, $rating_value, $comments = NULL)
 	{
-		parent::__construct($id);
+		$rating = new self;
+		$rating->add_curator($curator_id);
+		$rating->resource_id = $resource->id;
+
+		// TODO create/assign rating_round model
+		if ($resource->rating_last_round == '')
+		{
+			$round = 1;
+		} else
+		{
+			$round = $resource->rating_last_round + 1;
+		}
+		$rating->round = $round;
+		$rating->date = date_helper::mysql_datetime_now();
+		$rating->rating = $rating_value;
+
+		if ($comments != '')
+		{
+			$rating->comments = $comments;
+		}
+		return rating;
 	}
 
 	public function __get($column)
@@ -66,6 +86,11 @@ class Rating_Model extends Table_Model {
 		{
 			$date = new DateTime($value);
 			$value = $date->format(DATE_ATOM);
+		}
+		if ($key == 'rating')
+		{
+			$is_tech_problems = ($value == 4) ? TRUE : FALSE;
+			parent::__set('tech_problems', $is_tech_problems);
 		}
 		parent::__set($key, $value);
 	}
@@ -118,7 +143,6 @@ class Rating_Model extends Table_Model {
 
 	public static function get_final_array()
 	{
-
 		return self::$ratings_result;
 	}
 

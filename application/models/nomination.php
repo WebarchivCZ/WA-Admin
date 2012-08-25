@@ -19,7 +19,7 @@ class Nomination_Model extends Table_Model {
 		parent::__construct($id);
 		if (is_null($id))
 		{
-			$this->date_nominated = date_helper::mysql_date_now();
+			$this->date_nominated = date_helper::mysql_datetime_now();
 		}
 	}
 

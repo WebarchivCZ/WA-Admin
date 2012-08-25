@@ -23,8 +23,8 @@ class  Progress_Controller extends Template_Controller {
 	 */
 	public function new_contract($resource_id)
 	{
-		$resource = ORM::factory('resource', $resource_id);
-		$publisher = ORM::factory('publisher', $resource->publisher_id);
+		$resource = new Resource_Model($resource_id);
+		$publisher = new Publisher_Model($resource->publisher_id);
 
 		$form = $this->generate_new_contract_form($resource->title);
 
@@ -93,7 +93,7 @@ class  Progress_Controller extends Template_Controller {
 					$contract->save();
 				}
 
-				$resource = ORM::factory('resource', $resource_id);
+				$resource = new Resource_Model($resource_id);
 				$resource->resource_status_id = RS_APPROVED_PUB;
 				if ($resource->contract_id != NULL)
 				{
@@ -121,10 +121,9 @@ class  Progress_Controller extends Template_Controller {
 		}
 	}
 
-	public function reject($reason, $id)
+	public function reject($reason, $resource_id)
 	{
-		$resource = ORM::factory('resource', $id);
-
+		$resource = new Resource_Model($resource_id);
 		switch ($reason)
 		{
 			case 'publisher' :
