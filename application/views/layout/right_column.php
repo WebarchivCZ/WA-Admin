@@ -12,7 +12,7 @@
 
 	<div class="box">
 		<?php
-		if (Kohana::config("wadmin.debug_mode") == TRUE)
+		if (app::in_debug_mode())
 		{
 			echo "<p></p><b>TESTOVACÍ VERZE</b><br/>";
 			echo 'DB: '.Kohana::config("database.default.connection.database").'</p>';
@@ -36,7 +36,7 @@
 	<div class="box">
 		<p><a href="<?= Kohana::config('wadmin.ticket_url') ?>" target="_blank">Vytvořit ticket</a></p>
 
-		<p>WA Admin <?= Kohana::config('wadmin.version') ?>.<?= Kohana::config('wadmin.build') ?></p>
+		<p>WA Admin <?= app::get_full_version() ?></p>
 
 		<p><a href="https://github.com/WebArchivCZ/WA-Admin/commits/master" target="_blank">Poslední změny</a></p>
 	</div>

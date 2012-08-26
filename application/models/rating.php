@@ -24,7 +24,8 @@ class Rating_Model extends Table_Model {
 	protected $primary_val = 'rating';
 	protected $sorting = array('date' => 'asc');
 
-	protected $belongs_to = array('publisher', 'resource', 'curator', 'rating_round');
+	protected $belongs_to = array('publisher', 'resource', 'curator',
+		'round' => 'rating_round');
 
 	public static function create_instance($resource, $curator_id, $rating_value, $comments = NULL)
 	{
@@ -175,11 +176,12 @@ class Rating_Model extends Table_Model {
 		if ($only_rated == TRUE)
 		{
 			$sql_query = "SELECT g.resource_id AS id
-                            FROM ratings g, curators c, resources r
+                            FROM ratings g, curators c, resources r, rating_rounds rounds
                             WHERE r.curator_id = {$user_id}
                             AND g.resource_id = r.id
                             AND g.curator_id = c.id
-                            AND g.round {$round}
+                            AND rounds.id = g.round_id
+                            AND rounds.round {$round}
                             AND r.resource_status_id = {$resource_status}
                     {$reevaluate_constraint}
                             GROUP BY g.resource_id
@@ -193,11 +195,12 @@ class Rating_Model extends Table_Model {
                         AND r.id NOT IN
                         (
                             SELECT r.id
-                            FROM resources r, curators c, ratings g
+                            FROM resources r, curators c, ratings g, rating_rounds rounds
                             WHERE r.id = g.resource_id
                             AND c.id = g.curator_id
                             AND c.id = {$user_id}
-                            AND g.round > r.rating_last_round
+                            AND rounds.id = g.round_id
+                            AND rounds.round > r.rating_last_round
                         )
                     {$reevaluate_constraint}
                         ORDER BY field(suggested_by_id, 2, 1, 3, 4)";

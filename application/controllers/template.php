@@ -12,6 +12,7 @@ defined('SYSPATH') or die('No direct script access.');
  *
  * @package    Core
  * @author     Kohana Team
+ * @author       Adam Brokes
  * @copyright  (c) 2007-2008 Kohana Team
  * @license    http://kohanaphp.com/license.html
  */
@@ -80,7 +81,7 @@ abstract class Template_Controller extends Controller {
 		 * Error messages can be set by variable $this->template->debug
 		 */
 
-		if (Kohana::config('wadmin.debug_mode'))
+		if (app::in_debug_mode())
 		{
 			$this->profiler = new Profiler();
 		}

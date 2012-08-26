@@ -1,1 +1,0 @@
--- TODO add ratings.round_id - naplnit daty

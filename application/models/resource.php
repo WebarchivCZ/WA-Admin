@@ -564,9 +564,9 @@ class Resource_Model extends Table_Model {
 		}
 	}
 
-	public function save_final_rating($rating = NULL)
+	public function save_final_rating($final_rating = NULL)
 	{
-		switch ($rating)
+		switch ($final_rating)
 		{
 			case 1 :
 				$status = RS_REJECTED_WA;
@@ -584,8 +584,7 @@ class Resource_Model extends Table_Model {
 				return FALSE;
 		}
 		$this->resource_status_id = $status;
-		$this->rating_result = $rating;
-		// set rating round to resource
+		$this->rating_result = $final_rating;
 		$last_round = $this->rating_last_round;
 		if ($last_round == '')
 		{
@@ -594,6 +593,12 @@ class Resource_Model extends Table_Model {
 		{
 			$round = $last_round + 1;
 		}
+
+		$rating_round = new Rating_Round_Model();
+		$rating_round->closing_curator_id = $this->curator_id;
+		$rating_round->date_closed = date_helper::mysql_datetime_now();
+		$rating_round->rating_result = $final_rating;
+
 		$this->rating_last_round = $round;
 		$this->save();
 		if ($this->saved)
