@@ -42,7 +42,7 @@ update rating_rounds, resources
   set rating_rounds.date_closed = null
   where rating_rounds.resource_id = resources.id and
           resources.resource_status_id = 1 and
-          rating_rounds.rating_result IS null
+          rating_rounds.rating_result IS null;
 
 -- Drop ROUND column
 ALTER TABLE `ratings` DROP COLUMN `round`;
