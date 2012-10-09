@@ -25,7 +25,7 @@ INSERT INTO
                 (''application_build'', ''36'', ''APP'', ''Minor version of application. This is increased with new deployed changes.'', NOW( ) , NOW( )),
                 (''database_version'', ''1'', ''DB'', ''Version of database.'', NOW( ) , NOW( )),
                 (''database_production_db_name'', ''wadmin'', ''DB'', ''Name of production DB.'', NOW( ) , NOW( )),
-                (''database_test_db_name'', ''wadmin-test'', ''DB'', ''Name of production DB.'', NOW( ) , NOW( )),
+                (''database_test_db_name'', ''wadmin-test'', ''DB'', ''Name of test DB.'', NOW( ) , NOW( )),
                 (''application_debug_mode'', ''TRUE'', ''APP'', ''TRUE if deployed instance is running in debug mode.'', NOW( ) , NOW( ));
 
 -- Update database version info
