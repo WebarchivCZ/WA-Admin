@@ -27,21 +27,35 @@ class Rating_Model extends Table_Model {
 	protected $belongs_to = array('publisher', 'resource', 'curator',
 		'round' => 'rating_round');
 
+	/**
+	 * @static
+	 * @param $resource Resource_Model
+	 * @param $curator_id int
+	 * @param $rating_value int
+	 * @param null $comments String
+	 * @return mixed
+	 */
 	public static function create_instance($resource, $curator_id, $rating_value, $comments = NULL)
 	{
 		$rating = new self;
-		$rating->add_curator($curator_id);
+		$rating->add_curator((int)$curator_id);
 		$rating->resource_id = $resource->id;
 
-		// TODO create/assign rating_round model
-		if ($resource->rating_last_round == '')
+		$last_open_rating_round_id = $resource->get_last_rating_round_id(TRUE);
+
+		if ($last_open_rating_round_id == NULL)
 		{
-			$round = 1;
+			$round = new Rating_Round_Model();
+			$round->round = $resource->rating_last_round + 1;
+			$round->resource_id = $resource->id;
+			$round->date_created = date_helper::mysql_datetime_now();
+
+			$round->save();
 		} else
 		{
-			$round = $resource->rating_last_round + 1;
+			$round = new Rating_Round_Model($last_open_rating_round_id);
 		}
-		$rating->round = $round;
+		$rating->round_id = $round->id();
 		$rating->date = date_helper::mysql_datetime_now();
 		$rating->rating = $rating_value;
 
@@ -49,7 +63,7 @@ class Rating_Model extends Table_Model {
 		{
 			$rating->comments = $comments;
 		}
-		return rating;
+		return $rating;
 	}
 
 	public function __get($column)
@@ -109,12 +123,16 @@ class Rating_Model extends Table_Model {
 
 	public function add_curator($curator)
 	{
-		if ($curator instanceof Curator_Model)
+		if (is_int($curator))
+		{
+			$curator = new Curator_Model($curator);
+		}
+		if ($curator instanceof Curator_Model && $curator->loaded)
 		{
 			$this->curator_id = $curator->id;
 		} else
 		{
-			throw new InvalidArgumentException();
+			throw new InvalidArgumentException("Curator hasn't been found: ID=[{$curator->id}]");
 		}
 	}
 

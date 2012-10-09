@@ -45,12 +45,20 @@ class Curator_Model extends Auth_User_Model {
 	 */
 	public function could_close_rating($resource_id)
 	{
-		$resource = ORM::factory('resource', $resource_id);
+		$resource = new Resource_Model($resource_id);
 		$is_curated = $resource->is_curated_by($this);
-		$is_open = $resource->get_last_rating_round() > $resource->rating_last_round;
-		$result = $is_curated && $is_open;
-		return $result;
+		return $is_curated && $resource->is_ratable();
+	}
+
+	/**
+	 * Get active curators for resource,
+	 *
+	 * TODO Feature - activate&deactivate curators
+	 * @param Resource_Model $for_resource Rated resource
+	 * @return
+	 */
+	public static function get_curators_for_rating($for_resource)
+	{
+		return ORM::factory('curator')->where('active', 1)->find_all();
 	}
 }
-
-?>

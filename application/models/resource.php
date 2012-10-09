@@ -109,6 +109,7 @@ class Resource_Model extends Table_Model {
 
 	public static function get_rated_resources($round = 1, $limit = NULL, $offset = NULL, $pattern = NULL)
 	{
+		// TODO remove dependency on round
 		$conditions = array('ratings.round' => $round);
 		if (! is_null($pattern))
 		{
@@ -316,14 +317,18 @@ class Resource_Model extends Table_Model {
 	}
 
 	/**
-	 * Funkce vraci datum posledniho kola hodnoceni (alespon jeden kurator hodnotil)
-	 * Muze byt odlisne od atributu rating_last_round v DB, ktera obsahuje pouze uzavrena hodnoceni.
+	 * @param bool $last_open
+	 * @return int mixed Last rating_round ID (open if requested)
 	 */
-	public function get_last_rating_round()
+	public function get_last_rating_round_id($last_open = FALSE)
 	{
-		$sql = "SELECT MAX(round) as rating_round FROM rating_rounds WHERE resource_id = {$this->id}";
+		if ($last_open)
+		{
+			$additional_condition = "AND date_closed IS NULL";
+		}
+		$sql = "SELECT id FROM rating_rounds WHERE resource_id = {$this->id} {$additional_condition}";
 		$result = sql::get_first_result($sql);
-		return $result->rating_round;
+		return ($result) ? $result->id : NULL;
 	}
 
 	public function get_icon()
@@ -411,8 +416,9 @@ class Resource_Model extends Table_Model {
 		$rating_value = $this->rating_result;
 		if ($rating_value == '')
 		{
-			$ratings = ORM::factory('rating')->where(array('resource_id' => $this->id,
-														   'round'       => $round))->find_all();
+			$rating_round = ORM::factory('rating_round')->where(array('resource_id' => $this->id,
+																	  'round'       => $round))->find();
+			$ratings = $rating_round->ratings;
 			if ($ratings->count() == 0)
 			{
 				return FALSE;
@@ -459,9 +465,9 @@ class Resource_Model extends Table_Model {
 
 	public function rating_count($round = 1)
 	{
-		$ratings = ORM::factory('rating')->where(array('resource_id' => $this->id,
-													   'round'       => $round))->find_all();
-		return $ratings->count();
+		$rating_round = ORM::factory('rating_round')->where(array('resource_id' => $this->id,
+																  'round'       => $round))->find();
+		return $rating_round->ratings->count();
 	}
 
 	public function get_round_count()
@@ -506,25 +512,24 @@ class Resource_Model extends Table_Model {
 			->where(array('resource_id' => $this->id,
 						  'round'       => $round))
 			->orderby('round', 'desc')->find();
-		if ($rating_round->loaded)
+
+		if ($rating_round->date_closed == '')
 		{
-			return date_helper::short_date($rating_round->date_closed);
-		}
-		else
-		{
-			$sql = "SELECT MAX(date) as rating_date FROM ratings
+			$sql = "SELECT MAX(date) as last_rating_date FROM ratings
                                                 WHERE resource_id = {$this->id}
-                                                AND round = {$round}";
-			$rating_date = sql::get_first_result($sql)->rating_date;
+                                                AND round_id = {$rating_round->id()}";
+			$rating_date = sql::get_first_result($sql)->last_rating_date;
 			if (! is_null($rating_date))
 			{
 				$rating_date = date("d.m.Y", strtotime($rating_date));
-			}
-			else
+			} else
 			{
 				$rating_date = 'nehodnocen';
 			}
 			return $rating_date;
+		} else
+		{
+			return date_helper::short_date($rating_round->date_closed);
 		}
 	}
 
@@ -594,10 +599,16 @@ class Resource_Model extends Table_Model {
 			$round = $last_round + 1;
 		}
 
-		$rating_round = new Rating_Round_Model();
-		$rating_round->closing_curator_id = $this->curator_id;
+		$rating_round = new Rating_Round_Model($this->get_last_rating_round_id(TRUE));
+		if ($rating_round == NULL)
+		{
+			throw new WaAdmin_Exception('Rating round does not have any rating.', "There is no rating for resource [{$this->id}] and round [{$round}]");
+		}
+
+		$rating_round->curator_id = $this->curator_id;
 		$rating_round->date_closed = date_helper::mysql_datetime_now();
 		$rating_round->rating_result = $final_rating;
+		$rating_round->save();
 
 		$this->rating_last_round = $round;
 		$this->save();
@@ -620,9 +631,9 @@ class Resource_Model extends Table_Model {
 
 	/**
 	 * Vraci hodnoceni od daneho kuratora pro dany zdroj a dane kolo
-	 * @param <int/string> $curator_id
-	 * @param <int> $round
-	 * @return <Rating_Model>
+	 * @param Curator_Model $curator
+	 * @param int $round
+	 * @return mixed <Rating_Model>
 	 */
 	public function get_curator_rating($curator, $round = 1)
 	{
@@ -634,10 +645,10 @@ class Resource_Model extends Table_Model {
 		{
 			$curator_id = $curator;
 		}
-		$conditons = array('round'       => $round,
-						   'curator_id'  => $curator_id,
-						   'resource_id' => $this->id);
-		$rating = ORM::factory('rating')->where($conditons)->find();
+		$conditons = array('resource_id'      => $this->id,
+						   'round'            => $round);
+		$rating_round = ORM::factory('rating_round')->where($conditons)->find();
+		$rating = $rating_round->get_curator_rating($curator_id);
 
 		return $rating;
 	}
@@ -777,5 +788,3 @@ class Resource_Model extends Table_Model {
 		return $contracts;
 	}
 }
-
-?>

@@ -37,6 +37,13 @@ UPDATE ratings,
   WHERE rating_rounds.resource_id = ratings.resource_id AND
           rating_rounds.round = ratings.round;
 
+-- Clean date_closed from rating_rounds table for not finalized ratings on resources
+update rating_rounds, resources
+  set rating_rounds.date_closed = null
+  where rating_rounds.resource_id = resources.id and
+          resources.resource_status_id = 1 and
+          rating_rounds.rating_result IS null
+
 -- Drop ROUND column
 ALTER TABLE `ratings` DROP COLUMN `round`;
 
@@ -44,3 +51,4 @@ ALTER TABLE `ratings` DROP COLUMN `round`;
 UPDATE `application_info`
   SET `value` = '8', `date_changed` = NOW( )
   WHERE `key` = 'database_version';
+

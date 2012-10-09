@@ -14,7 +14,8 @@ class Resources_Controller extends Table_Controller {
 		parent::view($id);
 
 		$resource = $this->record;
-		$active_curators = ORM::factory('curator')->where('active', 1)->find_all();
+		$active_curators = Curator_Model::get_curators_for_rating($resource);
+
 
 		$append_view = View::factory('tables/append_resource');
 		$append_view->set_global('resource', $resource);
@@ -117,6 +118,11 @@ class Resources_Controller extends Table_Controller {
 		url::redirect("{$this->view_record_url}/{$resource->id}");
 	}
 
+	/**
+	 * @param int $resource_id
+	 * @param int $curator_id
+	 * @param int $round
+	 */
 	public function save_rating($resource_id, $curator_id, $round)
 	{
 		$rating_value = $this->input->post('rating');

@@ -169,8 +169,7 @@ class  Progress_Controller extends Template_Controller {
 
 			$this->session->set_flash('message', 'Smlouva byla úspěšně přiřazena.');
 			url::redirect('tables/resources/view/'.$resource->id);
-		}
-		else
+		} else
 		{
 			$assignment_view = ($contract->is_blanco()) ? 'assign_blanco_contract' : 'assign_addendum';
 			$this->template->content = View::factory("tables/contracts/{$assignment_view}")
