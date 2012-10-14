@@ -73,7 +73,7 @@ class Statistic_Model extends Model {
 		$date_conditions = self::create_date_conditions('last_date', $year, $month);
 		$where = self::combine_conditions($date_conditions, 'HAVING');
 
-		$sql = "SELECT id, MIN(date) AS last_date FROM ratings GROUP BY resource_id, round {$where}";
+		$sql = "SELECT id, MIN(date) AS last_date FROM ratings GROUP BY resource_id, round_id {$where}";
 		return sql::get_result($sql)->count();
 	}
 
@@ -115,7 +115,7 @@ class Statistic_Model extends Model {
                     FROM resources r, ratings g
                     WHERE rating_result =2
                     AND r.id = g.resource_id
-                    GROUP BY r.id, g.round
+                    GROUP BY r.id, g.round_id
                     {$having}
                 )
                 UNION (
