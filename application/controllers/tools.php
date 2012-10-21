@@ -21,7 +21,7 @@ class Tools_Controller extends Template_Controller {
 		$view->resources = Resource_Model::factory('resource')->where(array('resource_status_id' => 5, 'id >' => 7000))->find_all();
 		$view->format = $format;
 
-		$file_name = 'media\metadata.'.$format;
+		$file_name = 'media/metadata.'.$format;
 		$file = file_put_contents($file_name, "\xEF\xBB\xBF".$view->render());
 
 		if ($file == FALSE)
