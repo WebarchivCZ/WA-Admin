@@ -18,10 +18,10 @@ class Tools_Controller extends Template_Controller {
 			throw new WaAdmin_Exception('Not supported metadata format', "Only {$allowed_formats} are currently allowed");
 		}
 		$view = new View('tools/metadata_generator');
-		$view->resources = Resource_Model::factory('resource')->where(array('resource_status_id' => 5, 'id >' => 1000))->find_all();
+		$view->resources = Resource_Model::factory('resource')->where(array('resource_status_id' => 5, 'id >' => 7000))->find_all();
 		$view->format = $format;
 
-		$file_name = 'tmp/metadata.'.$format;
+		$file_name = 'media\metadata.'.$format;
 		$file = file_put_contents($file_name, "\xEF\xBB\xBF".$view->render());
 
 		if ($file == FALSE)
