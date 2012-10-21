@@ -1,0 +1,14 @@
+Název: <?= $resource->title."\n" ?>
+Url: <?= $resource->url."\n" ?>
+Spravuje: <?= $resource->curator."\n" ?>
+Konspekt: <?= $resource->conspectus."\n" ?>
+Podkategorie: <?= $resource->conspectus_subcategory."\n" ?>
+Frekvence sklízení: <?= $resource->crawl_freq."\n" ?>
+Status zdroje: <?= $resource->resource_status."\n" ?>
+Výsledek hodnocení: <?= $resource->rating_result."\n" ?>
+Aleph Sysno: <?= $resource->aleph_id."\n" ?>
+Katalogizováno: <?= $resource->catalogued."\n" ?>
+Komentář: <?= $resource->comments."\n" ?>
+Vydavatel: <?= $resource->publisher."\n" ?>
+Kontakt: <?= $resource->contact."\n" ?>
+Smlouva: <?= $resource->contract."\n\n" ?>
