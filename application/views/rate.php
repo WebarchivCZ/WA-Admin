@@ -1,10 +1,14 @@
 <div id="tabs">
-	<ul>
-		<li><a href="#tabs-1">K hodnocení <?= "({$resources_new->count()})" ?></a></li>
-		<li><a href="#tabs-2">K přehodnocení <?= "({$resources_reevaluate->count()})" ?></a></li>
-		<li><a href="#tabs-3">Ohodnocené <?= "({$rated_resources_new->count()})" ?></a></li>
-		<li><a href="#tabs-4">Přehodnocené <?= "({$rated_resources_reevaluate->count()})" ?></a></li>
-	</ul>
+    <ul>
+        <li><a href="#tabs-1">K hodnocení
+            (<?= is_null($resources_new) ? "0" : $resources_new->count() ?>)</a></li>
+        <li><a href="#tabs-2">K přehodnocení
+            (<?= is_null($resources_reevaluate) ? "0" : $resources_reevaluate->count() ?>)</a></li>
+        <li><a href="#tabs-3">Ohodnocené
+            (<?= is_null($rated_resources_new) ? "0" : $rated_resources_new->count() ?>)</a></li>
+        <li><a href="#tabs-4">Přehodnocené
+            (<?= is_null($rated_resources_reevaluate) ? "0" : $rated_resources_reevaluate->count() ?>)</a></li>
+    </ul>
 	<?php
 	if (isset($resources_new) and $resources_new)
 	{

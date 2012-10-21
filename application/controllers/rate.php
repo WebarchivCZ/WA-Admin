@@ -40,11 +40,16 @@ class Rate_Controller extends Template_Controller {
 	public function get_rated_resources($resource_status, $only_rated)
 	{
 		$id_array = Rating_Model::find_resources($this->user->id, $resource_status, $only_rated);
-		$resources = ORM::factory('resource')
-			->in('id', $id_array)
-			->orderby('date', 'ASC')
-			->find_all();
-		return $resources;
+		if (! empty($id_array))
+		{
+			return ORM::factory('resource')
+				->in('id', $id_array)
+				->orderby('date', 'ASC')
+				->find_all();
+		} else
+		{
+			return NULL;
+		}
 	}
 }
 
