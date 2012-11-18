@@ -15,7 +15,7 @@
 		$rating_result_array = Rating_Model::get_final_array();
 		foreach ($resources as $resource)
 		{
-			$round = ($status == RS_NEW) ? 1 : $resource->rating_last_round + 1;
+			$round = $resource->rating_last_round + 1;
 			$rating_count = $resource->rating_count($round);
 
 			$class = '';

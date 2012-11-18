@@ -18,10 +18,7 @@
 
 	foreach ($resources as $tab_id => $resource_set)
 	{
-		$status = ($tab_id % 2 == 0) ? RS_RE_EVALUATE : RS_NEW;
-
 		$view = View::factory('forms/ratings_final');
-		$view->status = RS_NEW;
 		$view->resources = $resource_set;
 		$view->tab_id = $tab_id;
 		$view->render(TRUE);
