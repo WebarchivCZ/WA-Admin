@@ -14,7 +14,7 @@ class Resources_Controller extends Table_Controller {
 		parent::view($id);
 
 		$resource = $this->record;
-		$active_curators = Curator_Model::get_curators_for_rating($resource);
+		$active_curators = Curator_Model::get_curators_for_rating($resource->id);
 
 
 		$append_view = View::factory('tables/append_resource');

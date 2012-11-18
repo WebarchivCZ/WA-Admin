@@ -54,11 +54,23 @@ class Curator_Model extends Auth_User_Model {
 	 * Get active curators for resource,
 	 *
 	 * TODO Feature - activate&deactivate curators
-	 * @param Resource_Model $for_resource Rated resource
+	 * @param Resource_Model $resource_id Rated resource
 	 * @return
 	 */
-	public static function get_curators_for_rating($for_resource)
+	public static function get_curators_for_rating($resource_id)
 	{
-		return ORM::factory('curator')->where('active', 1)->find_all();
+//		$sql = "select resources.date as date_start,
+//        if (rating_rounds.date_closed is null, now(), max(rating_rounds.date_closed)) as date_end
+//		from resources, rating_rounds
+//  		where rating_rounds.resource_id = resources.id and resource_id = ${resource_id}
+//          and rating_rounds.id = (select max(rating_rounds.id) from rating_rounds where resource_id = ${resource_id});";
+		$sql = "select c.* from curators c, curators_roles cr, resources r
+				WHERE cr.role_id = 2
+				AND c.id = cr.curator_id
+ 				AND c.active = 1
+ 				AND (c.active_to >= r.date OR c.active_to IS NULL)
+ 				AND r.id = $resource_id";
+		$id_array = sql::get_id_array($sql, 'id');
+		return ORM::factory('curator')->in('id', $id_array)->find_all();
 	}
 }
