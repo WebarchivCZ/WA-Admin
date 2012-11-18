@@ -61,8 +61,9 @@ class Statistic_Model extends Model {
 
 	public static function get_contracts($year = NULL, $month = NULL)
 	{
-		$date_conditions = self::create_date_conditions('date_signed', $year, $month);
-		$where = self::combine_conditions($date_conditions, 'WHERE');
+		$conditions = self::create_date_conditions('date_signed', $year, $month);
+		$conditions[] = 'parent_id is null';
+		$where = self::combine_conditions($conditions, 'WHERE');
 
 		$sql = "SELECT count(c.id) as 'count' FROM contracts c {$where}";
 		return sql::get_first_result($sql)->count;
