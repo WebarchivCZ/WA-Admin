@@ -608,6 +608,7 @@ class Resource_Model extends Table_Model {
 		$rating_round->curator_id = $this->curator_id;
 		$rating_round->date_closed = date_helper::mysql_datetime_now();
 		$rating_round->rating_result = $final_rating;
+		$rating_round->resource_id = $this->id;
 		$rating_round->save();
 
 		$this->rating_last_round = $round;
@@ -704,6 +705,9 @@ class Resource_Model extends Table_Model {
 
 		// ratings
 		ORM::factory('rating')->where('resource_id', $this->id)->delete_all();
+
+		// rating rounds
+		ORM::factory('rating_round')->where('resource_id', $this->id)->delete_all();
 
 		// seeds
 		ORM::factory('seed')->where('resource_id', $this->id)->delete_all();
