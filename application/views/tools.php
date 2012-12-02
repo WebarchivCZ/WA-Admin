@@ -23,7 +23,7 @@
     <button><a href="<?= url::site('tools/metadata_generator/txt') ?>">TXT formát</a></button>
 </p>
 
-<h3><a href="<?= url::site('tables/seeds/generate_list')?>">Generátor semínek</h3>
+<h3><a href="<?= url::site('tables/seeds/generate_list')?>">Generátor semínek</a></h3>
 
 
 
