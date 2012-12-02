@@ -25,7 +25,7 @@ class app {
 	 */
 	public static function in_debug_mode()
 	{
-		return (boolean)self::get_value('application_debug_mode');
+		return (self::get_value('application_debug_mode') == 'FALSE') ? FALSE : TRUE;
 	}
 
 	/**
