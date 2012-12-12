@@ -68,7 +68,7 @@ class Curator_Model extends Auth_User_Model {
 				WHERE cr.role_id = 2
 				AND c.id = cr.curator_id
  				AND c.active = 1
- 				AND (c.active_to >= r.date OR c.active_to IS NULL)
+ 				AND (c.active_to >= r.date OR (c.active_to IS NULL AND r.rating_result IS NULL))
  				AND r.id = $resource_id";
 		$id_array = sql::get_id_array($sql, 'id');
 		return ORM::factory('curator')->in('id', $id_array)->find_all();
