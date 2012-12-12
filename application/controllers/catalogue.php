@@ -36,7 +36,7 @@ class Catalogue_Controller extends Template_Controller {
 		if ($aleph_id)
 		{
 			$resource->aleph_id = $aleph_id;
-			$conspectus_sub_id = $this->input->post('aleph_id');
+			$conspectus_sub_id = $this->input->post('conspectus_subcategory_id');
 			if ($conspectus_sub_id != '')
 			{
 				$resource->conspectus_subcategory_id = $conspectus_sub_id;
