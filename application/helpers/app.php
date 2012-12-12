@@ -35,7 +35,7 @@ class app {
 			{
 				$user_role_is_debug = $user->has(ORM::factory('role', 'debug'));
 			}
-			$is_debug = (self::get_value('application_debug_mode') == 'FALSE' OR $user_role_is_debug) ? FALSE : TRUE;
+			$is_debug = ($user_role_is_debug || self::get_value('application_debug_mode') == 'FALSE') ? FALSE : TRUE;
 			$session->set('is_debug', $is_debug);
 		}
 		return $is_debug;
