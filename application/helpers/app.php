@@ -25,7 +25,20 @@ class app {
 	 */
 	public static function in_debug_mode()
 	{
-		return (self::get_value('application_debug_mode') == 'FALSE') ? FALSE : TRUE;
+		$session = Session::instance();
+		$is_debug = $session->get('is_debug', NULL);
+		if ($is_debug == NULL)
+		{
+			$user_role_is_debug = FALSE;
+			$user = Auth::instance()->get_user();
+			if ($user)
+			{
+				$user_role_is_debug = $user->has(ORM::factory('role', 'debug'));
+			}
+			$is_debug = (self::get_value('application_debug_mode') == 'FALSE' OR $user_role_is_debug) ? FALSE : TRUE;
+			$session->set('is_debug', $is_debug);
+		}
+		return $is_debug;
 	}
 
 	/**
