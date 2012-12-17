@@ -657,12 +657,25 @@ class Resource_Model extends Table_Model {
 	public function get_curators()
 	{
 		$rounds = ORM::factory('rating_round')->where('resource_id', $this->id)->find_all();
-		$curators = array();
-		foreach ($rounds as $round)
+		if ($rounds->count() == 0)
 		{
-			$curators = array_merge($round->get_active_curators());
+			$sql = 'SELECT c.id
+						FROM curators c, curators_roles cr
+						WHERE cr.role_id = 2
+							  AND c.id = cr.curator_id
+							  AND c.active = 1
+							  AND (c.active_to >= now() OR c.active_to IS NULL)';
+			return ORM::factory('curator')->in('id', sql::get_id_array($sql))->find_all()->as_array();
+		} else
+		{
+			$curators = array();
+			foreach ($rounds as $round)
+			{
+				$curators = array_merge($round->get_active_curators());
+			}
+			return $curators;
 		}
-		return $curators;
+
 	}
 
 	public function get_ratings_with_comment()
