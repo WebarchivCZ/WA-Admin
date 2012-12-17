@@ -1,6 +1,5 @@
 <?php
-$curators_count = $active_curators->count();
-$cell_width = (85 / $curators_count);
+$curators_count = count($active_curators);
 
 if ($resource->is_ratable())
 {
@@ -11,28 +10,29 @@ if ($resource->is_ratable())
 }
 if ($rounds > 0 || $resource->is_ratable())
 {
+	$cell_width = (85 / $curators_count);
 	echo table::header();
 	?>
 
-<tr>
-    <th width="15%" class="first">Datum</th>
-	<?php
-	foreach ($active_curators as $i => $curator)
-	{
-		if ($i == $curators_count - 1)
+	<tr>
+		<th width="15%" class="first">Datum</th>
+		<?php
+		foreach ($active_curators as $i => $curator)
 		{
-			$class = ' class="last"';
-		} else
-		{
-			$class = '';
+			if ($i == $curators_count - 1)
+			{
+				$class = ' class="last"';
+			} else
+			{
+				$class = '';
+			}
+
+			echo "<th{$class} width='{$cell_width}%'>$curator</th>";
 		}
+		?>
+	</tr>
 
-		echo "<th{$class} width='{$cell_width}%'>$curator</th>";
-	}
-	?>
-</tr>
-
-<?php
+	<?php
 	$url = "tables/resources/save_rating/{$resource->id}/{$this->user->id}/{$rounds}";
 	echo form::open(url::site($url));
 	for ($round = 1; $round <= $rounds; $round ++)
@@ -40,8 +40,8 @@ if ($rounds > 0 || $resource->is_ratable())
 		if ($resource->has_rating($round) or $resource->is_ratable())
 		{
 			?>
-<tr>
-	<td class="first"><?=$resource->get_ratings_date($round);?></td>
+			<tr>
+			<td class="first"><?=$resource->get_ratings_date($round);?></td>
 			<?php
 			foreach ($active_curators as $curator)
 			{
@@ -82,19 +82,19 @@ if ($rounds > 0 || $resource->is_ratable())
 		?>
 
 		<?= form::open(url::site('tables/resources/save_final_rating/'.$resource->id)) ?>
-    <p><strong>Finalní hodnocení:</strong>
-		<?=form::dropdown('final_rating', $rating_options, $resource_rating)?>
-    <p id='p_reevaluate_date' class="hidden_toggle_elements">
-        Prehodnotit k:
-		<?=form::input('reevaluate_date')?>
-    </p>
-    <p id='p_crawl_freq' class="hidden_toggle_elements">
-        Frekvence sklízení:
-		<?=form::dropdown('crawl_freq_id', $crawl_freq_options)?>
-    </p>
-    <p><strong>Souhlasí podkategorie?</strong> - <?=$subcategory?></p>
-    <p><?=form::submit('save_rating', 'Uložit finální hodnocení');?></p>
-		<?=form::close();?>
+		<p><strong>Finalní hodnocení:</strong>
+			<?=form::dropdown('final_rating', $rating_options, $resource_rating)?>
+		<p id='p_reevaluate_date' class="hidden_toggle_elements">
+			Prehodnotit k:
+			<?=form::input('reevaluate_date')?>
+		</p>
+		<p id='p_crawl_freq' class="hidden_toggle_elements">
+			Frekvence sklízení:
+			<?=form::dropdown('crawl_freq_id', $crawl_freq_options)?>
+		</p>
+		<p><strong>Souhlasí podkategorie?</strong> - <?=$subcategory?></p>
+		<p><?=form::submit('save_rating', 'Uložit finální hodnocení');?></p>
+		<?= form::close(); ?>
 
 	<?php
 	}

@@ -24,6 +24,30 @@ class Rating_Round_Model extends Table_Model {
 												   'resource_id' => $this->resource_id))->find();
 	}
 
+	public function get_active_curators()
+	{
+		if ($this->rating_result == "")
+		{
+			$sql = "select c.id from curators c, curators_roles cr, rating_rounds r
+				WHERE cr.role_id = 2
+				AND c.id = cr.curator_id
+ 				AND c.active = 1
+ 				AND (c.active_to >= r.date_created OR c.active_to >= now() OR c.active_to IS NULL)
+ 				AND r.resource_id = {$this->resource_id}";
+		} else
+		{
+			$sql = "select c.id from curators c, curators_roles cr, rating_rounds r
+				WHERE cr.role_id = 2
+				AND c.id = cr.curator_id
+ 				AND c.active = 1
+ 				AND (c.active_to >= r.date_created OR c.active_to IS NULL)
+ 				AND (c.active_from <= r.date_closed OR c.active_from IS NULL)
+ 				AND r.resource_id = {$this->resource_id}";
+		}
+		$curator_ids = sql::get_id_array($sql);
+		return ORM::factory('curator')->in('id', $curator_ids)->find_all()->as_array();
+	}
+
 	public function is_open()
 	{
 		return ($this->__isset('date_closed')) ? TRUE : FALSE;

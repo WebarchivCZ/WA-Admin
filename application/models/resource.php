@@ -646,12 +646,23 @@ class Resource_Model extends Table_Model {
 		{
 			$curator_id = $curator;
 		}
-		$conditons = array('resource_id'      => $this->id,
-						   'round'            => $round);
+		$conditons = array('resource_id' => $this->id,
+						   'round'       => $round);
 		$rating_round = ORM::factory('rating_round')->where($conditons)->find();
 		$rating = $rating_round->get_curator_rating($curator_id);
 
 		return $rating;
+	}
+
+	public function get_curators()
+	{
+		$rounds = ORM::factory('rating_round')->where('resource_id', $this->id)->find_all();
+		$curators = array();
+		foreach ($rounds as $round)
+		{
+			$curators = array_merge($round->get_active_curators());
+		}
+		return $curators;
 	}
 
 	public function get_ratings_with_comment()

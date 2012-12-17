@@ -12,10 +12,9 @@ class Resources_Controller extends Table_Controller {
 	public function view($id = FALSE)
 	{
 		parent::view($id);
-
+		/** @var Resource_Model $resource */
 		$resource = $this->record;
-		$active_curators = Curator_Model::get_curators_for_rating($resource->id);
-
+		$active_curators = $resource->get_curators();
 
 		$append_view = View::factory('tables/append_resource');
 		$append_view->set_global('resource', $resource);
