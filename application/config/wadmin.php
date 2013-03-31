@@ -1,6 +1,6 @@
 <?php
 $config = array(
-	'top_menu'          => array(
+	'top_menu' => array(
 		'home',
 		'suggest',
 		'rate',
@@ -10,14 +10,14 @@ $config = array(
 		'quality_control',
 		'conspectus'),
 
-	'date_format'       => 'Y-m-d H:i:s',
+	'date_format' => 'Y-m-d H:i:s',
 
 	'short_date_format' => 'd.m.Y',
 
-	'title_length'      => 35);
+	'title_length' => 35);
 
 // Application version info
-$config['version'] = '2.35';
+$config['version'] = '2.37';
 $config['build'] = 1;
 
 /**

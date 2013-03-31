@@ -56,15 +56,15 @@ $(document).ready(function () {
         function (event) {
             window.location = $(this).attr('href');
             return false;
-        }).confirm({timeout:5000,
-            dialogShow:'fadeIn',
-            dialogSpeed:'slow',
-            msg:'Určitě?',
-            buttons:{
-                ok:'Ano',
-                cancel:'Ne',
-                wrapper:'<button></button>',
-                separator:'&nbsp;&nbsp;  '
+        }).confirm({timeout: 5000,
+            dialogShow: 'fadeIn',
+            dialogSpeed: 'slow',
+            msg: 'Určitě?',
+            buttons: {
+                ok: 'Ano',
+                cancel: 'Ne',
+                wrapper: '<button></button>',
+                separator: '&nbsp;&nbsp;  '
             }
         });
 
@@ -73,15 +73,15 @@ $(document).ready(function () {
         function () {
             window.location = $(this).attr('href');
         }).confirm({
-            timeout:5000,
-            dialogShow:'fadeIn',
-            dialogSpeed:'slow',
-            msg:'<br /><b>POZOR!</b> Touto akcí vymažete smlouvu od všech zdrojů! Chcete opravdu pokračovat? <br />',
-            buttons:{
-                ok:'Ano',
-                cancel:'Ne',
-                wrapper:'<button></button>',
-                separator:'&nbsp;&nbsp;  '
+            timeout: 5000,
+            dialogShow: 'fadeIn',
+            dialogSpeed: 'slow',
+            msg: '<br /><b>POZOR!</b> Touto akcí vymažete smlouvu od všech zdrojů! Chcete opravdu pokračovat? <br />',
+            buttons: {
+                ok: 'Ano',
+                cancel: 'Ne',
+                wrapper: '<button></button>',
+                separator: '&nbsp;&nbsp;  '
             }
         });
 
@@ -128,9 +128,9 @@ $(document).ready(function () {
     // nastylovani tlacitek
     $("button, input:submit, .button_file").button();
     $(".icon").button("destroy");
-    $("input#reevaluate_date").datepicker({ dateFormat:'dd.mm.yy' });
-    $("input#date").datepicker({ dateFormat:'dd.mm.yy' });
-    $("input.date_today").datepicker({ dateFormat:'dd.mm.yy', gotoCurrent:true });
+    $("input#reevaluate_date").datepicker({ dateFormat: 'dd.mm.yy' });
+    $("input#date").datepicker({ dateFormat: 'dd.mm.yy' });
+    $("input.date_today").datepicker({ dateFormat: 'dd.mm.yy', gotoCurrent: true });
 
     $.datepicker.setDefaults($.datepicker.regional['cs']);
 
@@ -144,52 +144,55 @@ $(document).ready(function () {
     });
 
     $('.assign_contract_dialog').dialog({
-        autoOpen:false,
-        height:150,
-        width:350,
-        modal:true,
-        Cancel:function () {
+        autoOpen: false,
+        height: 150,
+        width: 350,
+        modal: true,
+        Cancel: function () {
             $(this).dialog("close");
         }});
 
     $('#assign_addendum_dialog').dialog(
-        "option", "buttons", { "Přiřadit dodatek":function () {
+        "option", "buttons", { "Přiřadit dodatek": function () {
             $("#addendum_form").submit();
         }});
 
     $('#assign_blanco_dialog').dialog(
-        "option", "buttons", { "Přiřadit blanco smlouvu":function () {
+        "option", "buttons", { "Přiřadit blanco smlouvu": function () {
             $("#addendum_form").submit();
         }});
 
     $('#date_signed').datepicker();
 
+    $('input#valid_from').datepicker();
+    $('input#valid_to').datepicker();
+
     // thumbnails in lightbox
     $('a.thumbnail').lightBox();
 
-    $('.accordion').accordion({autoHeight:false});
+    $('.accordion').accordion({autoHeight: false});
 });
 
 /* Czech initialisation for the jQuery UI date picker plugin. */
 /* Written by Tomas Muller (tomas@tomas-muller.net). */
 jQuery(function ($) {
     $.datepicker.regional['cs'] = {
-        closeText:'Zavřít',
-        prevText:'&#x3c;Dříve',
-        nextText:'Později&#x3e;',
-        currentText:'Nyní',
-        monthNames:['leden', 'únor', 'březen', 'duben', 'květen', 'červen',
+        closeText: 'Zavřít',
+        prevText: '&#x3c;Dříve',
+        nextText: 'Později&#x3e;',
+        currentText: 'Nyní',
+        monthNames: ['leden', 'únor', 'březen', 'duben', 'květen', 'červen',
             'červenec', 'srpen', 'září', 'říjen', 'listopad', 'prosinec'],
-        monthNamesShort:['led', 'úno', 'bře', 'dub', 'kvě', 'čer',
+        monthNamesShort: ['led', 'úno', 'bře', 'dub', 'kvě', 'čer',
             'čvc', 'srp', 'zář', 'říj', 'lis', 'pro'],
-        dayNames:['neděle', 'pondělí', 'úterý', 'středa', 'čtvrtek', 'pátek', 'sobota'],
-        dayNamesShort:['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'],
-        dayNamesMin:['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'],
-        weekHeader:'Týd',
-        dateFormat:'dd.mm.yy',
-        firstDay:1,
-        isRTL:false,
-        showMonthAfterYear:false,
-        yearSuffix:''};
+        dayNames: ['neděle', 'pondělí', 'úterý', 'středa', 'čtvrtek', 'pátek', 'sobota'],
+        dayNamesShort: ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'],
+        dayNamesMin: ['ne', 'po', 'út', 'st', 'čt', 'pá', 'so'],
+        weekHeader: 'Týd',
+        dateFormat: 'dd.mm.yy',
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: ''};
     $.datepicker.setDefaults($.datepicker.regional['cs']);
 });

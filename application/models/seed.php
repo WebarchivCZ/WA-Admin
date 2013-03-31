@@ -16,7 +16,7 @@ class Seed_Model extends Table_Model {
 	protected $primary_val = 'url';
 
 	protected $belongs_to = array(
-		'resource', 'seed_status');
+		'resource', 'seed_status', 'seed_type');
 
 	public $formo_ignores = array('id');
 
@@ -54,7 +54,7 @@ class Seed_Model extends Table_Model {
 			->count_all();
 		$records = $this->join('resources', 'resources.id = seeds.resource_id')
 			->orlike(array('resources.title' => $pattern,
-						   'seeds.url'       => $pattern))
+				'seeds.url' => $pattern))
 			->find_all($limit, $offset);
 		return $records;
 	}

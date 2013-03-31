@@ -19,8 +19,8 @@ abstract class Table_Controller extends Template_Controller {
 		{
 			$this->view_record_url = "tables/{$this->table}/view";
 		}
-		$this->template->title = Kohana::lang('tables.'.$this->title);
-		$search_url = url::site('tables/'.$this->table.'/search/');
+		$this->template->title = Kohana::lang('tables.' . $this->title);
+		$search_url = url::site('tables/' . $this->table . '/search/');
 		$this->template->set_global('search_url', $search_url);
 		$this->template->set_global('table', $this->table);
 	}
@@ -28,7 +28,7 @@ abstract class Table_Controller extends Template_Controller {
 	public function index()
 	{
 		$this->template->content = $this->show_items_view();
-		$this->template->title = Kohana::lang('tables.'.$this->title)." | ".Kohana::lang('tables.index');
+		$this->template->title = Kohana::lang('tables.' . $this->title) . " | " . Kohana::lang('tables.index');
 	}
 
 	protected function show_items_view($items = NULL)
@@ -54,7 +54,7 @@ abstract class Table_Controller extends Template_Controller {
 		$view->headers = $model->headers;
 		$view->columns = $model->table_columns();
 		$view->items = $items;
-		$view->pages = $pages.$pages_inline;
+		$view->pages = $pages . $pages_inline;
 		return $view;
 
 	}
@@ -125,7 +125,7 @@ abstract class Table_Controller extends Template_Controller {
 		$form = Formo::factory()->orm($this->model)
 			->label_filter('display::translate_orm')
 			->label_filter('ucfirst')
-			->add('submit', 'Vlozit')
+			->add('submit', 'Vložit')
 			->remove($this->columns_ignored);
 
 		if (! is_null($values))
@@ -163,7 +163,7 @@ abstract class Table_Controller extends Template_Controller {
 				{
 					$this->record->delete_record();
 					message::set_flash('Záznam byl úspěšně smazán.');
-					url::redirect(url::site('tables/'.$this->table));
+					url::redirect(url::site('tables/' . $this->table));
 				} else
 				{
 					$this->redirect();
@@ -209,7 +209,7 @@ abstract class Table_Controller extends Template_Controller {
 		$view->pages = $pages_inline;
 
 		$this->template->content = $view;
-		$this->template->title = Kohana::lang('tables.'.$this->title)." | ".Kohana::lang('tables.index');
+		$this->template->title = Kohana::lang('tables.' . $this->title) . " | " . Kohana::lang('tables.index');
 	}
 
 	protected function redirect($action = 'view')

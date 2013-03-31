@@ -16,6 +16,7 @@ class Crawl_Freq_Model extends Table_Model {
 		'comments');
 
 	protected $table_name = 'crawl_freq';
+	protected $sorting = array('frequency' => 'asc');
 
 	protected $primary_val = 'frequency';
 
